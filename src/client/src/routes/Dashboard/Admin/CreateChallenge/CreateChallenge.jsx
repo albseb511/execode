@@ -15,6 +15,8 @@ const initialState = {
   input_format: "",
   constraints: "",
   output_format: "",
+  sample_input: "",
+  sample_output: "",
   settings: [],
   test_cases: [],
   test_input: [],
@@ -34,13 +36,24 @@ class CreateChallenge extends Component {
   };
 
   addTestCase = testCase => {
-    this.setState(state => {
-      return {
-        test_cases: [...state.test_cases, testCase],
-        test_input: [...state.test_input, testCase.inputFile],
-        test_output: [...state.test_output, testCase.outputFile]
-      };
-    });
+    console.log(testCase);
+    if (
+      testCase.testCaseName &&
+      testCase.visibility &&
+      testCase.inputFile &&
+      testCase.strength &&
+      testCase.outputFile
+    ) {
+      this.setState(state => {
+        return {
+          test_cases: [...state.test_cases, testCase],
+          test_input: [...state.test_input, testCase.inputFile],
+          test_output: [...state.test_output, testCase.outputFile]
+        };
+      });
+    } else {
+      alert("All fields are mandatory");
+    }
   };
 
   addSettings = setting => {
@@ -81,7 +94,9 @@ class CreateChallenge extends Component {
       problem_statement: this.state.problem_statement,
       input_format: this.state.input_format,
       constraints: this.state.constraints,
-      output_format: this.state.output_format
+      output_format: this.state.output_format,
+      sample_input: this.state.sample_input,
+      sample_output: this.state.sample_output
     };
     const test_cases = this.state.test_cases.map(tcs => {
       return {
@@ -90,6 +105,26 @@ class CreateChallenge extends Component {
         strength: tcs.strength
       };
     });
+    // validation
+    if (data && test_cases && this.state.settings) {
+      for (const key in data) {
+        if (!data[key]) {
+          alert(key + " is required");
+          return false;
+        }
+      }
+      if (!test_cases.length) {
+        alert("Test Cases required");
+        return false;
+      }
+      if (!this.state.settings.length) {
+        alert("Add Settings");
+        return false;
+      }
+    } else {
+      alert("All fields are mandatory");
+      return false;
+    }
     // call api
 
     // set to initial state on successfull response
@@ -130,6 +165,8 @@ class CreateChallenge extends Component {
       constraints,
       output_format: outputFormat,
       settings,
+      sample_input,
+      sample_output,
       test_cases: testCases
     } = this.state;
     let viewTab;
@@ -144,6 +181,8 @@ class CreateChallenge extends Component {
           input_format={inputFormat}
           constraints={constraints}
           output_format={outputFormat}
+          sample_input={sample_input}
+          sample_output={sample_output}
         />
       );
     } else if (settingsTab) {

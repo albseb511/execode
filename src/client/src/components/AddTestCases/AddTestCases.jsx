@@ -50,6 +50,7 @@ class AddTestCases extends Component {
               value={testCaseName}
               name="testCaseName"
               onChange={this.handleChange}
+              required
             />
           </div>
           <div className="col-sm-3">
@@ -65,6 +66,7 @@ class AddTestCases extends Component {
               value={strength}
               onChange={this.handleChange}
               name="strength"
+              required
             />
           </div>
           <div className="col-sm-2">
@@ -76,6 +78,7 @@ class AddTestCases extends Component {
               onChange={this.handleChange}
               name="visibility"
               value={visibility}
+              required
             />
             Visibility
           </div>
@@ -92,8 +95,9 @@ class AddTestCases extends Component {
                 name="inputFile"
                 // onChange={this.handleFiles}
                 ref={this.inputFile}
+                required
               />
-              Choose Input file
+              Choose Input File
             </div>
           </div>
         </div>
@@ -108,8 +112,9 @@ class AddTestCases extends Component {
                 name="outputFile"
                 // onChange={this.handleFiles}
                 ref={this.outputFile}
+                required
               />
-              Choose Output file
+              Choose Outpur File
             </div>
           </div>
         </div>
@@ -144,7 +149,7 @@ class AddTestCases extends Component {
           <tbody>
             {testCases
               ? testCases.map((tCase, ind) => (
-                  <tr>
+                  <tr key={"test_case" + ind}>
                     <th scope="row">{ind + 1}</th>
                     <td>{tCase.inputFile.name}</td>
                     <td>{tCase.outputFile.name}</td>
