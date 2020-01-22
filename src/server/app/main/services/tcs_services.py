@@ -5,7 +5,7 @@ def save_changes(data):
     try:
         db.session.add(data)
         db.session.commit()
-    except:
+    except Exception as e:
         db.session.rollback()
 
 
@@ -27,9 +27,10 @@ def update_input_output(input_path, output_path, test_case_id):
     # save_changes(update_test_case)
     # update_input_output.output_file = output_path    
     # save_changes(update_test_case)
-    db.engine.execute("update test_cases set input_file='{input_path}', output_file='{output_path}' where id={test_case_id}")
+    db.engine.execute("update test_cases set input_file='%s', output_file='%s' where id=%s"%(input_path,output_path,test_case_id))
     try:
         db.session.commit()
-    except:
+        return True
+    except Exception as e:
         db.session.rollback()
-    return True
+        return False

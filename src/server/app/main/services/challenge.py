@@ -15,7 +15,8 @@ def save_changes(data):
     try:
         db.session.add(data)
         db.session.commit()
-    except:
+    except Exception as e:
+        print(e)
         db.session.rollback()
 
 # def get_challenge(data,challenge_name):
@@ -39,12 +40,12 @@ def get_challenge(challenge_name):
 
 def add_challenge(description,problem_statement,input_format,output_format,constraints,difficulty,sample_input,sample_output,challenge_name):   #This service is us   ed to add both the challenge and required test cases for it.
     description = description
-    problem_statement = problem_statement,
-    input_format = input_format,
-    output_format = output_format,
-    difficulty = difficulty,
-    sample_input = sample_input,
-    sample_output = sample_output,
+    problem_statement = problem_statement
+    input_format = input_format
+    output_format = output_format
+    difficulty = difficulty
+    sample_input = sample_input
+    sample_output = sample_output
     # print(description,problem_statement,input_format,output_format,difficulty,sample_input,sample_output)
     new_asset = ChallengesModel(challenge_name=challenge_name,description=description,problem_statement=problem_statement,input_format=input_format,output_format=output_format,difficulty=difficulty,sample_input=sample_input,sample_output=sample_output)
     save_changes(new_asset)

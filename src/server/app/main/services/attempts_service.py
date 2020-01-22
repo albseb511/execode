@@ -15,7 +15,7 @@ def save_to_db(model):
     try:
         db.session.add(model)
         db.session.commit()
-    except:
+    except Exception as e:
         db.session.rollback()
 
 

@@ -13,7 +13,11 @@ class Challenge(Resource):
 
     def get(self,challenge_name):
         # auth token 
+        print(request.headers)
         auth_token = request.headers.get("Authorization")
+        print(auth_token)
+        print('_________________--')
+        print(type(auth_token))
         user_id = decode_auth_token(auth_token)
         if user_id:
             # check if he is admin
@@ -40,12 +44,20 @@ class Challenge(Resource):
                 elif key== 'test_case_output'+str(out_count):
                     test_output.append(val)        
                     out_count = out_count + 1
+            print('____________________________')
             challenge_id = add_challenge(**Info, challenge_name=challenge_name) 
+
+            if challenge_id == None:
+                return {"comment": "Error in Challenge Creation, check session.commit()"}, 501
 
             # make folder with this challenge id
             path = make_challenge_folder(challenge_id)
             # insert test cases details into db
             test_case_ids = add_multiple_test_cases(challenge_id, test_cases)
+
+            if test_case_ids[0] == None:
+                return {"comment": "Error in TestCase Creation, check session.commit()"}, 501
+
             #  make files of test_cases
             if len(test_case_ids) != len(test_input):
                 return {"comment": "Incorrect test cases"}, 404

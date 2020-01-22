@@ -31,7 +31,7 @@ class UserModel(db.Model):
             db.session.add(cls(
                 **{"name": "sachin2", "email": "beckhamd@gmail.com", "role": "admin", "salt": "xyz"}))
             db.session.commit()
-        except:
+        except Exception as e:
             db.session.rollback()
 
     @property

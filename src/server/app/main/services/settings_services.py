@@ -6,11 +6,11 @@ def save_changes(data):
     try:
         db.session.add(data)
         db.session.commit()
-    except:
+    except Exception as e:
         db.session.rollback()
 
 def add_multiple_settings(challenge_id, settings):
     for setting in settings:
-        new_settings = ChallengeSettings(language_name=setting["language"], time_limit=setting["time_limit"], memory_limit=setting["memory_limit"], challenge_id=challenge_id)
+        new_settings = ChallengeSettings(language_name=setting["language"], time_limit=setting["timeLimit"], memory_limit=setting["memoryLimit"], challenge_id=challenge_id)
         save_changes(new_settings)
     return True

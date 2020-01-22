@@ -3,18 +3,6 @@ from flask_restful import Resource, reqparse
 from ..services.contest_detail import get_contests_challenges, get_contests, add_contest
 from app.main import db
 
-{
-    "start_date": "2020-08-09",
-    "end_date": "2020-08-09",
-    "start_time": "14:00",
-    "end_time": "15:00",
-    "details": "these are all the details for this particular challenge",
-    "show_leaderboard": True,
-    "challenges_ids": [1, 2, 3],
-    "action": "creating a contest"
-}
-
-
 class Contest(Resource):
     """"
     Get contest details 
@@ -33,7 +21,7 @@ class Contest(Resource):
                         help="Details is needed")
     parser.add_argument('show_leaderboard', type=bool,
                         required=True, help="Show leaderboard is needed")
-    parser.add_argument('challenges_ids', type=list,
+    parser.add_argument('challenge_ids', type=list,
                         required=True, location='json', help="Challenges cannot be empty")
 
     @classmethod
@@ -54,15 +42,14 @@ class Contest(Resource):
     def post(self, contest_name):
         data = Contest.parser.parse_args()
         # Add contest to database
+        print('add contest started')
         created = add_contest(data, contest_name)
+        print(created)
+        print('----------------------------------')
         if created:
-            return {
-                "comment": "contest created successfully"
-            }
+            return {"comment": "contest created successfully"}, 200
         else:
-            return {
-                "comment": "contest created successfully"
-            }
+            return {"comment": "error in contest creation"}, 501
 
 
 class Contests(Resource):

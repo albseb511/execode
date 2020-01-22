@@ -13,7 +13,7 @@ def save_changes(data):
     try:
         db.session.add(data)
         db.session.commit()
-    except:
+    except Exception as e:
         db.session.rollback()
 
 
@@ -92,10 +92,13 @@ def add_contest(data, contest_name):
                               end=end, details=data["details"], show_leaderboard=data["show_leaderboard"])
 
     save_changes(new_asset)
-
+    print('add contest saved')
     contest_id = new_asset.id
+    if contest_id == None:
+        return False
+
+    print('challenges added')
     for challenge_id in data["challenges_ids"]:
         new_asset = db.engine.execute(
             "insert into contests_challenges (challenge_id,contest_id) values ({},{})".format(challenge_id, contest_id))
     return True
-

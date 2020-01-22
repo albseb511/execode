@@ -7,7 +7,7 @@ def save_changes(data):
     try:
         db.session.add(data)
         db.session.commit()
-    except:
+    except Exception as e:
         db.session.rollback()
 
 def add_submission(language_name, user_id, contest_challenge_id):
