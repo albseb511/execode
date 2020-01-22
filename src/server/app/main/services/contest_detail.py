@@ -98,7 +98,7 @@ def add_contest(data, contest_name):
         return False
 
     print('challenges added')
-    for challenge_id in data["challenges_ids"]:
+    for challenge_id in data["challenge_ids"]:
         new_asset = db.engine.execute(
             "insert into contests_challenges (challenge_id,contest_id) values ({},{})".format(challenge_id, contest_id))
     return True
