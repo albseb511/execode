@@ -16,7 +16,8 @@ if (localToken === "undefined") localToken = "";
 const initState = {
   isAuth: true,
   isLoading: false,
-  token: localToken,
+  token:
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1Nzk3NzkwNzQsInN1YiI6MSwiaWF0IjoxNTc5NjkyNjY5fQ.EJfDGq_kTb_m6M_0zhHypC42yGMuB5oKr8ZxuqhaCqQ",
   isRegistering: false,
   registerSuccess: false,
   error: false,
@@ -45,8 +46,7 @@ const reducer = (state = initState, { type, payload }) => {
     case LOGIN_USER_FAILURE:
       return {
         ...state,
-        isAuth: false,
-        token: "",
+        isAuth: true,
         isLoading: false,
         error: true,
         errorType: "login",
