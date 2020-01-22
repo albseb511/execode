@@ -33,8 +33,9 @@ class ChallengeSettings extends Component {
               onChange={this.handleChange}
               id="language"
               className="form-control"
+              required
             >
-              <option selected>Choose Language...</option>
+              <option>Choose Language...</option>
               <option value="Python">Python</option>
               <option value="Javascript">Javascript</option>
             </select>
@@ -48,6 +49,7 @@ class ChallengeSettings extends Component {
               value={timeLimit}
               placeholder="Time LIMIT"
               name="timeLimit"
+              required
             />
           </div>
           <div className="col-sm-6 col-md-3">

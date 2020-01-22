@@ -8,6 +8,8 @@ const ChallengeDetails = ({
   problem_statement: problemStatement,
   input_format: inputFormat,
   constraints,
+  sample_input: sampleInput,
+  sample_output: sampleOutput,
   output_format: outputFormat,
   handleChange
 }) => {
@@ -29,6 +31,7 @@ const ChallengeDetails = ({
               id="challenge-name"
               value={challengeName}
               name="challenge_name"
+              required
             />
           </div>
 
@@ -41,8 +44,9 @@ const ChallengeDetails = ({
               onChange={handleChange}
               id="difficulty"
               className="form-control mt-2"
+              required
             >
-              <option selected>Choose...</option>
+              <option>Choose...</option>
               <option value="Easy">Easy</option>
               <option value="Medium">Medium</option>
               <option value="Hard">Hard</option>
@@ -62,6 +66,7 @@ const ChallengeDetails = ({
             onChange={handleChange}
             className="form-control"
             aria-label="With textarea"
+            required
           />
         </div>
 
@@ -75,6 +80,7 @@ const ChallengeDetails = ({
             onChange={handleChange}
             className="form-control"
             aria-label="With textarea"
+            required
           />
         </div>
 
@@ -88,6 +94,7 @@ const ChallengeDetails = ({
             onChange={handleChange}
             className="form-control"
             aria-label="With textarea"
+            required
           />
         </div>
 
@@ -101,6 +108,7 @@ const ChallengeDetails = ({
             onChange={handleChange}
             className="form-control"
             aria-label="With textarea"
+            required
           />
         </div>
 
@@ -114,6 +122,33 @@ const ChallengeDetails = ({
             onChange={handleChange}
             className="form-control mb-2"
             aria-label="With textarea"
+            required
+          />
+        </div>
+        <div className="row">
+          <label htmlFor="sampleInput" className="col-form-label" />
+          Sample Input
+          <textarea
+            value={sampleInput}
+            name="sample_input"
+            id="outputFormat"
+            onChange={handleChange}
+            className="form-control mb-2"
+            aria-label="With textarea"
+            required
+          />
+        </div>
+        <div className="row">
+          <label htmlFor="sampleOutput" className="col-form-label" />
+          Sample Output
+          <textarea
+            value={sampleOutput}
+            name="sample_output"
+            id="outputFormat"
+            onChange={handleChange}
+            className="form-control mb-2"
+            aria-label="With textarea"
+            required
           />
         </div>
       </form>
