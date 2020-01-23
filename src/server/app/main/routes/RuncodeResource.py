@@ -10,6 +10,7 @@ class RuncodeResource(Resource):
     parser.add_argument('challenge_id', type=int,
                         required=True, help="Challenge ID is needed")
     parser.add_argument('code', type=str, required=True, help="Code is needed")
+    parser.add_argument('language', type=str, required=True, help="language is needed")
 
     def post(self):
         auth_token = request.headers.get("Authorization")
@@ -18,9 +19,11 @@ class RuncodeResource(Resource):
         if user_id:
             data = RuncodeResource.parser.parse_args()
             details = getDetailsById(data["challenge_id"])
+            print('-----------------------------------')
+            print(details.challenge_name)
             if details:
                 output, error, is_correct = getResults(
-                    details["sample_input"], details["sample_output"], data["language"], user_id, data["code"])
+                    details.sample_input, details.sample_output, data['language'], user_id, data["code"])
                 return {
                     "comment": "",
                     "user_output": output,
