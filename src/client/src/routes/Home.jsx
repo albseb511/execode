@@ -9,10 +9,10 @@ const Home = () => {
         <div className="container">
           <div className="row">
             <div className="col-md-6 py-3">
-              <h1 className="h1">
+              <h3>
                 <i className="fas fa-file-code" />
                 <span className="text-monospace"> Execode</span>
-              </h1>
+              </h3>
               <p className="lead">
                 An open-source online coding platform which is complied with the
                 best features of different platforms giving the admin control
@@ -21,7 +21,7 @@ const Home = () => {
               <div className="row mt-5">
                 <div className="col-md-6">
                   <Link
-                    className="btn btn-secondary btn-lg btn-block mb-3"
+                    className="btn btn-outline-dark  btn-block mb-3"
                     to="/register"
                   >
                     Register
@@ -29,7 +29,7 @@ const Home = () => {
                 </div>
                 <div className="col-md-6">
                   <a
-                    className="btn btn-outline-info btn-lg btn-block"
+                    className="btn btn-outline-info  btn-block"
                     href="#howitwork"
                   >
                     How Execode works
@@ -108,7 +108,7 @@ const Home = () => {
           <p className="lead">
             Sign up to Execode and get started on your first track now.
           </p>
-          <Link className="btn btn-secondary" to="/register">
+          <Link className="btn btn-outline-light" to="/register">
             Sign up for FREE
           </Link>
         </div>

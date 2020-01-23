@@ -1,7 +1,9 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 
-const NavBar = ({ location: {pathname} }) => {
+const NavBar = ({ location: { pathname } }) => {
   let adminLinks = null;
   if (pathname.startsWith("/dashboard/admin")) {
     adminLinks = [
@@ -23,12 +25,12 @@ const NavBar = ({ location: {pathname} }) => {
     <div>
       <nav className="navbar fixed navbar-dark bg-dark navbar-expand-md mb-4">
         <div className="container">
-          <ul className="navbar-brand">
+          <div className="navbar-brand">
             <Link className="nav-link text-light" to="/dashboard">
               <i className="fas fa-file-code" />
-              <span className="text-monospace"> ExeCode</span>
+              <span className="text-monospace font-weight-bold"> ExeCode</span>
             </Link>
-          </ul>
+          </div>
           <div
             data-toggle="collapse"
             className="navbar-toggler"
