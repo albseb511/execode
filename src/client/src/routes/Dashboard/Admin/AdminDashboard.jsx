@@ -16,7 +16,7 @@ const AdminDashboard = () => {
           </div>
           <div className="col-md-3 py-3">
             <Link
-              className="btn btn-dark btn-block btn-lg"
+              className="btn btn-outline-dark btn-block btn-lg"
               to="/dashboard/admin/all-contest"
               role="button"
             >
@@ -34,7 +34,7 @@ const AdminDashboard = () => {
           </div>
           <div className="col-md-3 py-3">
             <Link
-              className="btn btn-dark btn-block btn-lg"
+              className="btn btn-outline-dark btn-block btn-lg"
               to="/dashboard/admin/create-contest"
               role="button"
             >
@@ -52,7 +52,7 @@ const AdminDashboard = () => {
           </div>
           <div className="col-md-3 py-3">
             <Link
-              className="btn btn-dark btn-block btn-lg"
+              className="btn btn-outline-dark btn-block btn-lg"
               to="/dashboard/admin/create-challenge"
               role="button"
             >

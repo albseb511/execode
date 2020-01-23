@@ -8,10 +8,10 @@ const NavBar = ({ location: { pathname } }) => {
     <div>
       <nav className="navbar navbar-dark bg-dark navbar-expand-md">
         <div className="container">
-          <a className="navbar-brand" href="/">
+          <Link className="nav-link text-light" to="/">
             <i className="fas fa-file-code" />
-            <span className="text-monospace"> ExeCode</span>
-          </a>
+            <span className="text-monospace font-weight-bold"> ExeCode</span>
+          </Link>
           <div
             data-toggle="collapse"
             className="navbar-toggler"
