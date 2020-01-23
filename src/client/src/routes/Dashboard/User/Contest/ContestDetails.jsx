@@ -24,23 +24,31 @@ const ContestDetails = ({ contestId }) => {
   return (
     <div>
       <div className="container">
-        <h3>challenge name: {aboutchallenges.contest_name}</h3>
-        <p>{aboutchallenges.details}</p>
-        <p>
-          <ul>
-            <li>start time: {aboutchallenges.start_time}</li>
+        <div className="row py-3">
+          <div className="col-md-8">
+            <h3 className="font-weight-bold text-dark">
+              {aboutchallenges.contest_name}
+            </h3>
+            <span>
+              Start Date:
+              <i> {aboutchallenges.start_date}</i>
+            </span>
+            <p>{aboutchallenges.details}</p>
+          </div>
+          <div className="col-md-3 text-center py-5">
+            <ul className="list-inline align-text-bottom text-success">
+              <li className="list-inline-item ">
+                <b>Start time: </b>
+                {aboutchallenges.start_time}
+              </li>
+              <li className="list-inline-item">
+                <b>End time: </b>
+                {aboutchallenges.end_time}
+              </li>
+            </ul>
+          </div>
+        </div>
 
-            <li>end time: {aboutchallenges.end_time}</li>
-          </ul>
-          <ul>
-            <li>
-              start date: <b>{aboutchallenges.start_date}</b>
-            </li>
-            <li>
-              end date: <b>{aboutchallenges.end_date}</b>
-            </li>
-          </ul>
-        </p>
         {challenges &&
           challenges.map(challenge => (
             <div key={challenge.challenge_id} className="row border mb-3 mt-5">

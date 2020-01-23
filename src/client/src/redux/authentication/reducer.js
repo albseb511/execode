@@ -17,7 +17,7 @@ const initState = {
   isAuth: true,
   isLoading: false,
   token:
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1Nzk3NzkwNzQsInN1YiI6MSwiaWF0IjoxNTc5NjkyNjY5fQ.EJfDGq_kTb_m6M_0zhHypC42yGMuB5oKr8ZxuqhaCqQ",
+    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzk4NDIzOTEsImlhdCI6MTU3OTc1NTk4Niwic3ViIjozfQ.A-GfEqZAFBHW3DdaoCMFOD6h3nDUfzHKlipAR5E6x9k",
   isRegistering: false,
   registerSuccess: false,
   error: false,
