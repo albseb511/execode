@@ -10,15 +10,14 @@ import { connect } from "react-redux";
 import axios from "../../../../utils/axiosInterceptor";
 const THEME = ["monokai", "github"];
 
-const LANGUAGE = ["javascript", "python"];
-
 // eslint-disable-next-line react/prop-types
 const SingleChallenge = ({ challengeId, contestId, token }) => {
   const [singleChallenge, setSingleChallenge] = useState([]);
   const [theme, setthemeUpdate] = useState("monokai");
-  const [progLanguages, setprogLanguages] = useState("javascript");
+  const [language, setLanguage] = useState("javascript");
   const [code, setCode] = useState("");
   const [runCodeResponse, setRunCodeResponse] = useState({});
+
   useEffect(() => {
     async function getChallenges() {
       try {
@@ -45,7 +44,7 @@ const SingleChallenge = ({ challengeId, contestId, token }) => {
         {
           contest_id: contestId,
           challenge_id: challengeId,
-          language: "python",
+          language,
           code,
           action: "run code"
         },
@@ -132,10 +131,10 @@ const SingleChallenge = ({ challengeId, contestId, token }) => {
               <label>language</label>
               <select
                 className="browser-default custom-select"
-                onChange={e => setprogLanguages(e.target.value)}
-                onBlur={e => setprogLanguages(e.target.value)}
+                onChange={e => setLanguage(e.target.value)}
+                onBlur={e => setLanguage(e.target.value)}
               >
-                {LANGUAGE.map(prolang => (
+                {["javascript", "python"].map(prolang => (
                   <option key={prolang} value={prolang}>
                     {prolang}
                   </option>
@@ -161,7 +160,7 @@ const SingleChallenge = ({ challengeId, contestId, token }) => {
             <AceEditor
               style={{ width: "100%" }}
               placeholder="console.log('Hello Masai School');"
-              mode={progLanguages}
+              mode={language}
               onChange={e => setCode(e)}
               theme={theme}
               fontSize={16}
@@ -215,7 +214,7 @@ const SingleChallenge = ({ challengeId, contestId, token }) => {
                   <code>
                     {runCodeResponse &&
                       runCodeResponse.user_output &&
-                      runCodeResponse.user_output.join("\n")}
+                      runCodeResponse.user_output.join("")}
                   </code>
                 </pre>
               </div>
