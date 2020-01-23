@@ -1,7 +1,7 @@
 import os
 import subprocess
 import fileinput
-
+import execjs
 
 def makeRunCodeFolder(user_id):
     """
@@ -45,7 +45,7 @@ def make_js_file(code, path):
     wf = open(path+"/code.js", "w")
     wf.write(code)
     wf.close()
-    return path+"/code.py"
+    return path+"/code.js"
 
 
 def generate_output_error(input_path, code_path, path, my_lang, output_file_name="out.txt", error_file_name="err.txt"):
@@ -56,6 +56,7 @@ def generate_output_error(input_path, code_path, path, my_lang, output_file_name
     error_path = path+"/"+error_file_name
     if my_lang == "javascript":
         pass
+        
     elif my_lang == "python":
         os.system("python {} 0<{} 1>{} 2>{}".format(
             code_path, input_path, output_path, error_path))
@@ -98,6 +99,17 @@ def compare_output(output_path, expected_path):
 
 
 def getResults(sample_input, sample_output, language, user_id, code):
+    if language == 'javascript':
+        output_boolean = False
+        error = ''
+        ctx = execjs.compile(code)
+        temp_output = ctx.call('process', sample_input)
+        print(temp_output)
+        print(sample_output)
+        if temp_output == sample_output:
+            output_boolean = True
+        return temp_output, error, output_boolean
+
     path = makeRunCodeFolder(user_id)
     my_lang = language.lower()
     if path:

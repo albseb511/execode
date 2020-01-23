@@ -25,8 +25,8 @@ class RuncodeResource(Resource):
                 output, error, is_correct = getResults(
                     details.sample_input, details.sample_output, data['language'], user_id, data["code"])
                 return {
-                    "comment": "",
-                    "user_output": output,
+                    "comment": "runcode successful",
+                    "user_output": list(output),
                     "user_error": error,
                     "sample_result": is_correct
                 }, 200
