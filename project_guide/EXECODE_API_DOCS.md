@@ -54,7 +54,7 @@ POST `/logout`
 ##### Header
 ```json
 {
-    "Authorization": "Bearer <auth_token>"
+    "Authorization": "<auth_token>"
 }
 ```
 ##### Body
@@ -76,9 +76,9 @@ POST `/logout`
 
 ## Challenge
 ​
-GET `/challenge/<challenge_name>`
+GET `/challenge/<challenge_id>`
 ​
-Required Headers - `Authorization: JWT <access_token>`
+Required Headers - `Authorization: <access_token>`
 ​
 #### RESPONSE 
 ​
@@ -102,7 +102,7 @@ Success (Status Code - 200)
 ​
 POST `/challenge/<challenge_name>`
 ​
-Required Headers - `Authorization: Bearer <user_token>`
+Required Headers - `Authorization: <user_token>`
 ​
 #### REQUEST 
 ​
@@ -154,7 +154,7 @@ Success (Status Code - 201)
 ​
 GET `/challenges`
 ​
-Required Headers - `Authorization: JWT <access_token>`
+Required Headers - `Authorization: <access_token>`
 ​
 Query Params
 ​
@@ -189,7 +189,7 @@ SUCCESS (Status Code - 200)
 ```
 GET `/challenges`
 ​
-Required Headers - `Authorization: JWT <access_token>`
+Required Headers - `Authorization: <access_token>`
 ​
 #### RESPONSE
 ​
@@ -212,7 +212,7 @@ SUCCESS (Status Code - 200)
 ​
 POST `/contest/<contest_name>`
 ​
-Required Headers - `Authorization: JWT <access_token>`
+Required Headers - `Authorization: <access_token>`
 ​
 #### REQUEST
 ​
@@ -244,7 +244,7 @@ Success (Status Code - 201)
 ​
 GET `/contest/<contest_name>`
 ​
-Required Headers - `Authorization: JWT <access_token>`
+Required Headers - `Authorization: <access_token>`
 ​
 #### RESPONSE
 ​
@@ -267,9 +267,9 @@ Success (Status Code - 200)
                             "difficulty":"INTEGER",
                             "sample_input":"STRING",
                             "sample_output":"STRING",
-                            "marks":’’
+                            "marks":""
                             },{},{}],
-    "comments":’’,
+    "comments":"",
 ​
 }
 ```
@@ -278,7 +278,7 @@ Success (Status Code - 200)
 ​
 GET `/contests`
 ​
-Required Headers - `Authorization: JWT <access_token>`
+Required Headers - `Authorization: <access_token>`
 ​
 #### RESPONSE
 ​
@@ -294,7 +294,7 @@ Success (Status Code - 200)
                         "details":"STRING",
                         "show_leader_board":"BOOLEAN",
                     }],
-            "comments":’’,        
+            "comments":"",        
 ​
 }
 ```
@@ -303,7 +303,7 @@ Success (Status Code - 200)
 ​
 GET `/signup/contest/<contest_id>`
 ​
-Required Headers - `Authorization: JWT <access_token>`
+Required Headers - `Authorization: <access_token>`
 ​
 #### RESPONSE
 ​
@@ -320,7 +320,7 @@ Failure (Status Code - 403)
 ```json
 {
             "comments":"contest has not started",
-            "error":true;
+            "error":true
 ​
 }
 ```
@@ -329,7 +329,7 @@ Failure (Status Code - 403)
 ​
 POST `/runcode`
 ​
-Required Headers - `Authorization: JWT <access_token>`
+Required Headers - `Authorization: <access_token>`
 ​
 #### REQUEST
 ​
@@ -361,7 +361,7 @@ Success (Status Code - 200)
 ​
 POST `/submit`
 ​
-Required Headers - `Authorization: JWT <access_token>`
+Required Headers - `Authorization: <access_token>`
 ​
 #### REQUEST
 ​
@@ -400,7 +400,7 @@ Success (Status Code - 200)
 ​
 GET `contest/<contest_id>/leaderboard`
 ​
-Required Headers - `Authorization: JWT <access_token>`
+Required Headers - `Authorization: <access_token>`
 ​
 #### RESPONSE
 ​
@@ -420,7 +420,7 @@ Success (Status Code - 202)
 ```
 GET `contest/<contest_id>/leaderboard/<user_id>`
 ​
-Required Headers - `Authorization: JWT <access_token>`
+Required Headers - `Authorization: <access_token>`
 ​
 #### RESPONSE
 ​
@@ -446,7 +446,7 @@ Success (Status Code - 202)
 ​
 GET `/code/<submission_id>`
 ​
-Required Headers - `Authorization: JWT <access_token>`
+Required Headers - `Authorization: <access_token>`
 ​
 #### RESPONSE
 ​
