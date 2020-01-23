@@ -30,7 +30,7 @@ def add_resources(app):
                      '/contest/<contest_id>/leaderboard/<user_id>')
     api.add_resource(RuncodeResource, '/runcode')
     api.add_resource(SubmitCodeResource, '/submit')
-    api.add_resource(Challenge, '/challenge/<challenge_name>')
+    api.add_resource(Challenge, '/challenge/<challenge_id>')
     api.add_resource(AllChallenge, '/challenges')
     api.add_resource(
         SubmittedCode, '/contest/<contest_id>/leaderboard/<user_id>/code/<submission_id>')

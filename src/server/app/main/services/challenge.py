@@ -21,8 +21,8 @@ def save_changes(data):
 
 # def get_challenge(data,challenge_name):
 
-def get_challenge(challenge_name):
-    challenge = ChallengesModel.query.filter_by(challenge_name = challenge_name).first()
+def get_challenge(challenge_id):
+    challenge = ChallengesModel.query.filter_by(id = challenge_id).first()
     challenege1 = db.engine.execute("select * from challenges join test_cases on challenges.id = test_cases.challenge_id join challenge_settings on challenge_settings.challenge_id = challenges.id")
     print(challenege1)
     # print(challenge)

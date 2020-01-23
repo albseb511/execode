@@ -11,7 +11,7 @@ from app.main.services.settings_services import add_multiple_settings
 
 class Challenge(Resource):
 
-    def get(self,challenge_name):
+    def get(self,challenge_id):
         # auth token 
         print(request.headers)
         auth_token = request.headers.get("Authorization")
@@ -21,7 +21,7 @@ class Challenge(Resource):
         user_id = decode_auth_token(auth_token)
         if user_id:
             # check if he is admin
-            return get_challenge(challenge_name)
+            return get_challenge(challenge_id)
         return {"comment":"Not Authorized"}, 401
 
     def post(self,challenge_name):
