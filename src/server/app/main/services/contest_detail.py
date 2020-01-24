@@ -38,6 +38,7 @@ def get_contests_challenges(contest_name):
     for i in names:
         challenge_data = {}
         data['contest_name'] = i['contest_name']
+        data['contest_id'] = i['id']
         data['start_date'] = str(i['start'].strftime("%m/%d/%Y"))
         data['start_time'] = str(i['start'].strftime("%H:%M"))
         data['end_date'] = str(i['end'].strftime("%m/%d/%Y"))
