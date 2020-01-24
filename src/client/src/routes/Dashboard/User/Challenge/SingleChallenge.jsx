@@ -14,7 +14,7 @@ const THEME = ["monokai", "github"];
 const SingleChallenge = ({ challengeId, contestId, token }) => {
   const [singleChallenge, setSingleChallenge] = useState([]);
   const [theme, setthemeUpdate] = useState("monokai");
-  const [language, setLanguage] = useState("javascript");
+  const [language, setLanguage] = useState("python");
   const [code, setCode] = useState("");
   const [runCodeResponse, setRunCodeResponse] = useState({});
 
@@ -98,12 +98,7 @@ const SingleChallenge = ({ challengeId, contestId, token }) => {
           <div className="mt-3 mb-3">
             <b>Constraints</b>
           </div>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat.
-          </p>
+          <p>{singleChallenge.constraints}</p>
         </div>
         <div className="mt-3 mb-3">
           <div className="mt-3 mb-3">

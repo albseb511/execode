@@ -1,3 +1,12 @@
+/* eslint-disable no-console */
+/* eslint-disable consistent-return */
+/* eslint-disable camelcase */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-plusplus */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-alert */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import ChallengeDetails from "../../../../components/ChallengeDetails/ChallengeDetails";
@@ -237,7 +246,7 @@ class CreateChallenge extends Component {
         <button
           type="button"
           onClick={this.createChallenge}
-          className="btn btn-dark btn-block"
+          className="btn btn-raised btn-dark btn-block"
         >
           Add Challenge
         </button>

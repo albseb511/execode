@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
@@ -127,7 +129,7 @@ class AddTestCases extends Component {
             })
           }
           type="button"
-          className="btn btn-primary btn-lg btn-block"
+          className="btn btn-raised btn-secondary btn-block"
         >
           Add Test Case
         </button>
@@ -149,7 +151,7 @@ class AddTestCases extends Component {
           <tbody>
             {testCases
               ? testCases.map((tCase, ind) => (
-                  <tr key={"test_case" + ind}>
+                  <tr key={`test_case${ind}`}>
                     <th scope="row">{ind + 1}</th>
                     <td>{tCase.inputFile.name}</td>
                     <td>{tCase.outputFile.name}</td>
