@@ -24,7 +24,7 @@ class Challenge(Resource):
             return get_challenge(challenge_id)
         return {"comment":"Not Authorized"}, 401
 
-    def post(self,challenge_name):
+    def post(self,challenge_id):
         # auth token 
         auth_token = request.headers.get("Authorization")
         user_id = decode_auth_token(auth_token)
@@ -45,7 +45,7 @@ class Challenge(Resource):
                     test_output.append(val)        
                     out_count = out_count + 1
             print('____________________________')
-            challenge_id = add_challenge(**Info, challenge_name=challenge_name) 
+            challenge_id = add_challenge(**Info, challenge_name=challenge_id) 
 
             if challenge_id == None:
                 return {"comment": "Error in Challenge Creation, check session.commit()"}, 501

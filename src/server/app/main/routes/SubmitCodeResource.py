@@ -35,7 +35,7 @@ class SubmitCodeResource(Resource):
                 submission_id = add_submission(
                     data["language"], user_id, contest_challenge_id)
                 # get total challenge marks alloted
-                challenge_marks = getDetailsById(data["challenge_id"])["marks"]
+                challenge_marks = getDetailsById(data["challenge_id"]).max_score
                 # get all test_cases
                 test_cases = get_challenge_test_cases(data["challenge_id"])
                 # run the file and get all details
