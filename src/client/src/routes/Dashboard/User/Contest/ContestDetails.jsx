@@ -29,20 +29,23 @@ const ContestDetails = ({ contestId }) => {
             <h3 className="font-weight-bold text-dark">
               {aboutchallenges.contest_name}
             </h3>
-            <span>
-              Start Date:
-              <i> {aboutchallenges.start_date}</i>
-            </span>
             <p>{aboutchallenges.details}</p>
           </div>
-          <div className="col-md-3 text-center py-5">
-            <ul className="list-inline align-text-bottom text-success">
+          <div className="col-md-3 text-center py-3">
+            <ul className="list-inline align-text-bottom ">
+              <span className="text-left">
+                <b>Start Date: </b>
+                {aboutchallenges.start_date}
+              </span>
+              <hr />
               <li className="list-inline-item ">
-                <b>Start time: </b>
+                <b className="text-dark">Start time: </b>
                 {aboutchallenges.start_time}
               </li>
+
               <li className="list-inline-item">
-                <b>End time: </b>
+                <span className="font-weight-bold text-light">|</span>
+                <b className="text-dark"> End time:</b>
                 {aboutchallenges.end_time}
               </li>
             </ul>
@@ -51,33 +54,37 @@ const ContestDetails = ({ contestId }) => {
 
         {challenges &&
           challenges.map(challenge => (
-            <div key={challenge.challenge_id} className="row border mb-3 mt-5">
+            <div key={challenge.challenge_id} className="row border mb-1 mt-3">
               <div className="col-md-8">
                 <div>
                   <div className="card-body">
-                    <h1>{challenge.description}</h1>
+                    <Link
+                      className="text-dark"
+                      to={`/dashboard/user/${aboutchallenges.contest_name}/${challenge.challenge_id}`}
+                    >
+                      <h3 className="font-weight-bold">
+                        {challenge.description}
+                      </h3>
+                    </Link>
                     <p>{challenge.problem_statement}</p>
-                    <span>{challenge.created_at}</span>
                   </div>
                 </div>
               </div>
               <div className="col-md-3">
-                <div className="py-3">
-                  <div className="row">
-                    <button
-                      type="button"
-                      className="btn btn-outline-info btn-block btn-lg"
-                      disabled
-                    >
+                <div className="mt-4 mb-5">
+                  <h6 className="h6">
+                    Problem Level:
+                    <span className="ml-1 text-primary font-weight-bold">
                       {challenge.difficulty}
-                    </button>
-                    <Link
-                      className="btn btn-outline-primary btn-block btn-lg"
-                      to={`/dashboard/user/${aboutchallenges.contest_name}/${challenge.challenge_id}`}
-                    >
-                      Contests
-                    </Link>
-                  </div>
+                    </span>
+                  </h6>
+
+                  <Link
+                    className="btn btn-outline-dark btn-block text-uppercase mt-3"
+                    to={`/dashboard/user/${aboutchallenges.contest_name}/${challenge.challenge_id}`}
+                  >
+                    Attempt
+                  </Link>
                 </div>
               </div>
             </div>
