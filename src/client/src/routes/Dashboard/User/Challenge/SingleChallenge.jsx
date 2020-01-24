@@ -7,17 +7,20 @@
 import React, { useState, useEffect } from "react";
 import AceEditor from "react-ace";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import axios from "../../../../utils/axiosInterceptor";
+import { submitPageRouteRequest } from "../../../../redux/user/action";
 const THEME = ["monokai", "github"];
 
 // eslint-disable-next-line react/prop-types
-const SingleChallenge = ({ challengeId, contestId, token, path }) => {
+const SingleChallenge = ({ challengeId, contestId, token, path, submit }) => {
   const [singleChallenge, setSingleChallenge] = useState([]);
   const [theme, setthemeUpdate] = useState("monokai");
   const [language, setLanguage] = useState("javascript");
   const [code, setCode] = useState("");
   const [runCodeResponse, setRunCodeResponse] = useState({});
+  const history = useHistory();
+  const location = useLocation();
 
   useEffect(() => {
     async function getChallenges() {
@@ -59,6 +62,15 @@ const SingleChallenge = ({ challengeId, contestId, token, path }) => {
       .catch(err => console.log("error while running code"));
     console.log(res);
     // next(action)
+  };
+
+  const submitCode = () => {
+    const payload = {
+      code,
+      language
+    };
+    submit(payload);
+    history.push(`${location.pathname}/submit`);
   };
 
   return (
@@ -184,14 +196,13 @@ const SingleChallenge = ({ challengeId, contestId, token, path }) => {
               </button>
             </div>
             <div className="col-md-2 text-center">
-              <Link to={`${path}/submit`}>
-                <button
-                  type="button"
-                  className="btn btn-outline-dark btn-block active"
-                >
-                  Submit Code
-                </button>
-              </Link>
+              <button
+                type="button"
+                className="btn btn-outline-dark btn-block active"
+                onClick={submitCode}
+              >
+                Submit Code
+              </button>
             </div>
           </div>
         </div>
@@ -228,4 +239,8 @@ const mapStateToProps = state => ({
   token: state.authReducer.token
 });
 
-export default connect(mapStateToProps)(SingleChallenge);
+const mapDispatchToProps = dispatch => ({
+  submit: payload => dispatch(submitPageRouteRequest(payload))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleChallenge);
