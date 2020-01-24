@@ -34,20 +34,22 @@ def get_challenge(challenge_id):
          "output_format":challenge.output_format,
          "difficulty":challenge.difficulty,
          "sample_input":challenge.sample_input,
-         "sample_output":challenge.sample_output
+         "sample_output":challenge.sample_output,
+         "constraints":challenge.constraints
          }
     return {"challenge":details}   
 
 def add_challenge(description,problem_statement,input_format,output_format,constraints,difficulty,sample_input,sample_output,challenge_name):   #This service is us   ed to add both the challenge and required test cases for it.
-    description = description
-    problem_statement = problem_statement
-    input_format = input_format
-    output_format = output_format
-    difficulty = difficulty
-    sample_input = sample_input
-    sample_output = sample_output
-    # print(description,problem_statement,input_format,output_format,difficulty,sample_input,sample_output)
-    new_asset = ChallengesModel(challenge_name=challenge_name,description=description,problem_statement=problem_statement,input_format=input_format,output_format=output_format,difficulty=difficulty,sample_input=sample_input,sample_output=sample_output)
+    
+    new_asset = ChallengesModel(challenge_name = challenge_name,
+                                description = description,
+                                problem_statement = problem_statement,
+                                input_format = input_format, 
+                                output_format = output_format,
+                                difficulty = difficulty,
+                                sample_input = sample_input,
+                                sample_output = sample_output,
+                                constraints = constraints)
     save_changes(new_asset)
     challengeid = new_asset.id
     return challengeid
