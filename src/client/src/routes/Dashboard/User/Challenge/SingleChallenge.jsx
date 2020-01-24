@@ -7,11 +7,12 @@
 import React, { useState, useEffect } from "react";
 import AceEditor from "react-ace";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import axios from "../../../../utils/axiosInterceptor";
 const THEME = ["monokai", "github"];
 
 // eslint-disable-next-line react/prop-types
-const SingleChallenge = ({ challengeId, contestId, token }) => {
+const SingleChallenge = ({ challengeId, contestId, token, path }) => {
   const [singleChallenge, setSingleChallenge] = useState([]);
   const [theme, setthemeUpdate] = useState("monokai");
   const [language, setLanguage] = useState("python");
@@ -183,12 +184,14 @@ const SingleChallenge = ({ challengeId, contestId, token }) => {
               </button>
             </div>
             <div className="col-md-2 text-center">
-              <button
-                type="button"
-                className="btn btn-outline-dark btn-block active"
-              >
-                Submit Code
-              </button>
+              <Link to={`${path}/submit`}>
+                <button
+                  type="button"
+                  className="btn btn-outline-dark btn-block active"
+                >
+                  Submit Code
+                </button>
+              </Link>
             </div>
           </div>
         </div>
