@@ -3,6 +3,7 @@ import ChallengeDetails from "../../../../components/ChallengeDetails/ChallengeD
 import ChallengeSettings from "../../../../components/ChallengeSettings/ChallengeSettings";
 import AddTestCases from "../../../../components/AddTestCases/AddTestCases";
 import axios from "../../../../utils/axiosInterceptor";
+import {connect} from "react-redux"
 
 const initialState = {
   detailsTab: true,
@@ -128,7 +129,7 @@ class CreateChallenge extends Component {
     // call api
 
     // set to initial state on successfull response
-
+    
     form.append("challenge_details", JSON.stringify(data));
     form.append("test_cases", JSON.stringify(test_cases));
     form.append("settings", JSON.stringify(this.state.settings));
@@ -147,7 +148,12 @@ class CreateChallenge extends Component {
       );
     }
     // console.log(form)
-    axios.post(`/challenge/${this.state.challenge_name}`, form).then(res => {
+    const {token} = this.props
+    axios.post(`/challenge/${this.state.challenge_name}`, form,{
+      headers:{
+        Authorization: token
+      }
+    }).then(res => {
       this.setState({ ...initialState });
     });
   };
@@ -238,4 +244,8 @@ class CreateChallenge extends Component {
   }
 }
 
-export default CreateChallenge;
+const mapStateToProps = state => ({
+  token: state.authReducer.token
+})
+
+export default connect(mapStateToProps)(CreateChallenge);
