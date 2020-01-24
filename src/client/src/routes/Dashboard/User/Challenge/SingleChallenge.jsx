@@ -15,7 +15,7 @@ const THEME = ["monokai", "github"];
 const SingleChallenge = ({ challengeId, contestId, token, path }) => {
   const [singleChallenge, setSingleChallenge] = useState([]);
   const [theme, setthemeUpdate] = useState("monokai");
-  const [language, setLanguage] = useState("python");
+  const [language, setLanguage] = useState("javascript");
   const [code, setCode] = useState("");
   const [runCodeResponse, setRunCodeResponse] = useState({});
 
