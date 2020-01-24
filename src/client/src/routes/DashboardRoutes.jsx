@@ -51,10 +51,11 @@ const DashboardRoutes = props => {
       <Route
         path="/dashboard/user/:contestId/:challengeId"
         exact
-        render={({ match }) => (
+        render={({ match, location }) => (
           <SingleChallenge
             contestId={match.params.contestId}
             challengeId={match.params.challengeId}
+            path = {location.pathname}
           />
         )}
       />
