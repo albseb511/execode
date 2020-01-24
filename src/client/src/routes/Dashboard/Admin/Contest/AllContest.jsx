@@ -19,34 +19,42 @@ const AllContest = ({
   }, []);
   const res = contestFinalData.map(contest => {
     return (
-      <div className="col-xl-5 col-sm-12 col-md-6  mb-3 mr-2  card shadow ">
-        <div className="row align-items-center justify-content-around card-body">
-          <div className="col-xs-8 col-sm-8">
-            <h3 className="text-primary">{contest.contest_name}</h3>
-            <div className="row">
-              <p className="col-5"> Start Date {contest.start_date}</p>
-              <p className="col-5">End Date {contest.end_date} </p>
-            </div>
-            <div className="row">
-              <p className="col-5">
-                Start Time
-                <span className="text-danger">{contest.start_time}</span>
-              </p>
-              <p className="col-5">
-                End Time
-                <span className="text-danger">{contest.end_time}</span>
-              </p>
-            </div>
-          </div>
-          <div className="col-xs-4 col-sm-4 p-1">
+      <div className="col-md-6 mb-3 py-1" key={contest.id}>
+        <div className="border py-3">
+          <div className="ml-3">
             <Link
-              className="text-light"
+              className="text-dark"
               to={`/dashboard/admin/${contest.id}/leaderboard`}
             >
-              <button type="button" className="btn btn-dark">
-                View Submission
-              </button>
+              <h3 className="font-weight-bold">{contest.contest_name}</h3>
             </Link>
+            <p>{contest.details}</p>
+            <div className="row">
+              <div className="col-md-6">
+                <b>Start Date: </b>
+                <span>{contest.start_date}</span>
+                <br /> <br />
+                <b>Start time: </b>
+                <span>{contest.start_time}</span>
+              </div>
+              <div className="col-md-6">
+                <b>End Date: </b>
+                <span>{contest.end_date}</span>
+                <br /> <br />
+                <b>End time: </b>
+                <span>{contest.end_time}</span>
+              </div>
+            </div>
+            <div className="row  py-3">
+              <div className="col-md-11 ml-1">
+                <Link
+                  className="btn-block btn btn-outline-dark active"
+                  to={`/dashboard/admin/${contest.id}/leaderboard`}
+                >
+                  View Submission
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>

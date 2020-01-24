@@ -1,3 +1,9 @@
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+/* eslint-disable prefer-template */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/sort-comp */
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import axiosInstance from "../../../../utils/axiosInterceptor";
@@ -41,11 +47,11 @@ class ContestLeaderBoard extends React.Component {
       <>
         <div className="row d-flex justify-content-center">
           <table
-            className="table table-striped text-center border border-success col-md-8 "
+            className="table table-striped text-center border border-dark col-md-8"
             style={{ marginTop: "100px" }}
           >
             <thead>
-              <tr className="p-3 mb-2 bg-info text-white">
+              <tr className="p-3 mb-2 thead-dark">
                 {/* <th scope="col">S.no</th> */}
                 <th scope="col">Username</th>
                 <th scope="col">Score</th>

@@ -1,3 +1,5 @@
+/* eslint-disable radix */
+/* eslint-disable no-console */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import axios from "../../utils/axiosInterceptor";
@@ -70,7 +72,7 @@ class AddChallenges extends Component {
           <br />
           <div className="col-sm-3">
             <button
-              className="btn btn-primary"
+              className="btn btn-raised btn-secondary"
               type="button"
               onClick={() => addChallengeId(challenge)}
             >

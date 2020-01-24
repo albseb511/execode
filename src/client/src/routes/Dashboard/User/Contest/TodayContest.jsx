@@ -35,7 +35,7 @@ const TodayContest = () => {
                 <div className="ml-3">
                   <Link
                     className="text-dark"
-                    to={`/dashboard/user/${costlist.contest_name}`}
+                    to={`/dashboard/user/${costlist.id}`}
                   >
                     <h3 className="font-weight-bold">
                       {costlist.contest_name}
@@ -62,7 +62,7 @@ const TodayContest = () => {
                     <div className="col-md-11 ml-1">
                       <Link
                         className="btn-block btn btn-outline-dark"
-                        to={`/dashboard/user/${costlist.contest_name}`}
+                        to={`/dashboard/user/${costlist.id}`}
                       >
                         Enter
                       </Link>

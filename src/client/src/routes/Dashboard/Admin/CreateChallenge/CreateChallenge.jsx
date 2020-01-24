@@ -1,9 +1,18 @@
+/* eslint-disable no-console */
+/* eslint-disable consistent-return */
+/* eslint-disable camelcase */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-plusplus */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-alert */
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import ChallengeDetails from "../../../../components/ChallengeDetails/ChallengeDetails";
 import ChallengeSettings from "../../../../components/ChallengeSettings/ChallengeSettings";
 import AddTestCases from "../../../../components/AddTestCases/AddTestCases";
 import axios from "../../../../utils/axiosInterceptor";
-import {connect} from "react-redux"
 
 const initialState = {
   detailsTab: true,
@@ -110,7 +119,7 @@ class CreateChallenge extends Component {
     if (data && test_cases && this.state.settings) {
       for (const key in data) {
         if (!data[key]) {
-          alert(key + " is required");
+          alert(`${key} is required`);
           return false;
         }
       }
@@ -129,7 +138,7 @@ class CreateChallenge extends Component {
     // call api
 
     // set to initial state on successfull response
-    
+
     form.append("challenge_details", JSON.stringify(data));
     form.append("test_cases", JSON.stringify(test_cases));
     form.append("settings", JSON.stringify(this.state.settings));
@@ -148,14 +157,16 @@ class CreateChallenge extends Component {
       );
     }
     // console.log(form)
-    const {token} = this.props
-    axios.post(`/challenge/${this.state.challenge_name}`, form,{
-      headers:{
-        Authorization: token
-      }
-    }).then(res => {
-      this.setState({ ...initialState });
-    });
+    const { token } = this.props;
+    axios
+      .post(`/challenge/${this.state.challenge_name}`, form, {
+        headers: {
+          Authorization: token
+        }
+      })
+      .then(res => {
+        this.setState({ ...initialState });
+      });
   };
 
   render() {
@@ -235,7 +246,7 @@ class CreateChallenge extends Component {
         <button
           type="button"
           onClick={this.createChallenge}
-          className="btn btn-dark btn-block"
+          className="btn btn-raised btn-dark btn-block"
         >
           Add Challenge
         </button>
@@ -246,6 +257,6 @@ class CreateChallenge extends Component {
 
 const mapStateToProps = state => ({
   token: state.authReducer.token
-})
+});
 
 export default connect(mapStateToProps)(CreateChallenge);

@@ -54,7 +54,11 @@ const ContestDetails = ({ contestId }) => {
 
         {challenges &&
           challenges.map(challenge => (
-            <div key={challenge.challenge_id} className="row border mb-1 mt-3">
+            <div
+              key={challenge.challenge_id}
+              className="row border mb-1 mt-3
+            "
+            >
               <div className="col-md-8">
                 <div>
                   <div className="card-body">

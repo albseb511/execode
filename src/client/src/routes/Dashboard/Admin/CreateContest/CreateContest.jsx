@@ -119,8 +119,11 @@ class CreateContest extends Component {
         )}
         <br />
         <br />
-        <button onClick={this.createConest} className="btn btn-dark btn-block">
-          Add Challenge
+        <button
+          onClick={this.createConest}
+          className="btn btn-raised btn-dark btn-block"
+        >
+          Add Contest
         </button>
       </div>
     );
