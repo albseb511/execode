@@ -64,7 +64,7 @@ const ContestDetails = ({ contestId }) => {
                   <div className="card-body">
                     <Link
                       className="text-dark"
-                      to={`/dashboard/user/${aboutchallenges.contest_name}/${challenge.challenge_id}`}
+                      to={`/dashboard/user/${contestId}/${challenge.challenge_id}`}
                     >
                       <h3 className="font-weight-bold">
                         {challenge.description}
@@ -85,7 +85,7 @@ const ContestDetails = ({ contestId }) => {
 
                   <Link
                     className="btn btn-outline-dark btn-block text-uppercase mt-3"
-                    to={`/dashboard/user/${aboutchallenges.contest_name}/${challenge.challenge_id}`}
+                    to={`/dashboard/user/${contestId}/${challenge.challenge_id}`}
                   >
                     Attempt
                   </Link>
