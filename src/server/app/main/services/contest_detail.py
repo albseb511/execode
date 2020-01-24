@@ -26,12 +26,12 @@ def find_by_name(cls, contest_name):
     return cls.query.filter_by(contest_name=contest_name)
 
 
-def get_contests_challenges(contest_name):
+def get_contests_challenges(contest_id):
     
     #challenge_data = {}
     # import pdb; pdb.set_trace()
     data_raw = db.engine.execute(
-        "select * from contests join contests_challenges on contests.id=contests_challenges.contest_id join challenges on contests_challenges.challenge_id=challenges.id where contests.contest_name='{}'".format(contest_name))
+        "select * from contests join contests_challenges on contests.id=contests_challenges.contest_id join challenges on contests_challenges.challenge_id=challenges.id where contests.id={}".format(contest_id))
     names = [dict(row) for row in data_raw]
     challenges_arr = []
     data = {}
