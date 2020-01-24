@@ -1,89 +1,81 @@
-import React from "react";
+/* eslint-disable react/button-has-type */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-console */
+/* eslint-disable lines-between-class-members */
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "../../../../utils/axiosInterceptor";
 
-class TodayContest extends React.Component {
-	constructor() {
-		super();
-		this.state = {
-			contestFinalData: []
-		};
-	}
+const TodayContest = () => {
+  const [contests, setContests] = useState([]);
 
-	componentDidMount() {
-		axios
-			.get("/contests")
-			.then(res => {
-				console.log(res.data);
-				this.setState({
-					contestFinalData: res.data.contests
-				});
-			})
-			.catch(err => console.log(err));
-	}
-	render() {
-		const res = this.state.contestFinalData.map(contest => {
-			return (
-				<div className='col-xl-5 col-sm-12 col-md-6  mb-3 mr-2  card shadow '>
-					<div className='row align-items-center justify-content-around card-body'>
-						<div className='col-xs-8 col-sm-8'>
-							<h3 className='text-primary'>{contest.contest_name}</h3>
-							<div className='row'>
-								<p className='col-5'> Start Date {contest.start_date}</p>
-								<p className='col-5'>End Date {contest.end_date} </p>
-							</div>
-							<div className='row'>
-								<p className='col-5'>
-									{" "}
-									Start Time <span className='text-danger'>{contest.start_time}</span>
-								</p>
-								<p className='col-5'>
-									End Time <span className='text-danger'>{contest.end_time}</span>{" "}
-								</p>
-							</div>
-						</div>
-						<div className='col-xs-4 col-sm-4 p-1'>
-							<Link className='text-light' to={`/dashboard/user/${contest.contest_name}`}>
-								<button className='btn btn-success'>Enter</button>
-							</Link>
-						</div>
-					</div>
-				</div>
-			);
-		});
-		// const todayContest = this.state.contestFinalData.map(contest => {
-		//   return (
-		//     <div className="col-xl-5 col-sm-12 col-md-6  mb-3 mr-2  card shadow ">
-		//       <div className="row align-items-center justify-content-around card-body">
-		//         <div className="col-xs-8 col-sm-8">
-		//           <h3 className="text-primary">{contest.contest_name}</h3>
-		//           <p>{` START DATE: ${contest.start_date} | END DATE: ${contest.end_date} | START TIME: ${contest.start_time}| END TIME: ${contest.end_time}`}</p>
-		//         </div>
-		//         <div className="col-xs-4 col-sm-4 p-1">
-		//             <Link
-		//               className="text-light"
-		//               to={`/dashboard/user/${contest.contest_name}`}><button className="btn btn-success">
-		//               Enter
-		//               </button>
-		//             </Link>
-		//         </div>
-		//       </div>
-		//     </div>
-		//   );
-		// });
-		return (
-			<div>
-				{/* <div className="container">
-      <div className = "text-success h3">Today Contests</div>
-      <div className="row">{todayContest}</div>
-    </div> */}
-				<div className='container'>
-					<div className='text-success h2'>All contests</div>
-					<div className='row'>{res}</div>
-				</div>
-			</div>
-		);
-	}
-}
+  console.log(contests);
+  useEffect(() => {
+    async function getContests() {
+      try {
+        const response = await axios.get(`/contests`);
+        setContests(response.data.contests);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      }
+    }
+    getContests();
+  }, []);
+  return (
+    <div>
+      <div className="container">
+        <div className="mb-3 mt-3">
+          <h3>All Contest</h3>
+        </div>
+        <div className="row">
+          {contests.map(costlist => (
+            <div className="col-md-6 mb-3 py-1" key={costlist.id}>
+              <div className="border py-3">
+                <div className="ml-3">
+                  <Link
+                    className="text-dark"
+                    to={`/dashboard/user/${costlist.contest_name}`}
+                  >
+                    <h3 className="font-weight-bold">
+                      {costlist.contest_name}
+                    </h3>
+                  </Link>
+                  <p>{costlist.details}</p>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <b>Start Date: </b>
+                      <span>{costlist.start_date}</span>
+                      <br /> <br />
+                      <b>Start time: </b>
+                      <span>{costlist.start_time}</span>
+                    </div>
+                    <div className="col-md-6">
+                      <b>End Date: </b>
+                      <span>{costlist.end_date}</span>
+                      <br /> <br />
+                      <b>End time: </b>
+                      <span>{costlist.end_time}</span>
+                    </div>
+                  </div>
+                  <div className="row  py-3">
+                    <div className="col-md-11 ml-1">
+                      <Link
+                        className="btn-block btn btn-outline-dark"
+                        to={`/dashboard/user/${costlist.contest_name}`}
+                      >
+                        Enter
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default TodayContest;
