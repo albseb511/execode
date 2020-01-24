@@ -74,7 +74,7 @@ const Register = ({ registerUser, isAuth }) => {
             onChange={onChange}
           />
         </div>
-        <button type="submit" className="btn btn-dark btn-block">
+        <button type="submit" className="btn btn-dark btn-raised  btn-block">
           Register
         </button>
       </form>

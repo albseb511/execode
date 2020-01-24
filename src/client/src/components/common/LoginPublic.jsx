@@ -67,13 +67,11 @@ const LoginPublic = ({ loginUser, isAuth, token }) => {
               <small className="text-muted ml-2">Keep me logged in</small>
             </span>
           </div>
-          <div className="col-xs-3 col-sm-6 col-md-6 col-lg-4 col-xl-3 m-auto">
-            <input
-              type="submit"
-              className="btn btn-dark btn-block btn-xs"
-              value="Login"
-            />
-          </div>
+          <input
+            type="submit"
+            className="btn btn-dark btn-raised  btn-block"
+            value="Login"
+          />
         </form>
       </div>
     </div>
