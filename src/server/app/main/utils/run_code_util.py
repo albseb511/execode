@@ -52,11 +52,12 @@ def generate_output_error(input_path, code_path, path, my_lang, output_file_name
     """
         Generate output and error
     """
-    output_path = path+"/"+output_file_name
-    error_path = path+"/"+error_file_name
+    output_path = path+"/"+output_file_name+".txt"
+    error_path = path+"/"+error_file_name+".txt"
+    
     if my_lang == "javascript":
         f_code = open(code_path)
-        f_input_test = open(input_path  )
+        f_input_test = open(input_path)
         code = f_code.read()
         input_test = f_input_test.read()
         ctx = execjs.compile(code)
@@ -73,7 +74,7 @@ def generate_output_error(input_path, code_path, path, my_lang, output_file_name
 
 
 def is_error(error_path):
-    wf = open(error_path)
+    wf = open(error_path, 'r+')
     lines = wf.readlines()
     if len(lines) == 0:
         wf.close()
