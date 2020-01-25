@@ -27,10 +27,10 @@ def make_python_codefile(code, path):
 
 
 def make_input_file(sample_input, path):
-    wg = open(path+"/x.txt", "w")
+    wg = open(path+"/in.txt", "w")
     wg.write(sample_input)
     wg.close()
-    return path+"/x.txt"
+    return path+"/in.txt"
 
 
 def make_sample_output(sample_output, path):
@@ -55,10 +55,19 @@ def generate_output_error(input_path, code_path, path, my_lang, output_file_name
     output_path = path+"/"+output_file_name
     error_path = path+"/"+error_file_name
     if my_lang == "javascript":
-        pass
-        
+        f_code = open(code_path)
+        f_input_test = open(input_path  )
+        code = f_code.read()
+        input_test = f_input_test.read()
+        ctx = execjs.compile(code)
+        temp_output = ctx.call('process', input_test)
+        f_output = open(output_path, "w")
+        f_output.write(temp_output)
+        f_output.close()
+
     elif my_lang == "python":
-        os.system("python {} 0<{} 1>{} 2>{}".format(
+
+        os.system("python %s 0<%s 1>%s 2>%s"%(
             code_path, input_path, output_path, error_path))
     return output_path, error_path
 
@@ -99,30 +108,29 @@ def compare_output(output_path, expected_path):
 
 
 def getResults(sample_input, sample_output, language, user_id, code):
-    if language == 'javascript':
-        output_boolean = False
-        error = ''
-        ctx = execjs.compile(code)
-        temp_output = ctx.call('process', sample_input)
-        print(temp_output)
-        print(sample_output)
-        if temp_output == sample_output:
-            output_boolean = True
-        return temp_output, error, output_boolean
+    #if language == 'javascript':
+    #    output_boolean = False
+    #    error = ''
+    #    ctx = execjs.compile(code)
+    #    temp_output = ctx.call('process', sample_input)
+    #    if temp_output == sample_output:
+    #        output_boolean = True
+    #    return temp_output, error, output_boolean
 
     path = makeRunCodeFolder(user_id)
     my_lang = language.lower()
     if path:
         input_path = make_input_file(sample_input, path)
         expected_path = make_sample_output(sample_output, path)
+        
         if my_lang == "javascript":
             code_file_path = make_js_file(code, path)
-            pass
         elif my_lang == "python":
             code_file_path = make_python_codefile(code, path)
+        
         output_path, error_path = generate_output_error(
             input_path, code_file_path, path, my_lang)
         is_correct, output = compare_output(output_path, expected_path)
-        return (output, read_error(error_path), is_correct and (not is_error(error_path)))
+        return (''.join(output), read_error(error_path), is_correct and (not is_error(error_path)))
 
     return None, None, False

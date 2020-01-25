@@ -36,11 +36,11 @@ def get_results(submission_id, test_cases, code, language, max_score):
 
             for test_case in test_cases:
                 output_path, error_path = generate_output_error(
-                    test_case["input_file"], code_file_path, path, language, output_file_name="tco"+str(test_case["id"]), error_file_name="tce"+str(test_case["id"]))
+                    '%s.txt'%(test_case["input_file"]), code_file_path, path, language, output_file_name="tco"+str(test_case["id"]), error_file_name="tce"+str(test_case["id"]))
                 # evaluate
                 # compare with challenge_settings - currently not done
                 is_correct, output = compare_output(
-                    output_path, test_case["output_file"])
+                    output_path, '%s.txt'%(test_case["output_file"]))
                 passed = is_correct and (not is_error(error_path))
                 if passed:
                     total_marks = total_marks + \
