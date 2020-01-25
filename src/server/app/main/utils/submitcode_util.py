@@ -25,7 +25,7 @@ def get_results(submission_id, test_cases, code, language, max_score):
     path = make_submit_folder(submission_id)
     # insert code file path into submissions folder
     language = language.lower()
-    if language == "python":
+    if language == "python" or language == 'javascript':
         if path:
             code_file_path = make_python_codefile(code, path)
             submission_outputs = []
@@ -50,8 +50,6 @@ def get_results(submission_id, test_cases, code, language, max_score):
                 # bring into db save format
                 submission_outputs.append(submission_format)
             return submission_outputs, code_file_path, total_marks
-        return False, False
-    elif language == "javascript":
-        return {"comment": "Currently not supported"}
+        return False, False, False
     else:
-        return {"comment": "Unknown Language"}
+        return False, False, False
