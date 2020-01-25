@@ -65,6 +65,8 @@ def generate_output_error(input_path, code_path, path, my_lang, output_file_name
         f_output = open(output_path, "w")
         f_output.write(temp_output)
         f_output.close()
+        f_error = open(error_path ,'w')
+        f_error.close()
 
     elif my_lang == "python":
 
@@ -74,7 +76,7 @@ def generate_output_error(input_path, code_path, path, my_lang, output_file_name
 
 
 def is_error(error_path):
-    wf = open(error_path, 'r+')
+    wf = open(error_path)
     lines = wf.readlines()
     if len(lines) == 0:
         wf.close()

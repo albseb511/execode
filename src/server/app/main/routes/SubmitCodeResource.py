@@ -53,8 +53,6 @@ class SubmitCodeResource(Resource):
                     return {
                         "total_marks": total_marks,
                         "test_case_result": submission_outputs,
-                        "time_taken": "should not be here, its in each test case",
-                        "memory_taken": "should also not be here",
                         "comment": "Code Submitted ,here are your results"
                     }, 201
                 else:
