@@ -42,11 +42,12 @@ def get_results(submission_id, test_cases, code, language, max_score):
                 is_correct, output = compare_output(
                     output_path, '%s.txt'%(test_case["output_file"]))
                 passed = is_correct and (not is_error(error_path))
+                
                 if passed:
-                    total_marks = total_marks + \
-                        (test_case["strength"]/total_strength)*max_score
+                    total_marks = total_marks + test_case["strength"]
                 submission_format = {"output_file": output_path, "time_taken": 1, "memory_taken": 1,
                                      "passed": passed, "submission_id": submission_id, "test_case_id": test_case["id"]}
+                
                 # bring into db save format
                 submission_outputs.append(submission_format)
             return submission_outputs, code_file_path, total_marks
