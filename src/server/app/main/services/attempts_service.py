@@ -12,21 +12,18 @@ def get_prev_best_attempt(contest_challenge_id, user_id):
 
 
 def save_to_db(model):
-    try:
-        db.session.add(model)
-        db.session.commit()
-    except Exception as e:
-        db.session.rollback()
+    db.session.add(model)
+    db.session.commit()
 
 
 def add_new_best_attempt(contest_challenge_id, new_score, submission_id, user_id):
     prev_max, prev_attempt_id = get_prev_best_attempt(contest_challenge_id, user_id)
+    print(prev_attempt_id)
     if prev_attempt_id:
         if prev_max <= new_score:
             # update
-            new_attempt = AttemptsModel(id=prev_attempt_id, max_score=new_score,
-                                        contest_challenge_id=contest_challenge_id, submission_id=submission_id, user_id=user_id)
-            save_to_db(new_attempt)
+            db.session.query(AttemptsModel).filter(AttemptsModel.id == prev_attempt_id).update({AttemptsModel.max_score : new_score})
+            db.session.commit()
         else:
             return False
     else:
@@ -34,4 +31,4 @@ def add_new_best_attempt(contest_challenge_id, new_score, submission_id, user_id
                                     submission_id=submission_id, user_id=user_id, max_score=new_score)
         save_to_db(new_attempt)
 
-    return new_attempt.id
+    return True
