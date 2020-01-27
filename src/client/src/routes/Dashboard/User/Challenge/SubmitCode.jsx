@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import AceEditor from "react-ace";
 import { connect } from "react-redux";
-import axios from "../../../../utils/axiosInterceptor";
+import { useHistory, useLocation } from "react-router-dom";
+import {
+  submitPageRouteExit,
+  getSubmitResults
+} from "../../../../redux/user/action";
 
 const initState = {
   testcases: [
@@ -33,10 +37,22 @@ const SubmitChallenge = ({
   language,
   error,
   errorMessage,
-  isSubmit
+  isSubmit,
+  unmount,
+  getResults
 }) => {
   const [state, setState] = useState(initState);
   const [testPass, setTestPass] = useState(null);
+  const testingFake = () => {
+    setState({ ...state, score: 7, isLoading: false });
+  };
+  const history = useHistory();
+  const location = useLocation();
+  const path = location.pathname.split("submit").join("");
+  // if(!isSubmit){
+  //   history.push(`${path}`)
+  // }
+
   const loading = (
     <div className="col-xl-5 ">
       <div className="spinner-border text-secondary" role="status">
@@ -46,47 +62,21 @@ const SubmitChallenge = ({
   );
 
   useEffect(() => {
-    //       {
-    //         "challenge_id":"INTEGER",
-    //         "contest_id":"INTEGER",
-    //         "code":"STRING",
-    //         "language":"STRING",
-    //         "action":"submit the code",
-
-    //          }
-
-    axios
-      .post(
-        "/submit",
-        {
-          challenge_id: challengeId,
-          contest_id: contestId,
-          code,
-          language,
-          action: "submit code"
-        },
-        {
-          headers: {
-            Authorization: token
-          }
-        }
-      )
-      .then(res => {
-        const result = res.data.test_case_result;
-        const score = res.data.marks;
-        setState({
-          ...state,
-          testcases: result,
-          score,
-          isLoading: false
-        });
-      })
-      .catch(err => testingFake());
+    const payload = {
+      challenge_id: challengeId,
+      contest_id: contestId,
+      code,
+      language,
+      action: "submit code",
+      token
+    };
+    console.log("hello");
+    getResults(payload);
+    testingFake();
+    return () => {
+      unmount();
+    };
   }, []);
-
-  const testingFake = () => {
-    setState({ ...state, score: 7, isLoading: false });
-  };
 
   useEffect(() => {
     if (!state.isLoading) {
@@ -149,7 +139,7 @@ const SubmitChallenge = ({
             mode="python"
             className="col-xl-12 "
             theme="github"
-            defaultValue={state.code}
+            value={code}
             readOnly="true"
             name="UNIQUE_ID_OF_DIV"
             editorProps={{ $blockScrolling: true }}
@@ -169,4 +159,9 @@ const mapStateToProps = state => ({
   errorMessage: state.user.errorMessage
 });
 
-export default connect(mapStateToProps)(SubmitChallenge);
+const mapDispatchToProps = dispatch => ({
+  unmount: () => dispatch(submitPageRouteExit()),
+  getResults: payload => dispatch(getSubmitResults(payload))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SubmitChallenge);
