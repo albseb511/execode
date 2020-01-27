@@ -74,5 +74,6 @@
       "prettier --write",
       "git add"
     ]
-  }
+  },
+  "homepage": "."
 }
