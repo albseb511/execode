@@ -70,8 +70,13 @@ def generate_output_error(input_path, code_path, path, my_lang, output_file_name
 
     elif my_lang == "python":
 
+        os.system("python3 %s 0<%s 1>%s 2>%s"%(
+            code_path, input_path, output_path, error_path))
+    elif my_lang == "python2":
+
         os.system("python %s 0<%s 1>%s 2>%s"%(
             code_path, input_path, output_path, error_path))
+
     return output_path, error_path
 
 
