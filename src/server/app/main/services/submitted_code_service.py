@@ -13,7 +13,7 @@ def get_raw_data(contest_id, user_id, submission_id):
 
     print(data_raw)
     names = [dict(row) for row in data_raw]
-    resp_data = []
+    resp_data = {}
     f_code = open(names[0]['code'])
     resp_data['code_path'] = names[0]['code']
     resp_data['code'] = f_code.read()
