@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
 import AceEditor from "react-ace";
 import { connect } from "react-redux";
@@ -84,28 +87,24 @@ const SubmitChallenge = ({
         state.testcases.map((a, i) => {
           if (a.passed) {
             return (
-              <div key={a.test_case_id} className="">
-                <div>
-                  <img
-                    src="https://image.flaticon.com/icons/png/512/368/368633.png"
-                    className="col-xl-2"
-                    alt="flat icon"
-                  />
+              <div className="col-md-2 mt-4 mb-3 text-center">
+                <div key={a.test_case_id}>
+                  <div>
+                    <i className="fas fa-check-circle fa-lg text-success fa-2x mb-2" />
+                  </div>
+                  {`Test Case ${i + 1}`}
                 </div>
-                {`Test Case ${i + 1}`}
               </div>
             );
           }
           return (
-            <div key={a.test_case_id} className="">
-              <div>
-                <img
-                  src="https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color-round-1/254000/43-512.png"
-                  className="col-xl-2"
-                  alt="social messaging"
-                />
+            <div className="col-md-2 mt-4 mb-3 text-center">
+              <div key={a.test_case_id}>
+                <div>
+                  <i className="fas fa-times-circle fa-lg text-danger fa-2x mb-2" />
+                </div>
+                {`Test Case ${i + 1}`}
               </div>
-              {`Test Case ${i + 1}`}
             </div>
           );
         })
@@ -115,35 +114,34 @@ const SubmitChallenge = ({
 
   return (
     <div className="container mb-5">
-      <h6 className="text-left">
-        Submitted a few seconds ago • Score: {state.score}{" "}
+      <h6 className="text-left mt-4 mb-3">
+        Submitted a few seconds ago •
+        <b className="text-primary font-weight-bold"> Score: </b>
+        <span className="text-primary font-weight-bold">{state.score}</span>
       </h6>
 
       {/* this Section is for the testcase   */}
       {state.isLoading ? (
-        <div className="row col-xl-12 justify-content-start mt-4">
-          {loading}
-        </div>
+        <div className="row ">{loading}</div>
       ) : (
-        <div className="row col-xl-12 justify-content-start mt-4">
-          {testPass}
-        </div>
+        <div className="row">{testPass}</div>
       )}
       <div>
-        <h2 className="text-left mt-4">Submitted Code</h2>
-        <p className="text-secondary border text-left">
-          Language : {state.language}
-        </p>
+        <hr />
+        <h3 className="text-left mt-3 font-weight-bold mb-3">Submitted Code</h3>
+        <mark className="text-dark border">Language : {state.language}</mark>
         <div>
-          <AceEditor
-            mode="python"
-            className="col-xl-12 "
-            theme="github"
-            value={code}
-            readOnly="true"
-            name="UNIQUE_ID_OF_DIV"
-            editorProps={{ $blockScrolling: true }}
-          />
+          <div className="d-block mb-4">
+            <AceEditor
+              style={{ width: "100%" }}
+              mode="python"
+              theme="github"
+              value={code}
+              readOnly="true"
+              name="UNIQUE_ID_OF_DIV"
+              editorProps={{ $blockScrolling: true }}
+            />
+          </div>
         </div>
       </div>
     </div>
