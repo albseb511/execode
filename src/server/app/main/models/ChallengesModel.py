@@ -17,7 +17,7 @@ class ChallengesModel(db.Model):
     description = db.Column(db.Text, nullable=False)
     problem_statement = db.Column(db.Text, nullable=False)
     input_format = db.Column(db.Text, nullable=False)
-    constraints = db.Column(db.Text, nullable=False)
+    constraints = db.Column(db.Text, nullable=True)
     output_format = db.Column(db.Text, nullable=False)
     difficulty = db.Column(db.String(20), nullable=False)
     sample_input = db.Column(db.Text, nullable=False)
