@@ -17,6 +17,7 @@ class ContestsModel(db.Model):
     __tablename__ = "contests"
 
     id = db.Column(db.Integer, primary_key=True)
+    owner = db.Column(db.String(20), nullable=True)
     contest_name = db.Column(db.String(80), nullable=False)
     start = db.Column(db.DateTime(120), unique=True, nullable=False)
     end = db.Column(db.DateTime(timezone=False), nullable=False)

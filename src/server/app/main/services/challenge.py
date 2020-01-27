@@ -39,7 +39,7 @@ def get_challenge(challenge_id):
          }
     return {"challenge":details}   
 
-def add_challenge(description,problem_statement,input_format,output_format,constraints,difficulty,sample_input,sample_output,challenge_name):   #This service is us   ed to add both the challenge and required test cases for it.
+def add_challenge(description,problem_statement,input_format,output_format,constraints,difficulty,sample_input,sample_output,challenge_name, user_id):   #This service is us   ed to add both the challenge and required test cases for it.
     
     new_asset = ChallengesModel(challenge_name = challenge_name,
                                 description = description,
@@ -49,7 +49,8 @@ def add_challenge(description,problem_statement,input_format,output_format,const
                                 difficulty = difficulty,
                                 sample_input = sample_input,
                                 sample_output = sample_output,
-                                constraints = constraints)
+                                constraints = constraints,
+                                owner = user_id)
     save_changes(new_asset)
     challengeid = new_asset.id
     return challengeid

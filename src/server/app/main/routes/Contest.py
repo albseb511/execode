@@ -40,16 +40,19 @@ class Contest(Resource):
 
     @classmethod
     def post(self, contest_name):
-        data = Contest.parser.parse_args()
-        # Add contest to database
-        print('add contest started')
-        created = add_contest(data, contest_name)
-        print(created)
-        print('----------------------------------')
-        if created:
-            return {"comment": "contest created successfully"}, 200
+        # auth token 
+        auth_token = request.headers.get("Authorization")
+        user_id = decode_auth_token(auth_token)
+        if user_id:
+            data = Contest.parser.parse_args()
+            # Add contest to database
+            created = add_contest(data, contest_name, user_id)
+            if created:
+                return {"comment": "contest created successfully"}, 200
+            else:
+                return {"comment": "error in contest creation"}, 501
         else:
-            return {"comment": "error in contest creation"}, 501
+            return {"comment": "user not found"}, 501
 
 
 class Contests(Resource):

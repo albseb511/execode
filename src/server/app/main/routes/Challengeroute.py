@@ -45,7 +45,7 @@ class Challenge(Resource):
                     test_output.append(val)        
                     out_count = out_count + 1
             print('____________________________')
-            challenge_id = add_challenge(**Info, challenge_name=challenge_id) 
+            challenge_id = add_challenge(**Info, challenge_name=challenge_id, user_id=user_id) 
 
             if challenge_id == None:
                 return {"comment": "Error in Challenge Creation, check session.commit()"}, 501
