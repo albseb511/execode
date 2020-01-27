@@ -31,3 +31,4 @@ class ChallengesModel(db.Model):
     test_cases = db.relationship(
         'TestCasesModel', backref='challenge', lazy=True)
     max_score = db.Column(db.Integer, nullable=True, default=0)
+    owner = db.Column(db.String(20), nullable=True)

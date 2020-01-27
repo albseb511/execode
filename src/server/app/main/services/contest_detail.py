@@ -86,11 +86,15 @@ def get_contests():
     return resp
 
 
-def add_contest(data, contest_name):
+def add_contest(data, contest_name, user_id):
     end = data['end_date']+" "+data['end_time']
     start = data['start_date']+" "+data['start_time']
-    new_asset = ContestsModel(contest_name=contest_name, start=start,
-                              end=end, details=data["details"], show_leaderboard=data["show_leaderboard"])
+    new_asset = ContestsModel(contest_name=contest_name, 
+                                start=start,
+                                end=end, 
+                                details=data["details"], 
+                                show_leaderboard=data["show_leaderboard"],
+                                owner = user_id)
 
     save_changes(new_asset)
     print('add contest saved')
