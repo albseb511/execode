@@ -17,6 +17,8 @@ const initState = {
   isAuth: false,
   isLoading: false,
   token: "",
+  userType: "",
+  email: "",
   isRegistering: false,
   registerSuccess: false,
   error: false,
@@ -36,14 +38,20 @@ const reducer = (state = initState, { type, payload }) => {
       };
     case LOGIN_USER_SUCCESS:
       localStorage.setItem("token", payload.Authorization);
+      localStorage.setItem("email", payload.email);
+      localStorage.setItem("role", payload.role);
       return {
         ...state,
         isAuth: true,
         token: payload.Authorization,
-        isLoading: false
+        isLoading: false,
+        userType: payload.role,
+        email: payload.email
       };
     case LOGIN_USER_FAILURE:
       localStorage.setItem("token", "");
+      localStorage.setItem("email", "");
+      localStorage.setItem("role", "");
       return {
         ...state,
         isAuth: false,
@@ -51,7 +59,7 @@ const reducer = (state = initState, { type, payload }) => {
         isLoading: false,
         error: true,
         errorType: "login",
-        errorMessage: "login failed"
+        errorMessage: "something went wrong"
       };
     case LOGOUT_USER_REQUEST:
       return {
@@ -65,7 +73,9 @@ const reducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         isAuth: false,
-        token: ""
+        token: "",
+        userType: "",
+        email: ""
       };
     case LOGOUT_USER_FAILURE:
       return {
