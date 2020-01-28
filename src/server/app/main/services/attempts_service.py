@@ -2,9 +2,9 @@ from app.main.models.AttemptsModel import AttemptsModel
 from .. import db
 
 
-def get_prev_best_attempt(contest_challenge_id, user_id):
+def get_prev_best_attempt(contest_id, user_id):
     prev_attempt = AttemptsModel.query.filter_by(
-        contest_challenge_id=contest_challenge_id, user_id = user_id).first()
+        contest_id=contest_id, user_id = user_id).first()
     if prev_attempt:
         return prev_attempt.max_score, prev_attempt.id
     else:
@@ -16,8 +16,8 @@ def save_to_db(model):
     db.session.commit()
 
 
-def add_new_best_attempt(contest_challenge_id, new_score, submission_id, user_id):
-    prev_max, prev_attempt_id = get_prev_best_attempt(contest_challenge_id, user_id)
+def add_new_best_attempt(contest_id, new_score, submission_id, user_id):
+    prev_max, prev_attempt_id = get_prev_best_attempt(contest_id, user_id)
     print(prev_attempt_id)
     if prev_attempt_id:
         if prev_max <= new_score:
@@ -27,7 +27,7 @@ def add_new_best_attempt(contest_challenge_id, new_score, submission_id, user_id
         else:
             return False
     else:
-        new_attempt = AttemptsModel(contest_challenge_id=contest_challenge_id,
+        new_attempt = AttemptsModel(contest_id=contest_id,
                                     submission_id=submission_id, user_id=user_id, max_score=new_score)
         save_to_db(new_attempt)
 
