@@ -16,8 +16,7 @@ class AttemptsModel(db.Model):
     max_score = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime(timezone=True),
                            nullable=False, default=datetime.datetime.now())
-    contest_id = db.Column(db.Integer, db.ForeignKey(
-        'contests.id'), nullable=False)
+    contest_id = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey(
         'users.id'), nullable=False)
     submission_id = db.Column(db.Integer, db.ForeignKey(
