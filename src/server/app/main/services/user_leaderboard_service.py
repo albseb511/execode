@@ -10,7 +10,7 @@ import json
 
 def get_raw_data(contest_id):
 
-    data_raw = db.engine.execute("select a.max_score,c.name,c.id from attempts where contest_id='%s'"%(contest_id))
+    data_raw = db.engine.execute("select a.max_score,c.name,c.id, c.email from attempts as a join users as c on c.id = a.user_id where a.contest_id='%s'"%(contest_id))
     print(data_raw)
     names = [dict(row) for  row in data_raw]
     # print(names)
