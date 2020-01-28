@@ -6,21 +6,13 @@
 /* eslint-disable react/sort-comp */
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import axiosInstance from "../../../../utils/axiosInterceptor";
+import axios from "../../../../utils/axiosInterceptor";
 
 class ContestLeaderBoard extends React.Component {
   constructor() {
     super();
     this.state = {
-      leaderboard: [
-        {
-          name: "Santhisri",
-          score: "200",
-          rank: "5",
-          contest_name: "samurai-1.2.2",
-          userId: 1
-        }
-      ]
+      leaderboard: []
     };
   }
 
@@ -28,7 +20,7 @@ class ContestLeaderBoard extends React.Component {
     // get the leader board data and set state
     // set auth header
     const { contestId } = this.props;
-    axiosInstance.get(`contest/${contestId}/leaderboard`).then(res => {
+    axios.get(`contest/${contestId}/leaderboard`).then(res => {
       if (res.data && res.data.leaderboard) {
         this.setState({ leaderboard: res.data.leaderboard });
       }
@@ -42,7 +34,6 @@ class ContestLeaderBoard extends React.Component {
 
   render() {
     const { leaderboard } = this.state;
-    console.log(this.props.contestId);
     return (
       <>
         <div className="row d-flex justify-content-center">
@@ -60,23 +51,24 @@ class ContestLeaderBoard extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {leaderboard.map(ele => {
-                return (
-                  <tr key={"leaderboard" + ele.id}>
-                    {/* <th scope="row">{ele.id}</th> */}
-                    <td>{ele.name}</td>
-                    <td>{ele.score}</td>
-                    <td>{ele.rank}</td>
-                    <td>
-                      <Link
-                        to={`/dashboard/admin/${this.props.contestId}/user-submission/${ele.id}`}
-                      >
-                        View
-                      </Link>
-                    </td>
-                  </tr>
-                );
-              })}
+              {leaderboard &&
+                leaderboard.map((ele, index) => {
+                  return (
+                    <tr key={"leaderboard" + ele.id}>
+                      {/* <th scope="row">{ele.id}</th> */}
+                      <td>{ele.name}</td>
+                      <td>{ele.max_score}</td>
+                      <td>{index + 1}</td>
+                      <td>
+                        <Link
+                          to={`/dashboard/admin/${this.props.contestId}/user-submission/${ele.id}`}
+                        >
+                          View
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
         </div>
