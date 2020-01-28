@@ -24,3 +24,4 @@ class SubmissionsModel(db.Model):
     score = db.Column(db.Integer, nullable=True)
     submission_outputs = db.relationship(
         'SubmissionOutputs', backref="submission", lazy=True)
+    test_cases_info = db.Column(db.Text, nullable=True)
