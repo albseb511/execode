@@ -14,10 +14,9 @@ let localToken = localStorage.getItem("token");
 if (localToken === "undefined") localToken = "";
 
 const initState = {
-  isAuth: true,
+  isAuth: false,
   isLoading: false,
-  token:
-    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzk4NDIzOTEsImlhdCI6MTU3OTc1NTk4Niwic3ViIjozfQ.A-GfEqZAFBHW3DdaoCMFOD6h3nDUfzHKlipAR5E6x9k",
+  token: "",
   isRegistering: false,
   registerSuccess: false,
   error: false,
@@ -44,9 +43,11 @@ const reducer = (state = initState, { type, payload }) => {
         isLoading: false
       };
     case LOGIN_USER_FAILURE:
+      localStorage.setItem("token", "");
       return {
         ...state,
-        isAuth: true,
+        isAuth: false,
+        token: "",
         isLoading: false,
         error: true,
         errorType: "login",
@@ -79,12 +80,14 @@ const reducer = (state = initState, { type, payload }) => {
         error: false,
         errorType: "",
         errorMessage: "",
-        isRegistering: true
+        isRegistering: true,
+        registerSuccess: false
       };
     case REGISTER_USER_SUCCESS:
       return {
         ...state,
-        isRegistering: false
+        isRegistering: false,
+        registerSuccess: true
       };
     case REGISTER_USER_FAILURE:
       return {
@@ -92,7 +95,8 @@ const reducer = (state = initState, { type, payload }) => {
         isRegistering: false,
         error: true,
         errorType: "register",
-        errorMessage: "registration failed"
+        errorMessage: "registration failed",
+        registerSuccess: false
       };
     default:
       return state;

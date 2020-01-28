@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 import { loginUser } from "../../redux/authentication/actions";
 import { connect } from "react-redux";
 
-const LoginPublic = ({ loginUser, isAuth, token }) => {
+const LoginPublic = ({ loginUser, isAuth, token, error, errorMessage }) => {
   const [loginState, setLoginState] = useState({
     email: "",
     password: "",
@@ -73,6 +73,7 @@ const LoginPublic = ({ loginUser, isAuth, token }) => {
             value="Login"
           />
         </form>
+        <div className="text-danger">{error && errorMessage}</div>
       </div>
     </div>
   );
@@ -81,7 +82,9 @@ const LoginPublic = ({ loginUser, isAuth, token }) => {
 const mapStateToProps = state => ({
   isAuth: state.authReducer.isAuth,
   isLoading: state.authReducer.isLoading,
-  token: state.authReducer.token
+  token: state.authReducer.token,
+  error: state.authReducer.error,
+  errorMessage: state.authReducer.errorMessage
 });
 
 const mapDispatchToProps = dispatch => ({

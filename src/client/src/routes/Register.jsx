@@ -4,7 +4,14 @@ import { Redirect } from "react-router-dom";
 import { registerUser } from "../redux/authentication/actions";
 import { connect } from "react-redux";
 
-const Register = ({ registerUser, isAuth }) => {
+const Register = ({
+  registerUser,
+  isAuth,
+  isRegistering,
+  registerSuccess,
+  error,
+  errorType
+}) => {
   const [signupState, setSignupState] = useState({
     email: "",
     name: "",
@@ -78,6 +85,12 @@ const Register = ({ registerUser, isAuth }) => {
           Register
         </button>
       </form>
+      {isRegistering && <div className="text-center">Registering</div>}
+      {error && errorType == "register" ? (
+        <div className="text-danger">Something went wrong</div>
+      ) : (
+        registerSuccess && <div className="text-center">Success</div>
+      )}
     </div>
   );
 };
@@ -85,7 +98,11 @@ const Register = ({ registerUser, isAuth }) => {
 const mapStateToProps = state => ({
   isAuth: state.authReducer.isAuth,
   isLoading: state.authReducer.isLoading,
-  token: state.authReducer.token
+  token: state.authReducer.token,
+  isRegistering: state.authReducer.isRegistering,
+  registerSuccess: state.authReducer.registerSuccess,
+  error: state.authReducer.error,
+  errorType: state.authReducer.errorType
 });
 
 const mapDispatchToProps = dispatch => ({
