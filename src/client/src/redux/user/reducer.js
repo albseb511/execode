@@ -12,7 +12,8 @@ const initialState = {
   language: "python",
   isLoading: false,
   error: false,
-  errorMessage: ""
+  errorMessage: "",
+  testCaseResults: []
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -46,7 +47,8 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isLoading: false,
-        error: false
+        error: false,
+        testCaseResults: payload.test_case_result
       };
     }
 

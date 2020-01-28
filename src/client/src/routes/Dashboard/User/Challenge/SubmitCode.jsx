@@ -42,13 +42,11 @@ const SubmitChallenge = ({
   errorMessage,
   isSubmit,
   unmount,
-  getResults
+  getResults,
+  testCaseResults,
+  score
 }) => {
   const [state, setState] = useState(initState);
-  const [testPass, setTestPass] = useState(null);
-  const testingFake = () => {
-    setState({ ...state, score: 7, isLoading: false });
-  };
   const history = useHistory();
   const location = useLocation();
   const path = location.pathname.split("submit").join("");
@@ -56,15 +54,9 @@ const SubmitChallenge = ({
   //   history.push(`${path}`)
   // }
 
-  const loading = (
-    <div className="col-xl-5 ">
-      <div className="spinner-border text-secondary" role="status">
-        <span className="sr-only">Loading...</span>
-      </div>
-    </div>
-  );
+  let testPass = null;
 
-  useEffect(() => {
+  const getResultsRequest = async () => {
     const payload = {
       challenge_id: challengeId,
       contest_id: contestId,
@@ -73,56 +65,62 @@ const SubmitChallenge = ({
       action: "submit code",
       token
     };
-    console.log("hello");
-    getResults(payload);
-    testingFake();
+    await getResults(payload);
+  };
+
+  useEffect(() => {
+    getResultsRequest();
     return () => {
       unmount();
     };
   }, []);
 
-  useEffect(() => {
-    if (!state.isLoading) {
-      setTestPass(
-        state.testcases.map((a, i) => {
-          if (a.passed) {
-            return (
-              <div className="col-md-2 mt-4 mb-3 text-center">
-                <div key={a.test_case_id}>
-                  <div>
-                    <i className="fas fa-check-circle fa-lg text-success fa-2x mb-2" />
-                  </div>
-                  {`Test Case ${i + 1}`}
-                </div>
+  if (!isLoading && isSubmit && testCaseResults) {
+    console.log("test cases mapping");
+    testPass = testCaseResults.map((a, i) => {
+      if (a.passed) {
+        return (
+          <div key={a.test_case_id} className="col-md-2 mt-4 mb-3 text-center">
+            <div key={a.test_case_id}>
+              <div>
+                <i className="fas fa-check-circle fa-lg text-success fa-2x mb-2" />
               </div>
-            );
-          }
-          return (
-            <div className="col-md-2 mt-4 mb-3 text-center">
-              <div key={a.test_case_id}>
-                <div>
-                  <i className="fas fa-times-circle fa-lg text-danger fa-2x mb-2" />
-                </div>
-                {`Test Case ${i + 1}`}
-              </div>
+              {`Test Case ${i + 1}`}
             </div>
-          );
-        })
+          </div>
+        );
+      }
+      return (
+        <div className="col-md-2 mt-4 mb-3 text-center">
+          <div key={a.test_case_id}>
+            <div>
+              <i className="fas fa-times-circle fa-lg text-danger fa-2x mb-2" />
+            </div>
+            {`Test Case ${i + 1}`}
+          </div>
+        </div>
       );
-    }
-  }, [state.isLoading]);
+    });
+  }
 
+  console.log("is loading", isLoading);
+  console.log("test pass", testPass);
   return (
     <div className="container mb-5">
       <h6 className="text-left mt-4 mb-3">
         Submitted a few seconds ago •
         <b className="text-primary font-weight-bold"> Score: </b>
-        <span className="text-primary font-weight-bold">{state.score}</span>
+        <span className="text-primary font-weight-bold">
+          {!isLoading && testPass && score}
+        </span>
       </h6>
-
       {/* this Section is for the testcase   */}
-      {state.isLoading ? (
-        <div className="row ">{loading}</div>
+      {isLoading ? (
+        <div className="row ">
+          <div className="spinner-border text-secondary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
       ) : (
         <div className="row">{testPass}</div>
       )}
@@ -154,7 +152,10 @@ const mapStateToProps = state => ({
   language: state.user.language,
   isLoading: state.user.isLoading,
   error: state.user.error,
-  errorMessage: state.user.errorMessage
+  errorMessage: state.user.errorMessage,
+  testCaseResults: state.user.testCaseResults,
+  isSubmit: state.user.isSubmit,
+  score: state.user.score
 });
 
 const mapDispatchToProps = dispatch => ({

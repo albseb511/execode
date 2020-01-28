@@ -54,13 +54,3 @@ export const getSubmitResults = payload => {
       .catch(err => dispatch(submitCodeFailure(err)));
   };
 };
-
-// ```json
-// {
-//         "challenge_id":"INTEGER",
-//         "contest_id":"INTEGER",
-//         "code":"STRING",
-//         "language":"STRING",
-//         "action":"submit the code",
-
-// }
