@@ -49,7 +49,7 @@ class SubmitCodeResource(Resource):
                             **submission_output)
                     # add new best attempt
                     add_new_best_attempt(
-                        contest_challenge_id, total_marks, submission_id, user_id)
+                        data["contest_id"], total_marks, submission_id, user_id)
                     return {
                         "total_marks": total_marks,
                         "test_case_result": submission_outputs,

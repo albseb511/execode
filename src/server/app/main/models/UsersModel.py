@@ -47,7 +47,7 @@ class UserModel(db.Model):
         return flask_bcrypt.check_password_hash(self.password_hash, password)
 
     @staticmethod
-    def encode_auth_token(user_id):
+    def encode_auth_token(user_id, role):
         """
         Generates the Auth Token
         :return: string
@@ -56,7 +56,8 @@ class UserModel(db.Model):
             payload = {
                 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1, seconds=5),
                 'iat': datetime.datetime.utcnow(),
-                'sub': user_id
+                'sub': user_id,
+                'role': role
             }
             return jwt.encode(
                 payload,
@@ -80,11 +81,11 @@ class UserModel(db.Model):
             #     return 'Token blacklisted. Please log in again.'
             # else:
             #     return payload['sub']
-            return True
+            return payload['sub']
         except jwt.ExpiredSignatureError:
-            return 'Signature expired. Please log in again.'
+            return False
         except jwt.InvalidTokenError:
-            return 'Invalid token. Please log in again.'
+            return False
 
     def __repr__(self):
         return "<User '{}'>".format(self.username)

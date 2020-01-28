@@ -52,7 +52,7 @@ class Contest(Resource):
             else:
                 return {"comment": "error in contest creation"}, 501
         else:
-            return {"comment": "user not found"}, 501
+            return {"comment": "JWT Expired or Invalid"}, 401
 
 
 class Contests(Resource):
