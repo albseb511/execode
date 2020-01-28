@@ -23,6 +23,13 @@ class RuncodeResource(Resource):
             if details:
                 output, error, is_correct = getResults(
                     details.sample_input, details.sample_output, data['language'], user_id, data["code"])
+                if output == False:
+                    return {
+                    "comment": "runcode not successful",
+                    "user_output": "",
+                    "user_error": "Timeout Exception",
+                    "sample_result": False
+                }, 200
                 output_resp.append(output.strip())
                 return {
                     "comment": "runcode successful",

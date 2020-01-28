@@ -1,7 +1,42 @@
+from __future__ import print_function
 import os
 import subprocess
 import fileinput
 import execjs
+import multiprocessing
+
+import sys
+import threading
+from time import sleep
+try:
+    import thread
+except ImportError:
+    import _thread as thread
+
+
+def quit_function(fn_name):
+    # print to stderr, unbuffered in Python 2.
+    print('{0} took too long'.format(fn_name), file=sys.stderr)
+    sys.stderr.flush() # Python 3 stderr is likely buffered.
+    thread.interrupt_main() # raises KeyboardInterrupt
+
+def exit_after(s):
+    '''
+    use as decorator to exit process if
+    function takes longer than s seconds
+    '''
+    def outer(fn):
+        def inner(*args, **kwargs):
+            timer = threading.Timer(s, quit_function, args=[fn.__name__])
+            timer.start()
+            try:
+                result = fn(*args, **kwargs)
+            finally:
+                timer.cancel()
+            return result
+        return inner
+    return outer
+
 
 def makeRunCodeFolder(user_id):
     """
@@ -47,6 +82,24 @@ def make_js_file(code, path):
     wf.close()
     return path+"/code.js"
 
+@exit_after(1)
+def run_python_code(code_path, input_path, output_path, error_path):
+    print("started run code")
+    os.system("python3 %s 0<%s 1>%s 2>%s"%(
+            code_path, input_path, output_path, error_path))
+
+@exit_after(1)
+def run_python2_code(code_path, input_path, output_path, error_path):
+    print("started run code")
+    os.system("python3 %s 0<%s 1>%s 2>%s"%(
+            code_path, input_path, output_path, error_path))
+
+
+@exit_after(1)
+def run_js_code(code, input_test)
+    ctx = execjs.compile(code)
+    temp_output = ctx.call('process', input_test)
+    return temp_output
 
 def generate_output_error(input_path, code_path, path, my_lang, output_file_name="out.txt", error_file_name="err.txt"):
     """
@@ -54,14 +107,15 @@ def generate_output_error(input_path, code_path, path, my_lang, output_file_name
     """
     output_path = path+"/"+output_file_name+".txt"
     error_path = path+"/"+error_file_name+".txt"
-    
     if my_lang == "javascript":
         f_code = open(code_path)
         f_input_test = open(input_path)
         code = f_code.read()
         input_test = f_input_test.read()
-        ctx = execjs.compile(code)
-        temp_output = ctx.call('process', input_test)
+        try:
+            temp_output = run_js_code(code, input_test)
+        except Exception:
+            return False, "Infinite Loop"
         f_output = open(output_path, "w")
         f_output.write(temp_output)
         f_output.close()
@@ -69,13 +123,18 @@ def generate_output_error(input_path, code_path, path, my_lang, output_file_name
         f_error.close()
 
     elif my_lang == "python":
+        try:
+            run_python_code(
+            code_path, input_path, output_path, error_path)
+        except Exception as e:
+            return False, "Infinite Loop"
 
-        os.system("python3 %s 0<%s 1>%s 2>%s"%(
-            code_path, input_path, output_path, error_path))
     elif my_lang == "python2":
-
-        os.system("python %s 0<%s 1>%s 2>%s"%(
-            code_path, input_path, output_path, error_path))
+        try:
+            run_python2_code(
+            code_path, input_path, output_path, error_path)
+        except Exception as e:
+            return False, "Infinite Loop"
 
     return output_path, error_path
 
@@ -130,14 +189,18 @@ def getResults(sample_input, sample_output, language, user_id, code):
     if path:
         input_path = make_input_file(sample_input, path)
         expected_path = make_sample_output(sample_output, path)
-        
+
         if my_lang == "javascript":
             code_file_path = make_js_file(code, path)
         elif my_lang == "python":
             code_file_path = make_python_codefile(code, path)
-        
+
         output_path, error_path = generate_output_error(
             input_path, code_file_path, path, my_lang)
+
+        if output_path == False:
+            return False, "Infinite Loop", False
+
         is_correct, output = compare_output(output_path, expected_path)
         return (''.join(output), read_error(error_path), is_correct and (not is_error(error_path)))
 
