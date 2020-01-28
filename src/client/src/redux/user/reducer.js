@@ -13,7 +13,8 @@ const initialState = {
   isLoading: false,
   error: false,
   errorMessage: "",
-  testCaseResults: []
+  testCaseResults: [],
+  score: 0
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -48,7 +49,8 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         isLoading: false,
         error: false,
-        testCaseResults: payload.test_case_result
+        testCaseResults: payload.test_case_result,
+        score: payload.total_marks
       };
     }
 
