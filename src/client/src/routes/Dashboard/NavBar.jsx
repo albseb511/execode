@@ -5,6 +5,9 @@ import { Link, NavLink } from "react-router-dom";
 
 const NavBar = ({ location: { pathname } }) => {
   let adminLinks = null;
+  // dangerous, use from redux store
+  let userType = localStorage.getItem("role");
+  userType = userType || null;
   if (pathname.startsWith("/dashboard/admin")) {
     adminLinks = [
       { name: "Contests", path: "all-contest" },
@@ -41,17 +44,19 @@ const NavBar = ({ location: { pathname } }) => {
           </div>
           <div className="collapse navbar-collapse" id="navcol-1">
             <ul className="nav navbar-nav ml-auto">
-              {adminLinks}
+              {userType === "admin" && adminLinks}
               <li role="presentation" className="nav-item">
                 <Link className="nav-link text-light" to="/dashboard">
                   Dashboard
                 </Link>
               </li>
-              <li role="presentation" className="nav-item">
-                <Link className="nav-link text-light" to="/dashboard/admin">
-                  Admin
-                </Link>
-              </li>
+              {userType === "admin" && (
+                <li role="presentation" className="nav-item">
+                  <Link className="nav-link text-light" to="/dashboard/admin">
+                    Admin
+                  </Link>
+                </li>
+              )}
               <li role="presentation" className="nav-item">
                 <Link className="nav-link text-light" to="/dashboard/profile">
                   Profile
