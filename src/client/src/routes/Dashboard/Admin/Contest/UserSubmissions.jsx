@@ -24,7 +24,6 @@ class UserSubmissions extends Component {
     // send auth token
     const { userId, contestId } = this.props;
     Axios.get(`contest/${contestId}/leaderboard/${userId}`).then(res => {
-      // console.log(res);
       if (res && res.data && res.data.challenges) {
         this.setState({
           submissions: res.data.challenges
@@ -73,6 +72,7 @@ class UserSubmissions extends Component {
                   <th scope="col">Challenge Name</th>
                   <th scope="col">Score</th>
                   <th scope="col">User Name</th>
+                  <th scope="col">Submitted at</th>
                   <th scope="col">Code</th>
                 </tr>
               </thead>
@@ -80,10 +80,11 @@ class UserSubmissions extends Component {
                 {submissions &&
                   submissions.map(ele => {
                     return (
-                      <tr key={"submission id" + submissions.submission_id}>
+                      <tr key={ele.submission_id}>
                         <td>{ele.challenge_name}</td>
                         <td>{ele.max_score}</td>
                         <td>{ele.name}</td>
+                        <td>{ele.created_at}</td>
                         <td>
                           <button
                             type="button"
