@@ -125,20 +125,16 @@ export const tokenValidateUser = payload => {
   return dispatch => {
     dispatch(tokenValidateRequest());
     return axios
-      .post(
-        "/validate",
-        {},
-        {
-          headers: {
-            Authorization: payload
-          }
+      .get("/validate", {
+        headers: {
+          Authorization: payload
         }
-      )
-      .then(res => {
+      })
+      .then(res =>
         res.data.success
           ? dispatch(tokenValidateSuccess(res))
-          : dispatch(tokenValidateFail());
-      })
+          : dispatch(tokenValidateFail())
+      )
       .catch(() => dispatch(tokenValidateFail()));
   };
 };
