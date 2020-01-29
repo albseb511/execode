@@ -6,80 +6,13 @@ import {
   FETCH_ALL_CONTESTS_REQUEST
 } from "./actionType";
 
-const contests = [
-  {
-    contest_id: "INTEGER",
-    contest_name: "Today's Contest",
-    start_date: "DATETIME",
-    end_date: "DATETIME",
-    end_time: "DATETIME",
-    details: "STRING",
-    show_leader_board: "DATETIME"
-  },
-  {
-    contest_id: "INTEGER",
-    contest_name: "Contest-1",
-    start_date: "DATETIME",
-    end_date: "DATETIME",
-    end_time: "DATETIME",
-    details: "STRING",
-    show_leader_board: "DATETIME"
-  },
-  {
-    contest_id: "INTEGER",
-    contest_name: "Contest-2",
-    start_date: "DATETIME",
-    end_date: "DATETIME",
-    end_time: "DATETIME",
-    details: "STRING",
-    show_leader_board: "DATETIME"
-  },
-  {
-    contest_id: "INTEGER",
-    contest_name: "Contest-3",
-    start_date: "DATETIME",
-    end_date: "DATETIME",
-    end_time: "DATETIME",
-    details: "STRING",
-    show_leader_board: "DATETIME"
-  },
-  {
-    contest_id: "INTEGER",
-    contest_name: "Contest-4",
-    start_date: "DATETIME",
-    end_date: "DATETIME",
-    end_time: "DATETIME",
-    details: "STRING",
-    show_leader_board: "DATETIME"
-  }
-];
-
 const initState = {
   userSubmissions: {
-    submissions: [
-      {
-        id: "user1",
-        userName: "Krishna",
-        score: "5",
-        totalScore: "6",
-        rank: "2",
-        code: "console.log('Krishna')",
-        language: "javascript"
-      },
-      {
-        id: "user2",
-        userName: "Sachin",
-        score: "6",
-        totalScore: "6",
-        rank: "1",
-        code: "print('Sachin')",
-        language: "python"
-      }
-    ],
+    submissions: [],
     viewCode: "",
     viewLanguage: ""
   },
-  contests,
+  contests: [],
   isLoading: false,
   error: false,
   errorType: "",

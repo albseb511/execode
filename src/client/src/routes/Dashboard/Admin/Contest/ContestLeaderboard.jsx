@@ -63,7 +63,7 @@ class ContestLeaderBoard extends React.Component {
                       <td>N/A</td>
                       <td>
                         <Link
-                          to={`/dashboard/admin/${this.props.contestId}/user-submission/${ele.id}`}
+                          to={`/dashboard/admin/${this.props.contestId}/user-submission/${ele.user_id}`}
                         >
                           View
                         </Link>

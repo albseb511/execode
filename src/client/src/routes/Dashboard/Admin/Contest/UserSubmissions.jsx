@@ -16,7 +16,8 @@ class UserSubmissions extends Component {
     super(props);
     this.state = {
       submissions: [],
-      code: ""
+      code: "",
+      testCaseInfo: {}
     };
   }
 
@@ -37,10 +38,10 @@ class UserSubmissions extends Component {
     Axios.get(
       `contest/${contestId}/leaderboard/${userId}/code/${submission_id}`
     ).then(res => {
-      // console.log(res);
       if (res && res.data && res.data.code) {
         this.setState({
-          code: res.data.code
+          code: res.data.code,
+          testCaseInfo: JSON.parse(res.data.test_case_info)
         });
       }
     });
@@ -82,7 +83,7 @@ class UserSubmissions extends Component {
                     return (
                       <tr key={ele.submission_id}>
                         <td>{ele.challenge_name}</td>
-                        <td>{ele.max_score}</td>
+                        <td>{ele.score}</td>
                         <td>{ele.name}</td>
                         <td>{ele.created_at}</td>
                         <td>
@@ -121,6 +122,14 @@ class UserSubmissions extends Component {
                 tabSize: 2
               }}
             />
+            <div>
+              {this.state.testCaseInfo &&
+                Object.values(this.state.testCaseInfo).map((res, index) => (
+                  <div key={index}>
+                    Test Case {index + 1}: {res ? "true" : "false"}
+                  </div>
+                ))}
+            </div>
           </div>
         </div>
       </>
