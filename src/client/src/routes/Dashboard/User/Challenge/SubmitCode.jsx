@@ -10,27 +10,6 @@ import {
   getSubmitResults
 } from "../../../../redux/user/action";
 
-const initState = {
-  testcases: [
-    { passed: true, test_case_id: "1" },
-    { passed: true, test_case_id: "2" },
-    { passed: false, test_case_id: "3" },
-    { passed: true, test_case_id: "4" },
-    { passed: false, test_case_id: "5" },
-    { passed: true, test_case_id: "6" },
-    { passed: false, test_case_id: "7" },
-    { passed: true, test_case_id: "8" },
-    { passed: true, test_case_id: "9" },
-    { passed: true, test_case_id: "10" }
-  ],
-  score: 0,
-  isLoading: true,
-  show: false,
-  passed: false,
-  code: `var a=1;\n var arr = [1,2,3,4,5,6]`,
-  language: "Javascript"
-};
-
 const SubmitChallenge = ({
   contestId,
   challengeId,
@@ -46,7 +25,6 @@ const SubmitChallenge = ({
   testCaseResults,
   score
 }) => {
-  const [state, setState] = useState(initState);
   const history = useHistory();
   const location = useLocation();
   const path = location.pathname.split("submit").join("");
@@ -127,7 +105,7 @@ const SubmitChallenge = ({
       <div>
         <hr />
         <h3 className="text-left mt-3 font-weight-bold mb-3">Submitted Code</h3>
-        <mark className="text-dark border">Language : {state.language}</mark>
+        <mark className="text-dark border">Language : {language}</mark>
         <div>
           <div className="d-block mb-4">
             <AceEditor

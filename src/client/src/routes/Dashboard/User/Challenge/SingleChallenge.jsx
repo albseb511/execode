@@ -9,11 +9,21 @@ import AceEditor from "react-ace";
 import { connect } from "react-redux";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import axios from "../../../../utils/axiosInterceptor";
-import { submitPageRouteRequest } from "../../../../redux/user/action";
+import {
+  submitPageRouteRequest,
+  eventCodeSubmit
+} from "../../../../redux/user/action";
 const THEME = ["monokai", "github"];
 
 // eslint-disable-next-line react/prop-types
-const SingleChallenge = ({ challengeId, contestId, token, path, submit }) => {
+const SingleChallenge = ({
+  challengeId,
+  contestId,
+  token,
+  path,
+  submit,
+  eventSubmit
+}) => {
   const [singleChallenge, setSingleChallenge] = useState([]);
   const [theme, setthemeUpdate] = useState("monokai");
   const [language, setLanguage] = useState("javascript");
@@ -21,7 +31,7 @@ const SingleChallenge = ({ challengeId, contestId, token, path, submit }) => {
   const [runCodeResponse, setRunCodeResponse] = useState({});
   const history = useHistory();
   const location = useLocation();
-
+  console.log(language);
   useEffect(() => {
     async function getChallenges() {
       try {
@@ -71,6 +81,15 @@ const SingleChallenge = ({ challengeId, contestId, token, path, submit }) => {
     };
     submit(payload);
     history.push(`${location.pathname}/submit`);
+  };
+
+  const events = event => {
+    const payload = {
+      event: event.event.type,
+      text: event.text
+    };
+    console.log("payload for events is", payload);
+    eventSubmit(payload);
   };
 
   return (
@@ -156,9 +175,9 @@ const SingleChallenge = ({ challengeId, contestId, token, path, submit }) => {
                 onChange={e => setthemeUpdate(e.target.value)}
                 onBlur={e => setthemeUpdate(e.target.value)}
               >
-                {THEME.map(thmedata => (
-                  <option key={thmedata} value={thmedata}>
-                    {thmedata}
+                {THEME.map(themedata => (
+                  <option key={themedata} value={themedata}>
+                    {themedata}
                   </option>
                 ))}
               </select>
@@ -170,6 +189,8 @@ const SingleChallenge = ({ challengeId, contestId, token, path, submit }) => {
               placeholder="console.log('Hello Masai School');"
               mode={language}
               onChange={e => setCode(e)}
+              onCopy={events}
+              onPaste={events}
               theme={theme}
               fontSize={16}
               showPrintMargin
@@ -240,7 +261,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  submit: payload => dispatch(submitPageRouteRequest(payload))
+  submit: payload => dispatch(submitPageRouteRequest(payload)),
+  eventSubmit: payload => dispatch(eventCodeSubmit(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleChallenge);

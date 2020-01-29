@@ -6,6 +6,12 @@ import {
   SUBMIT_CODE_FAILURE
 } from "./actionTypes";
 
+let data = localStorage.getItem("bStore");
+if (!data) {
+  localStorage.setItem("bStore", "");
+  data = {};
+}
+
 const initialState = {
   isSubmit: false,
   submitCode: "print('hello')",
