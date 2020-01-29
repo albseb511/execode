@@ -23,6 +23,20 @@ def get_raw_data(contest_id):
         temp_dict['email'] = row['email']
         names.append(temp_dict)
 
-    # print(names)
+    names = sorted(names, key = lambda i: i['total'])
+    names.reverse()
+
+    temp_score = names[0]['total']
+    rank = 1
+    count = 0
+
+    for i in names:
+        count = count + 1
+        if i['total'] == temp_score:
+            i['rank'] = rank
+        else:
+            temp_score = i['total']
+            i['rank'] = count
+            rank = count
     resp = {"leaderboard": names,"comment":"success"}
     return resp
