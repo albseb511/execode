@@ -17,6 +17,7 @@ class AttemptsModel(db.Model):
     created_at = db.Column(db.DateTime(timezone=True),
                            nullable=False, default=datetime.datetime.now())
     contest_id = db.Column(db.Integer, nullable=False)
+    challenge_id = db.Column(db.Integer, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey(
         'users.id'), nullable=False)
     submission_id = db.Column(db.Integer, db.ForeignKey(

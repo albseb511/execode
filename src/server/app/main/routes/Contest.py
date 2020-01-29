@@ -1,6 +1,7 @@
 from flask import request
 from flask_restful import Resource, reqparse
 from ..services.contest_detail import get_contests_challenges, get_contests, add_contest
+from app.main.services.decode_auth_token import decode_auth_token
 from app.main import db
 
 class Contest(Resource):
