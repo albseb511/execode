@@ -1,3 +1,10 @@
+/* eslint-disable react/no-unused-prop-types */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-unused-vars */
+/* eslint-disable camelcase */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/sort-comp */
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -65,46 +72,51 @@ class UserSubmissions extends Component {
     const { submissions, code } = this.state;
     return (
       <>
-        <div className="row d-flex justify-content-center mt-4">
-          <div className="col-lg-6">
-            <table className="table table-striped text-center">
-              <thead className="thead-dark">
-                <tr className="text-white">
-                  <th scope="col">Challenge Name</th>
-                  <th scope="col">Score</th>
-                  <th scope="col">User Name</th>
-                  <th scope="col">Submitted at</th>
-                  <th scope="col">Code</th>
-                </tr>
-              </thead>
-              <tbody>
-                {submissions &&
-                  submissions.map(ele => {
-                    return (
-                      <tr key={ele.submission_id}>
-                        <td>{ele.challenge_name}</td>
-                        <td>{ele.score}</td>
-                        <td>{ele.name}</td>
-                        <td>{ele.created_at}</td>
-                        <td>
-                          <button
-                            type="button"
-                            className="btn btn-dark"
-                            onClick={() => this.viewUserCode(ele.submission_id)}
-                          >
-                            Code
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
+        <div className="container">
+          <div className="mt-4 mb-3">
+            <div className="row">
+              <table className="table text-center">
+                <thead className="thead-dark">
+                  <tr className="text-white">
+                    <th scope="col">Challenge Name</th>
+                    <th scope="col">Score</th>
+                    <th scope="col">User Name</th>
+                    <th scope="col">Submitted at</th>
+                    <th scope="col">Code</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {submissions &&
+                    submissions.map(ele => {
+                      return (
+                        <tr key={ele.submission_id}>
+                          <td>{ele.challenge_name}</td>
+                          <td>{ele.score}</td>
+                          <td>{ele.name}</td>
+                          <td>{ele.created_at}</td>
+                          <td>
+                            <button
+                              type="button"
+                              className="btn btn-dark active"
+                              onClick={() =>
+                                this.viewUserCode(ele.submission_id)
+                              }
+                            >
+                              View Code
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div className="col-lg-6">
+          <div className="d-block mb-4">
             <AceEditor
               placeholder="View User Code"
               mode={language}
+              style={{ width: "100%" }}
               theme="monokai"
               name="user-submission"
               onLoad={this.onLoad}
