@@ -41,7 +41,7 @@ class UserSubmissions extends Component {
       if (res && res.data && res.data.code) {
         this.setState({
           code: res.data.code,
-          testCaseInfo: JSON.parse(res.data.test_case_info)
+          testCaseInfo: res.data.test_case_info
         });
       }
     });
