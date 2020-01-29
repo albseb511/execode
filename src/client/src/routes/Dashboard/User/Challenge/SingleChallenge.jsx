@@ -31,7 +31,8 @@ const SingleChallenge = ({
   const [runCodeResponse, setRunCodeResponse] = useState({});
   const history = useHistory();
   const location = useLocation();
-  console.log(language);
+  const languagesList = ["javascript", "python"];
+  let data = "";
   useEffect(() => {
     async function getChallenges() {
       try {
@@ -49,9 +50,39 @@ const SingleChallenge = ({
     getChallenges();
   }, []);
 
+  // set placeholder data
+  useEffect(() => {
+    data = localStorage.getItem("bStore");
+    if (!data) {
+      data = {};
+      languagesList.forEach(a => {
+        if (a == "javascript") {
+          data[`${contestId}__${challengeId}__${a}__default`] =
+            "function process(input){\n\t// write code below\n\treturn input\n}";
+          data[`${contestId}__${challengeId}__${a}`] =
+            "function process(input){\n\t// write code below\n\treturn input\n}";
+        } else {
+          data[`${contestId}__${challengeId}__${a}__default`] =
+            "# write code here. python3";
+          data[`${contestId}__${challengeId}__${a}`] =
+            "# write code here. python3";
+        }
+      });
+      localStorage.setItem("bStore", JSON.stringify(data));
+    } else {
+      data = JSON.parse(data);
+    }
+    console.log(data);
+    setCode(data[`${contestId}__${challengeId}__${language}`]);
+  }, [singleChallenge]);
+
+  useEffect(() => {
+    data = localStorage.getItem("bStore");
+    data = JSON.parse(data);
+    setCode(data[`${contestId}__${challengeId}__${language}`]);
+  }, [language]);
+
   const runCode = async () => {
-    // from match object
-    console.log(contestId, challengeId);
     const res = await axios
       .post(
         "/runcode",
@@ -69,9 +100,15 @@ const SingleChallenge = ({
         }
       )
       .then(response => setRunCodeResponse(response.data))
-      .catch(err => console.log("error while running code"));
-    console.log(res);
-    // next(action)
+      .catch(err => console.log("error while running code", err.message));
+  };
+
+  const handleChangeCode = e => {
+    setCode(e);
+    data = localStorage.getItem("bStore");
+    data = JSON.parse(data);
+    data[`${contestId}__${challengeId}__${language}`] = e;
+    localStorage.setItem("bStore", JSON.stringify(data));
   };
 
   const submitCode = () => {
@@ -89,7 +126,6 @@ const SingleChallenge = ({
       event: event.event,
       text: event.text
     };
-    console.log("payload for events is", payload);
     eventSubmit(payload);
   };
 
@@ -162,7 +198,7 @@ const SingleChallenge = ({
                 onChange={e => setLanguage(e.target.value)}
                 onBlur={e => setLanguage(e.target.value)}
               >
-                {["javascript", "python"].map(prolang => (
+                {languagesList.map(prolang => (
                   <option key={prolang} value={prolang}>
                     {prolang}
                   </option>
@@ -189,7 +225,7 @@ const SingleChallenge = ({
               style={{ width: "100%" }}
               placeholder="console.log('Hello Masai School');"
               mode={language}
-              onChange={e => setCode(e)}
+              onChange={e => handleChangeCode(e)}
               onCopy={event => handleEvents(event)}
               onPaste={event => handleEvents(event)}
               theme={theme}

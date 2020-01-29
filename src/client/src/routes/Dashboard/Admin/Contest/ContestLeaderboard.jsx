@@ -60,7 +60,7 @@ class ContestLeaderBoard extends React.Component {
                       <td>{ele.email}</td>
                       <td>{ele.name}</td>
                       <td>{ele.total}</td>
-                      <td>N/A</td>
+                      <td>{ele.rank}</td>
                       <td>
                         <Link
                           to={`/dashboard/admin/${this.props.contestId}/user-submission/${ele.user_id}`}
