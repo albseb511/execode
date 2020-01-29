@@ -81,8 +81,6 @@ const SubmitChallenge = ({
     });
   }
 
-  console.log("is loading", isLoading);
-  console.log("test pass", testPass);
   return (
     <div className="container mb-5">
       <h6 className="text-left mt-4 mb-3">
