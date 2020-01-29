@@ -18,8 +18,9 @@ import UserSubmissions from "./Dashboard/Admin/Contest/UserSubmissions";
 import CreateChallenge from "./Dashboard/Admin/CreateChallenge/CreateChallenge";
 import CreateContest from "./Dashboard/Admin/CreateContest/CreateContest";
 import ContestDetails from "./Dashboard/User/Contest/ContestDetails";
+import { logoutUser } from "../redux/authentication/actions";
 
-const DashboardRoutes = ({ isAuth, token, userType, email }) => {
+const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser }) => {
   return isAuth ? (
     <>
       <Route
@@ -30,6 +31,7 @@ const DashboardRoutes = ({ isAuth, token, userType, email }) => {
             email={email}
             token={token}
             userType={userType}
+            logoutUser={logoutUser}
           />
         )}
       />
@@ -130,4 +132,8 @@ const mapStateToProps = state => ({
   email: state.authReducer.email
 });
 
-export default connect(mapStateToProps)(DashboardRoutes);
+const mapDispatchToProps = dispatch => ({
+  logoutUser: payload => dispatch(logoutUser(payload))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardRoutes);
