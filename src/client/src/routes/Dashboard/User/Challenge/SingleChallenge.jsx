@@ -83,9 +83,10 @@ const SingleChallenge = ({
     history.push(`${location.pathname}/submit`);
   };
 
-  const events = event => {
+  const handleEvents = event => {
+    console.log(event);
     const payload = {
-      event: event.event.type,
+      event: event.event,
       text: event.text
     };
     console.log("payload for events is", payload);
@@ -189,8 +190,8 @@ const SingleChallenge = ({
               placeholder="console.log('Hello Masai School');"
               mode={language}
               onChange={e => setCode(e)}
-              onCopy={events}
-              onPaste={events}
+              onCopy={event => handleEvents(event)}
+              onPaste={event => handleEvents(event)}
               theme={theme}
               fontSize={16}
               showPrintMargin
