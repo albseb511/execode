@@ -25,7 +25,8 @@ def get_raw_data(contest_id,user_id):
         temp_dict['name'] = row['name']
         difference = row['created_at'] - start_time
         temp_dict['time_taken'] = divmod(difference.days * seconds_in_day + difference.seconds, 60)
-        temp_dict['created_at'] = row['created_at'].strftime("%m-%d-%Y %H:%M:%S")
+        ist_created_at = row['created_at'] - datetime.timedelta(minutes=-330)
+        temp_dict['created_at'] = ist_created_at.strftime("%m-%d-%Y %H:%M:%S")
         temp_dict['score'] = row['score']
         names.append(temp_dict)
     # print(names)
