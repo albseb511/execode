@@ -19,16 +19,20 @@ import CreateChallenge from "./Dashboard/Admin/CreateChallenge/CreateChallenge";
 import CreateContest from "./Dashboard/Admin/CreateContest/CreateContest";
 import ContestDetails from "./Dashboard/User/Contest/ContestDetails";
 
-const DashboardRoutes = props => {
-  const { isAuth } = props;
-  if(!isAuth){
-    // request if token present in local storage is still valid
-    // if not valid response do nothing
-    // else authenticate user
-  }
+const DashboardRoutes = ({ isAuth, token, userType, email }) => {
   return isAuth ? (
     <>
-      <Route path="/dashboard" render={NavBar} />
+      <Route
+        path="/dashboard"
+        render={({ location }) => (
+          <NavBar
+            location={location}
+            email={email}
+            token={token}
+            userType={userType}
+          />
+        )}
+      />
       {/* <Route path="/dashboard" exact render={() => <UserDashboard />} /> */}
       {/* <Route
         path="/dashboard/user/all-contest/"
@@ -55,7 +59,7 @@ const DashboardRoutes = props => {
           <SingleChallenge
             contestId={match.params.contestId}
             challengeId={match.params.challengeId}
-            path = {location.pathname}
+            path={location.pathname}
           />
         )}
       />
@@ -121,7 +125,9 @@ DashboardRoutes.propTypes = {
 
 const mapStateToProps = state => ({
   isAuth: state.authReducer.isAuth,
-  token: state.authReducer.token
+  token: state.authReducer.token,
+  userType: state.authReducer.userType,
+  email: state.authReducer.email
 });
 
 export default connect(mapStateToProps)(DashboardRoutes);

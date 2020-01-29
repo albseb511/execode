@@ -7,18 +7,33 @@ import {
   LOGOUT_USER_FAILURE,
   REGISTER_USER_REQUEST,
   REGISTER_USER_SUCCESS,
-  REGISTER_USER_FAILURE
+  REGISTER_USER_FAILURE,
+  TOKEN_VALIDATE_REQUEST,
+  TOKEN_VALIDATE_SUCCESS,
+  TOKEN_VALIDATE_FAILURE
 } from "./actionTypes";
 
-let localToken = localStorage.getItem("token");
-if (localToken === "undefined") localToken = "";
+function getUserInfo() {
+  let token = localStorage.getItem("token");
+  let email = localStorage.getItem("email");
+  let userType = localStorage.getItem("role");
+  if (!token || !email || !userType) {
+    email = "";
+    token = "";
+    userType = "";
+  }
+  return [token, email, userType];
+}
 
+const [token, email, userType] = getUserInfo();
+console.log("loading store", token, email, userType);
 const initState = {
   isAuth: false,
   isLoading: false,
-  token: "",
-  userType: "",
-  email: "",
+  isValidating: false,
+  token,
+  userType,
+  email,
   isRegistering: false,
   registerSuccess: false,
   error: false,
@@ -70,6 +85,8 @@ const reducer = (state = initState, { type, payload }) => {
       };
     case LOGOUT_USER_SUCCESS:
       localStorage.setItem("token", "");
+      localStorage.setItem("email", "");
+      localStorage.setItem("role", "");
       return {
         ...state,
         isAuth: false,
@@ -107,6 +124,35 @@ const reducer = (state = initState, { type, payload }) => {
         errorType: "register",
         errorMessage: "registration failed",
         registerSuccess: false
+      };
+    case TOKEN_VALIDATE_REQUEST:
+      return {
+        ...state,
+        isValidating: true,
+        error: false,
+        errorType: "",
+        errorMessage: ""
+      };
+    case TOKEN_VALIDATE_SUCCESS:
+      return {
+        ...state,
+        isValidating: false,
+        isAuth: true
+      };
+    case TOKEN_VALIDATE_FAILURE:
+      localStorage.setItem("token", "");
+      localStorage.setItem("email", "");
+      localStorage.setItem("role", "");
+      return {
+        ...state,
+        token: "",
+        userType: "",
+        email: "",
+        isAuth: false,
+        isValidating: false,
+        error: true,
+        errorType: "token_invalid",
+        errorMessage: "session has expired or invalid. Please login in again"
       };
     default:
       return state;

@@ -3,11 +3,9 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 
-const NavBar = ({ location: { pathname } }) => {
+const NavBar = ({ location: { pathname }, userType }) => {
   let adminLinks = null;
   // dangerous, use from redux store
-  let userType = localStorage.getItem("role");
-  userType = userType || null;
   if (pathname.startsWith("/dashboard/admin")) {
     adminLinks = [
       { name: "Contests", path: "all-contest" },
