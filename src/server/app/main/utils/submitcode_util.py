@@ -2,7 +2,7 @@ import os
 import subprocess
 import fileinput
 from app.main.utils.run_code_util import is_error, make_python_codefile, generate_output_error, compare_output
-
+import json
 
 def make_submit_folder(submission_id):
     """
@@ -31,6 +31,8 @@ def get_results(submission_id, test_cases, code, language, max_score):
             submission_outputs = []
             total_strength = 0
             total_marks = 0
+
+            test_case_info = {}
             for tcs in test_cases:
                 total_strength = total_strength + tcs["strength"]
 
@@ -44,12 +46,21 @@ def get_results(submission_id, test_cases, code, language, max_score):
                 passed = is_correct and (not is_error(error_path))
                 
                 if passed:
+                    test_case_info["tco%d"%(test_case["id"])] = True
                     total_marks = total_marks + test_case["strength"]
+                else:
+                    test_case_info["tco%d"%(test_case["id"])] = False
+                
                 submission_format = {"output_file": output_path, "time_taken": 1, "memory_taken": 1,
                                      "passed": passed, "submission_id": submission_id, "test_case_id": test_case["id"]}
                 
                 # bring into db save format
                 submission_outputs.append(submission_format)
+            
+            # update
+            db.session.query(SubmissionsModel).filter(SubmissionsModel.id == submission_id).update({SubmissionsModel.score : total_marks, SubmissionsModel.test_case_info: json.dumps(test_case_info)})
+            db.session.commit()
+            
             return submission_outputs, code_file_path, total_marks
         return False, False, False
     else:

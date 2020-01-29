@@ -13,11 +13,7 @@ class Challenge(Resource):
 
     def get(self,challenge_id):
         # auth token 
-        print(request.headers)
         auth_token = request.headers.get("Authorization")
-        print(auth_token)
-        print('_________________--')
-        print(type(auth_token))
         user_id = decode_auth_token(auth_token)
         if user_id:
             # check if he is admin
@@ -44,7 +40,6 @@ class Challenge(Resource):
                 elif key== 'test_case_output'+str(out_count):
                     test_output.append(val)        
                     out_count = out_count + 1
-            print('____________________________')
             challenge_id = add_challenge(**Info, challenge_name=challenge_id, user_id=user_id) 
 
             if challenge_id == None:
@@ -72,8 +67,8 @@ class Challenge(Resource):
             
             # add multiple settings cases
             add_multiple_settings(challenge_id, settings)
-
+            
             return {"comment": "successfully stored the data"}, 201
-        return {"comment":"Not Authorized"}, 401
+        return {"comment":"JWT expired or Invalid"}, 401
 
 

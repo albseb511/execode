@@ -96,7 +96,7 @@ def run_python2_code(code_path, input_path, output_path, error_path):
 
 
 @exit_after(1)
-def run_js_code(code, input_test)
+def run_js_code(code, input_test):
     ctx = execjs.compile(code)
     temp_output = ctx.call('process', input_test)
     return temp_output

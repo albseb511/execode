@@ -9,7 +9,7 @@ class Auth:
             # fetch the user data
             user = UserModel.query.filter_by(email=data.get('email')).first()
             if user and user.check_password(data.get('password')):
-                auth_token = user.encode_auth_token(user.id)
+                auth_token = user.encode_auth_token(user.id, user.role)
                 if auth_token:
                     response_object = {
                         'status': 'success',
