@@ -59,8 +59,8 @@ class ContestLeaderBoard extends React.Component {
                       {/* <th scope="row">{ele.id}</th> */}
                       <td>{ele.email}</td>
                       <td>{ele.name}</td>
-                      <td>{ele.max_score}</td>
-                      <td>{index + 1}</td>
+                      <td>{ele.total}</td>
+                      <td>N/A</td>
                       <td>
                         <Link
                           to={`/dashboard/admin/${this.props.contestId}/user-submission/${ele.id}`}
