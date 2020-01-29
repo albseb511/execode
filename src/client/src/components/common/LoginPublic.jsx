@@ -3,8 +3,25 @@ import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { loginUser } from "../../redux/authentication/actions";
 import { connect } from "react-redux";
+import { tokenValidateUser } from "../../redux/authentication/actions";
 
-const LoginPublic = ({ loginUser, isAuth, token, error, errorMessage }) => {
+const LoginPublic = ({
+  loginUser,
+  isAuth,
+  token,
+  error,
+  errorMessage,
+  isValidating,
+  tokenValidateUser
+}) => {
+  if (token != "" && !isValidating && !isAuth) {
+    console.log(token);
+    tokenValidateUser(token);
+    if (isValidating) {
+      return <div>Validating</div>;
+    }
+  }
+
   const [loginState, setLoginState] = useState({
     email: "",
     password: "",
@@ -84,11 +101,13 @@ const mapStateToProps = state => ({
   isLoading: state.authReducer.isLoading,
   token: state.authReducer.token,
   error: state.authReducer.error,
-  errorMessage: state.authReducer.errorMessage
+  errorMessage: state.authReducer.errorMessage,
+  isValidating: state.authReducer.isValidating
 });
 
 const mapDispatchToProps = dispatch => ({
-  loginUser: payload => dispatch(loginUser(payload))
+  loginUser: payload => dispatch(loginUser(payload)),
+  tokenValidateUser: payload => dispatch(tokenValidateUser(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPublic);

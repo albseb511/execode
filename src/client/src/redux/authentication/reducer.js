@@ -26,7 +26,7 @@ function getUserInfo() {
 }
 
 const [token, email, userType] = getUserInfo();
-console.log("loading store", token, email, userType);
+
 const initState = {
   isAuth: false,
   isLoading: false,
