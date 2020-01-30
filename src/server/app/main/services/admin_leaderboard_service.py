@@ -6,6 +6,7 @@ from app.main.models.ContestsModel import ContestsModel
 from app.main import db
 import uuid
 import json
+import datetime
 
 
 def get_raw_data(contest_id,user_id):
