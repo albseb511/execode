@@ -81,6 +81,8 @@ export const eventCodeSubmit = payload => {
         {
           event: payload.event,
           text: payload.text,
+          contest_id: parseInt(payload.contestId),
+          challenge_id: parseInt(payload.challengeId),
           action: "event logging"
         },
         {

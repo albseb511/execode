@@ -34,6 +34,8 @@ const initState = {
   token,
   userType,
   email,
+  userId: "nin_001",
+  team: "ninjas",
   isRegistering: false,
   registerSuccess: false,
   error: false,

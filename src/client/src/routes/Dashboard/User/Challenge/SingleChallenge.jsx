@@ -13,6 +13,11 @@ import {
   submitPageRouteRequest,
   eventCodeSubmit
 } from "../../../../redux/user/action";
+import "ace-builds/src-min-noconflict/ext-language_tools";
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/snippets/python";
+import "ace-builds/src-noconflict/theme-monokai";
+
 const THEME = ["monokai", "github"];
 
 // eslint-disable-next-line react/prop-types
@@ -22,7 +27,8 @@ const SingleChallenge = ({
   token,
   path,
   submit,
-  eventSubmit
+  eventSubmit,
+  email
 }) => {
   const [singleChallenge, setSingleChallenge] = useState([]);
   const [theme, setthemeUpdate] = useState("monokai");
@@ -57,14 +63,14 @@ const SingleChallenge = ({
       data = {};
       languagesList.forEach(a => {
         if (a == "javascript") {
-          data[`${contestId}__${challengeId}__${a}__default`] =
+          data[`${email}__${contestId}__${challengeId}__${a}__default`] =
             "function process(input){\n\t// write code below\n\treturn input\n}";
-          data[`${contestId}__${challengeId}__${a}`] =
+          data[`${email}__${contestId}__${challengeId}__${a}`] =
             "function process(input){\n\t// write code below\n\treturn input\n}";
         } else {
-          data[`${contestId}__${challengeId}__${a}__default`] =
+          data[`${email}__${contestId}__${challengeId}__${a}__default`] =
             "# write code here. python3";
-          data[`${contestId}__${challengeId}__${a}`] =
+          data[`${email}__${contestId}__${challengeId}__${a}`] =
             "# write code here. python3";
         }
       });
@@ -72,18 +78,17 @@ const SingleChallenge = ({
     } else {
       data = JSON.parse(data);
     }
-    console.log(data);
-    setCode(data[`${contestId}__${challengeId}__${language}`]);
+    setCode(data[`${email}__${contestId}__${challengeId}__${language}`]);
   }, [singleChallenge]);
 
   useEffect(() => {
     data = localStorage.getItem("bStore");
     data = JSON.parse(data);
-    setCode(data[`${contestId}__${challengeId}__${language}`]);
+    setCode(data[`${email}__${contestId}__${challengeId}__${language}`]);
   }, [language]);
 
-  const runCode = async () => {
-    const res = await axios
+  const runCode = () => {
+    axios
       .post(
         "/runcode",
         {
@@ -107,7 +112,7 @@ const SingleChallenge = ({
     setCode(e);
     data = localStorage.getItem("bStore");
     data = JSON.parse(data);
-    data[`${contestId}__${challengeId}__${language}`] = e;
+    data[`${email}__${contestId}__${challengeId}__${language}`] = e;
     localStorage.setItem("bStore", JSON.stringify(data));
   };
 
@@ -120,11 +125,13 @@ const SingleChallenge = ({
     history.push(`${location.pathname}/submit`);
   };
 
-  const handleEvents = event => {
-    console.log(event);
+  const handleEvents = ({ text }, event) => {
     const payload = {
-      event: event.event,
-      text: event.text
+      event,
+      text,
+      contestId,
+      challengeId,
+      token
     };
     eventSubmit(payload);
   };
@@ -226,14 +233,15 @@ const SingleChallenge = ({
               placeholder="console.log('Hello Masai School');"
               mode={language}
               onChange={e => handleChangeCode(e)}
-              onCopy={event => handleEvents(event)}
-              onPaste={event => handleEvents(event)}
+              onCopy={event => handleEvents(event, "copy")}
+              onPaste={event => handleEvents(event, "paste")}
               theme={theme}
               fontSize={16}
               showPrintMargin
               showGutter={true}
               highlightActiveLine
               value={code}
+              debounceChangePeriod={200}
               setOptions={{
                 enableBasicAutocompletion: true,
                 enableLiveAutocompletion: true,
@@ -294,7 +302,8 @@ const SingleChallenge = ({
 };
 
 const mapStateToProps = state => ({
-  token: state.authReducer.token
+  token: state.authReducer.token,
+  email: state.authReducer.email
 });
 
 const mapDispatchToProps = dispatch => ({
