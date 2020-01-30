@@ -3,8 +3,9 @@ import thunk from "redux-thunk";
 import authReducer from "./authentication/reducer";
 import admin from "./admin/reducer";
 import user from "./user/reducer";
+import contest from "./contest/reducer";
 
-const rootReducer = combineReducers({ authReducer, admin, user });
+const rootReducer = combineReducers({ authReducer, admin, user, contest });
 
 let composeEnhancers = compose;
 

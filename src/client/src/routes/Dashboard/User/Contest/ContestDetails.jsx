@@ -2,9 +2,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "../../../../utils/axiosInterceptor";
+import { connect } from "react-redux"
+import {setContestEndTime} from "../../../../redux/contest/action"
+import TimeLeft from "../../../../components/common/TimeLeft"
 
 // eslint-disable-next-line react/prop-types
-const ContestDetails = ({ contestId, path }) => {
+const ContestDetails = ({ contestId, path, setContestEndTime }) => {
   const [challenges, setChallenges] = useState([]);
   const [aboutchallenges, setAboutchallenges] = useState([]);
 
@@ -21,6 +24,18 @@ const ContestDetails = ({ contestId, path }) => {
     }
     getChallenges();
   }, []);
+
+  useEffect(()=>{
+    const d1 = new Date(`${aboutchallenges.end_date} ${aboutchallenges.end_time}`)
+    let payload = {
+      contestId,
+      contestName:aboutchallenges.contest_name,
+      endTimeLeft: 5
+      // change this to actual seconds for end of contest
+    }
+    console.log('payload for date',payload, payload.timeLeft/(1000*60*60*24))
+    setContestEndTime(payload)
+  },[aboutchallenges])
   return (
     <div>
       <div className="container">
@@ -58,6 +73,8 @@ const ContestDetails = ({ contestId, path }) => {
                     {aboutchallenges.end_time}
                 </div>
               </li>
+              <hr />
+              END TIME: <TimeLeft/>
               <hr />
               <Link to={`${path.split("user/"+contestId)[0]}leaderboard/${contestId}`}>
                 <li className="btn btn-dark active">
@@ -114,4 +131,12 @@ const ContestDetails = ({ contestId, path }) => {
   );
 };
 
-export default ContestDetails;
+const mapStateToProps = state => ({
+  endTime: state.contest.endTimeLeft
+})
+
+const mapDispatchToProps = dispatch => ({
+  setContestEndTime: payload => dispatch(setContestEndTime(payload))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContestDetails);
