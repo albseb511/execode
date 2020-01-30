@@ -22,12 +22,13 @@ def add_event(data,user_id):
     return save_changes(new_assest)
 
 def get_events(user_id):
-    data_event = EventsModel.query.filter_by(user_id = user_id).all()
+    data_event = db.engine.execute("select a.event as event, a.created_at as created_at, a.event_text as text, b.name as name, d.challenge_name from events as a join contests_challenges as c on c.id = a.contests_challenges_id join challenges as d on d.id = c.challenge_id join users as b on b.id = a.id where a.user_id = '%s';"%(user_id))
     events = []
     for row in data_event:
-        events.append({
-            "event": row.event,
-            "text": row.event_text,
-            "created_at": row.created_at.strftime("%m-%d-%Y %H:%M:%S")
-        })
+        temp_dict = {}
+        temp_dict['event'] = row.event
+        temp_dict['text'] = row.text
+        temp_dict['name'] = row.name
+        temp_dict['challenge_name'] = row.challenge_name
+        temp_dict['created_at'] = row.created_at.strftime("%m-%d-%Y %H:%M:%S")
     return events
