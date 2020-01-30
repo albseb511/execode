@@ -19,6 +19,7 @@ import UserSubmissionsEvents from "./Dashboard/Admin/Contest/UserSubmissionsEven
 import CreateChallenge from "./Dashboard/Admin/CreateChallenge/CreateChallenge";
 import CreateContest from "./Dashboard/Admin/CreateContest/CreateContest";
 import ContestDetails from "./Dashboard/User/Contest/ContestDetails";
+import ContestLeaderboardUser from "./Dashboard/User/Contest/ContestLeaderboardUser"
 import { logoutUser, setRedirectUrl, resetRedirectUrl } from "../redux/authentication/actions";
 
 const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser, path, setRedirectUrl, resetRedirectUrl }) => {
@@ -54,8 +55,15 @@ const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser, path, set
       <Route
         path="/dashboard/user/:contestId"
         exact
+        render={({ match, location }) => (
+          <ContestDetails contestId={match.params.contestId} path={location.pathname} />
+        )}
+      />
+      <Route
+        path="/dashboard/leaderboard/:contestId"
+        exact
         render={({ match }) => (
-          <ContestDetails contestId={match.params.contestId} />
+          <ContestLeaderboardUser contestId={match.params.contestId} />
         )}
       />
       <Route

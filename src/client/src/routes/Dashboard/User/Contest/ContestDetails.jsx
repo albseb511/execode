@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "../../../../utils/axiosInterceptor";
 
 // eslint-disable-next-line react/prop-types
-const ContestDetails = ({ contestId }) => {
+const ContestDetails = ({ contestId, path }) => {
   const [challenges, setChallenges] = useState([]);
   const [aboutchallenges, setAboutchallenges] = useState([]);
 
@@ -59,9 +59,11 @@ const ContestDetails = ({ contestId }) => {
                 </div>
               </li>
               <hr />
-              <li className="btn btn-dark active">
-                  LEADERBOARD
-              </li>
+              <Link to={`${path.split("user/"+contestId)[0]}leaderboard/${contestId}`}>
+                <li className="btn btn-dark active">
+                  LEADERBOARD      
+                </li>
+              </Link>
             </ul>
           </div>
         </div>
