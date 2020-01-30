@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 import {
   SUBMIT_PAGE_ROUTE_REQUEST,
   SUBMIT_CODE_REQUEST,

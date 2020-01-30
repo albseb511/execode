@@ -71,9 +71,61 @@ class UserSubmissions extends Component {
     const { language, contestName } = this.props;
     const { submissions, code } = this.state;
     return (
-      <>
+      <div>
         <div className="container">
+          <h4 className="font-weight-bold">Submitted Code</h4>
+
+          <div>
+            <div className="row text-center">
+              {this.state.testCaseInfo &&
+                Object.values(this.state.testCaseInfo).map((res, index) => (
+                  <div key={index}>
+                    <span className="text-center">Test {index + 1} </span>
+                    <div>
+                      {res ? (
+                        <div className="col-md-2 text-center">
+                          <span>
+                            <i className="fas fa-check-circle fa-lg text-success fa-2x mt-3 mb-2" />
+                          </span>
+                        </div>
+                      ) : (
+                        <div className="col-md-2 text-center">
+                          <span>
+                            <i className="fas fa-times-circle fa-lg text-danger fa-2x mt-3 mb-2" />
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+          <div className="d-block mb-5 mt-4 disabled">
+            <AceEditor
+              placeholder="View User Code"
+              mode={language}
+              className="disabled"
+              style={{ width: "100%" }}
+              theme="monokai"
+              name="user-submission"
+              onLoad={this.onLoad}
+              onChange={this.onChange}
+              fontSize={14}
+              showPrintMargin
+              showGutter
+              highlightActiveLine
+              value={code}
+              setOptions={{
+                enableBasicAutocompletion: false,
+                enableLiveAutocompletion: false,
+                enableSnippets: false,
+                showLineNumbers: true,
+                tabSize: 2
+              }}
+            />
+          </div>
           <div className="mt-4 mb-3">
+            <h4 className="font-weight-bold">Submission list</h4>
             <div className="row">
               <table className="table text-center">
                 <thead className="thead-dark">
@@ -112,39 +164,8 @@ class UserSubmissions extends Component {
               </table>
             </div>
           </div>
-          <div className="d-block mb-4">
-            <AceEditor
-              placeholder="View User Code"
-              mode={language}
-              style={{ width: "100%" }}
-              theme="monokai"
-              name="user-submission"
-              onLoad={this.onLoad}
-              onChange={this.onChange}
-              fontSize={14}
-              showPrintMargin
-              showGutter
-              highlightActiveLine
-              value={code}
-              setOptions={{
-                enableBasicAutocompletion: false,
-                enableLiveAutocompletion: false,
-                enableSnippets: false,
-                showLineNumbers: true,
-                tabSize: 2
-              }}
-            />
-            <div>
-              {this.state.testCaseInfo &&
-                Object.values(this.state.testCaseInfo).map((res, index) => (
-                  <div key={index}>
-                    Test Case {index + 1}: {res ? "true" : "false"}
-                  </div>
-                ))}
-            </div>
-          </div>
         </div>
-      </>
+      </div>
     );
   }
 }
