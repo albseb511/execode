@@ -15,7 +15,7 @@ class EventsModel(db.Model):
     #image_file = db.Column(db.String(250))
     created_at = db.Column(db.DateTime(timezone=False),
                            nullable=False, default=datetime.datetime.now())
-    contest_challenge_id = db.Column(db.Integer, db.ForeignKey(
+    contests_challenges_id = db.Column(db.Integer, db.ForeignKey(
         'contests_challenges.id'), nullable=False)
     event = db.Column(db.Text, nullable=True)
     event_text = db.Column(db.Text, nullable=True)
