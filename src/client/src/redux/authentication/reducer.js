@@ -146,9 +146,6 @@ const reducer = (state = initState, { type, payload }) => {
         isAuth: true
       };
     case TOKEN_VALIDATE_FAILURE:
-      localStorage.setItem("token", "");
-      localStorage.setItem("email", "");
-      localStorage.setItem("role", "");
       return {
         ...state,
         token: "",

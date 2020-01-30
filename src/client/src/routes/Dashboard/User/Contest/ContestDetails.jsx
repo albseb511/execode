@@ -3,11 +3,11 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "../../../../utils/axiosInterceptor";
 import { connect } from "react-redux"
-import {setContestEndTime} from "../../../../redux/contest/action"
+import {setContestEndTime, contestEnded, contestNotStarted, contestStart} from "../../../../redux/contest/action"
 import TimeLeft from "../../../../components/common/TimeLeft"
 
 // eslint-disable-next-line react/prop-types
-const ContestDetails = ({ contestId, path, setContestEndTime }) => {
+const ContestDetails = ({ contestId, path, setContestEndTime, contestEnded, contestNotStarted, contestStart }) => {
   const [challenges, setChallenges] = useState([]);
   const [aboutchallenges, setAboutchallenges] = useState([]);
 
@@ -26,15 +26,24 @@ const ContestDetails = ({ contestId, path, setContestEndTime }) => {
   }, []);
 
   useEffect(()=>{
-    const d1 = new Date(`${aboutchallenges.end_date} ${aboutchallenges.end_time}`)
-    let payload = {
-      contestId,
-      contestName:aboutchallenges.contest_name,
-      endTimeLeft: 5
-      // change this to actual seconds for end of contest
+    const dStart = new Date(`${aboutchallenges.start_date} ${aboutchallenges.start_time}`)
+    const dEnd = new Date(`${aboutchallenges.end_date} ${aboutchallenges.end_time}`)
+    if(dStart<=Date.now() && Date.now()<dEnd){
+      let payload = {
+        contestId,
+        contestName:aboutchallenges.contest_name,
+        endTimeLeft: parseInt((dEnd-Date.now())/1000)
+        // change this to actual seconds for end of contest
+      }
+      setContestEndTime(payload)
+      contestStart()
     }
-    console.log('payload for date',payload, payload.timeLeft/(1000*60*60*24))
-    setContestEndTime(payload)
+    else if(dStart>Date.now()){
+      contestNotStarted()
+    }
+    else if(dEnd<Date.now()){
+      contestEnded()
+    }
   },[aboutchallenges])
   return (
     <div>
@@ -74,7 +83,7 @@ const ContestDetails = ({ contestId, path, setContestEndTime }) => {
                 </div>
               </li>
               <hr />
-              END TIME: <TimeLeft/>
+              STATUS: <TimeLeft/>
               <hr />
               <Link to={`${path.split("user/"+contestId)[0]}leaderboard/${contestId}`}>
                 <li className="btn btn-dark active">
@@ -136,7 +145,10 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  setContestEndTime: payload => dispatch(setContestEndTime(payload))
+  setContestEndTime: payload => dispatch(setContestEndTime(payload)),
+  contestNotStarted: () => dispatch(contestNotStarted()),
+  contestStart: payload => dispatch(contestStart(payload)),
+  contestEnded: payload => dispatch(contestEnded(payload))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContestDetails);

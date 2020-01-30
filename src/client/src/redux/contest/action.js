@@ -1,6 +1,9 @@
 import {
     SET_CONTEST_END_TIME,
-    UPDATE_CONTEST_TIME
+    UPDATE_CONTEST_TIME,
+    CONTEST_NOT_STARTED,
+    CONTEST_START,
+    CONTEST_END
 } from "./actionTypes";
 
 export const setContestEndTime = (payload) => ({
@@ -10,4 +13,19 @@ export const setContestEndTime = (payload) => ({
 
 export const updateTime = () => ({
     type: UPDATE_CONTEST_TIME,
+})
+
+export const contestStart = (payload) => ({
+    type: CONTEST_START,
+    payload
+})
+
+export const contestEnded = (payload) => ({
+    type: CONTEST_END,
+    payload
+})
+
+export const contestNotStarted = (payload) => ({
+    type: CONTEST_NOT_STARTED,
+    payload
 })
