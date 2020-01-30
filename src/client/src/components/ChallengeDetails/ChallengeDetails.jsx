@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -131,7 +133,7 @@ const ChallengeDetails = ({
           <textarea
             value={sampleInput}
             name="sample_input"
-            id="outputFormat"
+            id="outputFormat01"
             onChange={handleChange}
             className="form-control mb-2"
             aria-label="With textarea"
@@ -144,7 +146,7 @@ const ChallengeDetails = ({
           <textarea
             value={sampleOutput}
             name="sample_output"
-            id="outputFormat"
+            id="outputFormat02"
             onChange={handleChange}
             className="form-control mb-2"
             aria-label="With textarea"

@@ -71,7 +71,7 @@ class AddTestCases extends Component {
               required
             />
           </div>
-          <div className="col-sm-2">
+          <div className="col-md-6 py-3">
             <label className="form-check-label" htmlFor="Visibility" />
             <input
               className="form-check-input"
@@ -85,38 +85,33 @@ class AddTestCases extends Component {
             Visibility
           </div>
         </div>
-
         <div className="form-group row">
-          <div className="col-sm-6">
+          <div className="col-md-6 py-2 border">
             <div className="custom-file">
               <label className="custom-file-label" htmlFor="customFile" />
               <input
                 type="file"
-                className="custom-file-input"
                 id="customFile"
                 name="inputFile"
                 // onChange={this.handleFiles}
                 ref={this.inputFile}
                 required
               />
-              Choose Input File
             </div>
           </div>
         </div>
         <div className="form-group row">
-          <div className="col-sm-6">
+          <div className="col-md-6 py-2 border">
             <div className="custom-file">
-              <label className="custom-file-label" htmlFor="customFile" />
+              <label className="custom-file-label" htmlFor="customFile01" />
               <input
                 type="file"
-                className="custom-file-input"
-                id="customFile"
+                id="customFile01"
                 name="outputFile"
                 // onChange={this.handleFiles}
                 ref={this.outputFile}
                 required
               />
-              Choose Outpur File
             </div>
           </div>
         </div>
