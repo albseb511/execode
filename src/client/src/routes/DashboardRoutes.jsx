@@ -15,6 +15,7 @@ import AdminDashboard from "./Dashboard/Admin/AdminDashboard";
 import AllContest from "./Dashboard/Admin/Contest/AllContest";
 import ContestLeaderboard from "./Dashboard/Admin/Contest/ContestLeaderboard";
 import UserSubmissions from "./Dashboard/Admin/Contest/UserSubmissions";
+import UserSubmissionsEvents from "./Dashboard/Admin/Contest/UserSubmissionsEvents";
 import CreateChallenge from "./Dashboard/Admin/CreateChallenge/CreateChallenge";
 import CreateContest from "./Dashboard/Admin/CreateContest/CreateContest";
 import ContestDetails from "./Dashboard/User/Contest/ContestDetails";
@@ -98,10 +99,22 @@ const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser }) => {
       <Route
         path="/dashboard/admin/:contestId/user-submission/:userId"
         exact
-        render={({ match }) => (
+        render={({ match, location }) => (
           <UserSubmissions
             contestId={match.params.contestId}
             userId={match.params.userId}
+            path={location.pathname}
+          />
+        )}
+      />
+      <Route
+        path="/dashboard/admin/:contestId/user-submission/:userId/events"
+        exact
+        render={({ match, location }) => (
+          <UserSubmissionsEvents
+            contestId={match.params.contestId}
+            userId={match.params.userId}
+            path={location.pathname}
           />
         )}
       />
