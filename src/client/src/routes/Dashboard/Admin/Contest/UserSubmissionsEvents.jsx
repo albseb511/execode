@@ -18,7 +18,7 @@ import {
 } from "../../../../redux/admin/action";
 import Axios from "../../../../utils/axiosInterceptor";
 
-class UserSubmissions extends Component {
+class UserSubmissionsEvents extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,13 +28,17 @@ class UserSubmissions extends Component {
     };
   }
 
-  getUserSubmissions = () => {
+  getUserEvents = () => {
     // send auth token
     const { userId, contestId } = this.props;
-    Axios.get(`contest/${contestId}/leaderboard/${userId}`).then(res => {
-      if (res && res.data && res.data.challenges) {
+    Axios.get(`event/${userId}`, {
+      headers: {
+        Authorization: this.props.token
+      }
+    }).then(res => {
+      if (res && res.data && res.data.events) {
         this.setState({
-          submissions: res.data.challenges
+          submissions: res.data.events
         });
       }
     });
@@ -57,7 +61,7 @@ class UserSubmissions extends Component {
   componentDidMount() {
     // const { fetchUserSubmissions: fetchSubmissions } = this.props;
     // fetchSubmissions();
-    this.getUserSubmissions();
+    this.getUserEvents();
   }
 
   viewUserCode = id => {
@@ -74,35 +78,10 @@ class UserSubmissions extends Component {
       <div>
         <div className="container">
           <div className="d-flex p-2">
-            <h4 className="font-weight-bold">Submitted Code</h4>
-            <Link to={`${path}/events`} className="ml-auto">
-              <div className="btn btn-dark active">EVENTS</div>
+            <h4 className="font-weight-bold">Events</h4>
+            <Link to={`${path.split("/events")[0]}`} className="ml-auto">
+              <div className="btn btn-dark active">GO BACK</div>
             </Link>
-          </div>
-          <div>
-            <div className="row text-center">
-              {this.state.testCaseInfo &&
-                Object.values(this.state.testCaseInfo).map((res, index) => (
-                  <div key={index}>
-                    <span className="text-center">Test {index + 1} </span>
-                    <div>
-                      {res ? (
-                        <div className="col-md-2 text-center">
-                          <span>
-                            <i className="fas fa-check-circle fa-lg text-success fa-2x mt-3 mb-2" />
-                          </span>
-                        </div>
-                      ) : (
-                        <div className="col-md-2 text-center">
-                          <span>
-                            <i className="fas fa-times-circle fa-lg text-danger fa-2x mt-3 mb-2" />
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-            </div>
           </div>
           <div className="d-block mb-5 mt-4 disabled">
             <AceEditor
@@ -130,36 +109,34 @@ class UserSubmissions extends Component {
             />
           </div>
           <div className="mt-4 mb-3">
-            <h4 className="font-weight-bold">Submission list</h4>
+            <h4 className="font-weight-bold">Events list</h4>
             <div className="row">
               <table className="table text-center">
                 <thead className="thead-dark">
                   <tr className="text-white">
                     <th scope="col">Challenge Name</th>
-                    <th scope="col">Score</th>
+                    <th scope="col">Event Type</th>
                     <th scope="col">User Name</th>
                     <th scope="col">Submitted at</th>
-                    <th scope="col">Code</th>
+                    <th scope="col">Content</th>
                   </tr>
                 </thead>
                 <tbody>
                   {submissions &&
-                    submissions.map(ele => {
+                    submissions.map((ele, index) => {
                       return (
-                        <tr key={ele.submission_id}>
+                        <tr key={index}>
                           <td>{ele.challenge_name}</td>
-                          <td>{ele.score}</td>
+                          <td>{ele.event}</td>
                           <td>{ele.name}</td>
                           <td>{ele.created_at}</td>
                           <td>
                             <button
                               type="button"
                               className="btn btn-dark active"
-                              onClick={() =>
-                                this.viewUserCode(ele.submission_id)
-                              }
+                              onClick={() => this.setState({ code: ele.text })}
                             >
-                              View Code
+                              View Content
                             </button>
                           </td>
                         </tr>
@@ -175,7 +152,7 @@ class UserSubmissions extends Component {
   }
 }
 
-UserSubmissions.propTypes = {
+UserSubmissionsEvents.propTypes = {
   submissions: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchUserSubmissions: PropTypes.func.isRequired,
   fetchUserCode: PropTypes.func.isRequired,
@@ -186,10 +163,11 @@ UserSubmissions.propTypes = {
 const mapStateToProps = state => ({
   submissions: state.admin.userSubmissions.submissions,
   code: state.admin.userSubmissions.viewCode,
-  language: state.admin.userSubmissions.viewLanguage
+  language: state.admin.userSubmissions.viewLanguage,
+  token: state.authReducer.token
 });
 
 export default connect(mapStateToProps, {
   fetchUserSubmissions,
   fetchUserCode
-})(UserSubmissions);
+})(UserSubmissionsEvents);
