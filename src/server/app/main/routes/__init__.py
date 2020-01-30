@@ -10,7 +10,7 @@ from app.main.routes.Challengeroute import Challenge
 from app.main.routes.Contests import Contests
 from app.main.routes.SubmittedCode import SubmittedCode
 from app.main.routes.JwtValidation import JwtValidation
-from app.main.routes.EventsHandle import EventsHandle
+from app.main.routes.EventsHandle import EventsHandle, EventsHandleAdd
 
 
 def add_resources(app):
@@ -23,6 +23,7 @@ def add_resources(app):
 
     api.add_resource(UserLogin, '/login')
     api.add_resource(EventsHandle, '/event/<user_id>')
+    api.add_resource(EventsHandleAdd, '/event')
     api.add_resource(JwtValidation, '/validate')
     api.add_resource(LogoutAPI, '/logout')
     api.add_resource(UserSignUp, '/signup')

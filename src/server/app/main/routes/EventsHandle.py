@@ -25,8 +25,9 @@ class EventsHandle(Resource):
             return {'events': events, 'comment': 'All the events of user %s'%(user_id)}
         else:
             return {'success': False, 'comment': 'Token Invalid or Expired'}
-    
-    def post(self, user_id):
+
+class EventsHandleAdd(Resource): 
+    def post(self):
         auth_token = request.headers.get("Authorization")
         user_id = decode_auth_token(auth_token)
         
