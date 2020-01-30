@@ -22,7 +22,7 @@ def add_resources(app):
     """
 
     api.add_resource(UserLogin, '/login')
-    api.add_resource(EventsHandle, '/event')
+    api.add_resource(EventsHandle, '/event/<user_id>')
     api.add_resource(JwtValidation, '/validate')
     api.add_resource(LogoutAPI, '/logout')
     api.add_resource(UserSignUp, '/signup')

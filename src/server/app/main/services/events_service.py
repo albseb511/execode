@@ -20,3 +20,14 @@ def add_event(data,user_id):
                             user_id = user_id)
 
     return save_changes(new_assest)
+
+def get_events(user_id):
+    data_event = EventsModel.query.filter_by(EventsModel.user_id = user_id).all()
+    events = []
+    for row in data_event:
+        events.append({
+            "event": row.event,
+            "text": row.event_text,
+            "created_at": row.created_at.strftime("%m-%d-%Y %H:%M:%S")
+        })
+    return events

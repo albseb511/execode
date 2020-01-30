@@ -2,7 +2,7 @@ from flask import request
 from flask_restful import Resource, reqparse
 import requests
 from app.main.services.decode_auth_token import decode_auth_token
-from app.main.services.events_service import add_event
+from app.main.services.events_service import add_event, get_events
 
 class EventsHandle(Resource):
 
@@ -16,16 +16,17 @@ class EventsHandle(Resource):
     parser.add_argument('contest_id', type=int, required=True,
                         help="Contest id is needed")
 
-    def get(self):
+    def get(self, user_id):
         auth_token = request.headers.get("Authorization")
-        user_id = decode_auth_token(auth_token)
+        admin_id = decode_auth_token(auth_token)
         
-        if user_id:
-            return {'success': True}
+        if admin_id:
+            events = get_events(user_id)
+            return {'events': events, 'comment': 'All the events of user %s'%(user_id)}
         else:
             return {'success': False, 'comment': 'Token Invalid or Expired'}
     
-    def post(self):
+    def post(self, user_id):
         auth_token = request.headers.get("Authorization")
         user_id = decode_auth_token(auth_token)
         
