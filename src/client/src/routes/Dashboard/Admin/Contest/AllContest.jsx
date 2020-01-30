@@ -45,13 +45,17 @@ const AllContest = ({
                 <span>{contest.end_time}</span>
               </div>
             </div>
+            <div className="d-flex mt-4">
+              <b>URL:</b>
+              <p className="mx-auto">localhost:3000/dashboard/user/{contest.id}</p>  
+            </div>
             <div className="row  py-3">
               <div className="col-md-11 ml-1">
                 <Link
                   className="btn-block btn btn-outline-dark active"
                   to={`/dashboard/admin/${contest.id}/leaderboard`}
                 >
-                  View Submission
+                  View Submissions
                 </Link>
               </div>
             </div>
