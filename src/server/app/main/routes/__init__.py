@@ -10,6 +10,7 @@ from app.main.routes.Challengeroute import Challenge
 from app.main.routes.Contests import Contests
 from app.main.routes.SubmittedCode import SubmittedCode
 from app.main.routes.JwtValidation import JwtValidation
+from app.main.routes.EventsHandle import EventsHandle
 
 
 def add_resources(app):
@@ -19,7 +20,9 @@ def add_resources(app):
     Args:
         app (object): object of Flask representing the app in context
     """
+
     api.add_resource(UserLogin, '/login')
+    api.add_resource(EventHandle, '/event')
     api.add_resource(JwtValidation, '/validate')
     api.add_resource(LogoutAPI, '/logout')
     api.add_resource(UserSignUp, '/signup')
