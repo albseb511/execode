@@ -10,7 +10,9 @@ import {
   REGISTER_USER_FAILURE,
   TOKEN_VALIDATE_REQUEST,
   TOKEN_VALIDATE_SUCCESS,
-  TOKEN_VALIDATE_FAILURE
+  TOKEN_VALIDATE_FAILURE,
+  REDIRECT_URL,
+  RESET_REDIRECT_URL
 } from "./actionTypes";
 
 function getUserInfo() {
@@ -40,7 +42,9 @@ const initState = {
   registerSuccess: false,
   error: false,
   errorType: "",
-  errorMessage: ""
+  errorMessage: "",
+  redirectUrl: "",
+  redirect: false
 };
 
 const reducer = (state = initState, { type, payload }) => {
@@ -156,6 +160,18 @@ const reducer = (state = initState, { type, payload }) => {
         errorType: "token_invalid",
         errorMessage: "session has expired or invalid. Please login in again"
       };
+    case REDIRECT_URL:
+      return {
+        ...state,
+        redirectUrl: payload,
+        redirect: true
+      }
+    case RESET_REDIRECT_URL:
+      return {
+        ...state,
+        redirectUrl: "",
+        redirect: false
+      }
     default:
       return state;
   }

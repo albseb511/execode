@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
-import { loginUser } from "../../redux/authentication/actions";
+import { loginUser, setRedirectUrl } from "../../redux/authentication/actions";
 import { connect } from "react-redux";
 import { tokenValidateUser } from "../../redux/authentication/actions";
 
@@ -12,16 +12,16 @@ const LoginPublic = ({
   error,
   errorMessage,
   isValidating,
-  tokenValidateUser
+  tokenValidateUser,
+  redirectUrl,
+  redirect
 }) => {
   if (token != "" && !isValidating && !isAuth) {
-    console.log(token);
     tokenValidateUser(token);
     if (isValidating) {
       return <div>Validating</div>;
     }
   }
-
   const [loginState, setLoginState] = useState({
     email: "",
     password: "",
@@ -44,8 +44,12 @@ const LoginPublic = ({
     };
     loginUser(payload);
   };
+  console.log(redirect,redirectUrl)
   return isAuth ? (
-    <Redirect to="/dashboard" />
+    <>
+    {redirect? <Redirect to={`${redirectUrl}`} />:
+    <Redirect to="/dashboard" />}
+    </>
   ) : (
     <div className="mb-4 mt-4">
       <div>
@@ -102,12 +106,15 @@ const mapStateToProps = state => ({
   token: state.authReducer.token,
   error: state.authReducer.error,
   errorMessage: state.authReducer.errorMessage,
-  isValidating: state.authReducer.isValidating
+  isValidating: state.authReducer.isValidating,
+  redirectUrl: state.authReducer.redirectUrl,
+  redirect: state.authReducer.redirect
 });
 
 const mapDispatchToProps = dispatch => ({
   loginUser: payload => dispatch(loginUser(payload)),
-  tokenValidateUser: payload => dispatch(tokenValidateUser(payload))
+  tokenValidateUser: payload => dispatch(tokenValidateUser(payload)),
+  setRedirectUrl: payload => dispatch(setRedirectUrl(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPublic);

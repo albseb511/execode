@@ -10,7 +10,9 @@ import {
   REGISTER_USER_FAILURE,
   TOKEN_VALIDATE_REQUEST,
   TOKEN_VALIDATE_SUCCESS,
-  TOKEN_VALIDATE_FAILURE
+  TOKEN_VALIDATE_FAILURE,
+  REDIRECT_URL,
+  RESET_REDIRECT_URL
 } from "./actionTypes";
 import axios from "../../utils/axiosInterceptor";
 
@@ -138,3 +140,12 @@ export const tokenValidateUser = payload => {
       .catch(() => dispatch(tokenValidateFail()));
   };
 };
+
+export const setRedirectUrl = payload => ({
+  type: REDIRECT_URL,
+  payload
+})
+
+export const resetRedirectUrl = () => ({
+  type: RESET_REDIRECT_URL,
+})

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -19,9 +19,12 @@ import UserSubmissionsEvents from "./Dashboard/Admin/Contest/UserSubmissionsEven
 import CreateChallenge from "./Dashboard/Admin/CreateChallenge/CreateChallenge";
 import CreateContest from "./Dashboard/Admin/CreateContest/CreateContest";
 import ContestDetails from "./Dashboard/User/Contest/ContestDetails";
-import { logoutUser } from "../redux/authentication/actions";
+import { logoutUser, setRedirectUrl, resetRedirectUrl } from "../redux/authentication/actions";
 
-const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser }) => {
+const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser, path, setRedirectUrl, resetRedirectUrl }) => {
+  useEffect(()=>{
+    !isAuth?setRedirectUrl(path):resetRedirectUrl()
+  },[])
   return isAuth ? (
     <>
       <Route
@@ -146,7 +149,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  logoutUser: payload => dispatch(logoutUser(payload))
+  logoutUser: payload => dispatch(logoutUser(payload)),
+  setRedirectUrl: payload => dispatch(setRedirectUrl(payload)),
+  resetRedirectUrl: () => dispatch(resetRedirectUrl())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardRoutes);
