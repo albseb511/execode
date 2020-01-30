@@ -1,5 +1,5 @@
 from ..models.EventsModel import EventsModel
-from contests_challenges_service import get_contest_challenge_id
+from .contests_challenges_services import get_contest_challenge_id
 
 def save_changes(data):
     try:

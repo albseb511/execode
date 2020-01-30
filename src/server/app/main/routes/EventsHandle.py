@@ -1,5 +1,5 @@
 from flask import request
-from flask_restful import Resource
+from flask_restful import Resource, reqparse
 import requests
 from app.main.services.decode_auth_token import decode_auth_token
 from app.main.services.events_service import add_event
