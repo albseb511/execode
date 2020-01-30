@@ -22,7 +22,7 @@ def add_event(data,user_id):
     return save_changes(new_assest)
 
 def get_events(user_id):
-    data_event = EventsModel.query.filter_by(EventsModel.user_id = user_id).all()
+    data_event = EventsModel.query.filter_by(user_id = user_id).all()
     events = []
     for row in data_event:
         events.append({
