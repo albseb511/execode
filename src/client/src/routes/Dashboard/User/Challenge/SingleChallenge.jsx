@@ -230,7 +230,7 @@ const SingleChallenge = ({
           <div className="d-block mb-4">
             <AceEditor
               style={{ width: "100%" }}
-              placeholder="console.log('Hello Masai School');"
+              placeholder="Ask for help if you need it"
               mode={language}
               onChange={e => handleChangeCode(e)}
               onCopy={event => handleEvents(event, "copy")}

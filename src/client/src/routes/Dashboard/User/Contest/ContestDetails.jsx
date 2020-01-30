@@ -31,22 +31,36 @@ const ContestDetails = ({ contestId }) => {
             </h3>
             <p>{aboutchallenges.details}</p>
           </div>
-          <div className="col-md-3 text-center py-3">
+          <div className="col-md-4 text-center py-3">
             <ul className="list-inline align-text-bottom ">
-              <span className="text-left">
-                <b>Start Date: </b>
-                {aboutchallenges.start_date}
-              </span>
+              <div className="text-left d-flex">
+                <b className="mt-2 mr-2">Start Date: </b>
+                <div className="btn btn-dark active ml-auto">
+                    {aboutchallenges.start_date}
+                </div>
+              </div>
+              <li className="d-flex ">
+                <b className="mt-2 mr-2">Start time: </b>
+                  <div className="btn btn-dark active ml-auto">
+                      {aboutchallenges.start_time}
+                  </div>
+                </li>
               <hr />
-              <li className="list-inline-item ">
-                <b className="text-dark">Start time: </b>
-                {aboutchallenges.start_time}
+              <div className="text-left d-flex">
+                <b className="mt-2 mr-2">End Date: </b>
+                <div className="btn btn-dark active ml-auto">
+                    {aboutchallenges.end_date}
+                </div>
+              </div>
+              <li className="d-flex">
+                <b className="mt-2 mr-2">End time: </b>
+                <div className="btn btn-dark active ml-auto">
+                    {aboutchallenges.end_time}
+                </div>
               </li>
-
-              <li className="list-inline-item">
-                <span className="font-weight-bold text-light">|</span>
-                <b className="text-dark"> End time:</b>
-                {aboutchallenges.end_time}
+              <hr />
+              <li className="btn btn-dark active">
+                  LEADERBOARD
               </li>
             </ul>
           </div>
