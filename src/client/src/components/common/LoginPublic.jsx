@@ -44,7 +44,6 @@ const LoginPublic = ({
     };
     loginUser(payload);
   };
-  console.log(redirect,redirectUrl)
   return isAuth ? (
     <>
     {redirect? <Redirect to={`${redirectUrl}`} />:

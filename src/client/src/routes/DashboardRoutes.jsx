@@ -20,6 +20,7 @@ import CreateChallenge from "./Dashboard/Admin/CreateChallenge/CreateChallenge";
 import CreateContest from "./Dashboard/Admin/CreateContest/CreateContest";
 import ContestDetails from "./Dashboard/User/Contest/ContestDetails";
 import ContestLeaderboardUser from "./Dashboard/User/Contest/ContestLeaderboardUser"
+import AdminRoutes from "../components/common/AdminRoutes"
 import { logoutUser, setRedirectUrl, resetRedirectUrl } from "../redux/authentication/actions";
 
 const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser, path, setRedirectUrl, resetRedirectUrl }) => {
@@ -94,51 +95,53 @@ const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser, path, set
 
       {/* Admin Dashboard - need authorization */}
       {/* also need navbar for user */}
-      <Route path="/dashboard/admin/" exact render={() => <AdminDashboard />} />
-      <Route
-        path="/dashboard/admin/all-contest"
-        exact
-        render={() => <AllContest />}
-      />
-      <Route
-        path="/dashboard/admin/:contestId/leaderboard/"
-        exact
-        render={({ match }) => (
-          <ContestLeaderboard contestId={match.params.contestId} />
-        )}
-      />
-      <Route
-        path="/dashboard/admin/:contestId/user-submission/:userId"
-        exact
-        render={({ match, location }) => (
-          <UserSubmissions
-            contestId={match.params.contestId}
-            userId={match.params.userId}
-            path={location.pathname}
-          />
-        )}
-      />
-      <Route
-        path="/dashboard/admin/:contestId/user-submission/:userId/events"
-        exact
-        render={({ match, location }) => (
-          <UserSubmissionsEvents
-            contestId={match.params.contestId}
-            userId={match.params.userId}
-            path={location.pathname}
-          />
-        )}
-      />
-      <Route
-        path="/dashboard/admin/create-challenge"
-        exact
-        render={() => <CreateChallenge />}
-      />
-      <Route
-        path="/dashboard/admin/create-contest"
-        exact
-        render={() => <CreateContest />}
-      />
+      <AdminRoutes userType={userType}>
+        <Route path="/dashboard/admin/" exact render={() => <AdminDashboard />} />
+        <Route
+          path="/dashboard/admin/all-contest"
+          exact
+          render={() => <AllContest />}
+        />
+        <Route
+          path="/dashboard/admin/:contestId/leaderboard/"
+          exact
+          render={({ match }) => (
+            <ContestLeaderboard contestId={match.params.contestId} />
+          )}
+        />
+        <Route
+          path="/dashboard/admin/:contestId/user-submission/:userId"
+          exact
+          render={({ match, location }) => (
+            <UserSubmissions
+              contestId={match.params.contestId}
+              userId={match.params.userId}
+              path={location.pathname}
+            />
+          )}
+        />
+        <Route
+          path="/dashboard/admin/:contestId/user-submission/:userId/events"
+          exact
+          render={({ match, location }) => (
+            <UserSubmissionsEvents
+              contestId={match.params.contestId}
+              userId={match.params.userId}
+              path={location.pathname}
+            />
+          )}
+        />
+        <Route
+          path="/dashboard/admin/create-challenge"
+          exact
+          render={() => <CreateChallenge />}
+        />
+        <Route
+          path="/dashboard/admin/create-contest"
+          exact
+          render={() => <CreateContest />}
+        />
+      </AdminRoutes>
     </>
   ) : (
     <Redirect to="/login" />
