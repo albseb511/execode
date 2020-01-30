@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import AddContestDetails from "../../../../components/AddContestDetails/AddContestDetails";
 import AddChallenges from "../../../../components/AddChallenges/AddChallenges";
 import axios from "../../../../utils/axiosInterceptor";
+import {connect} from "react-redux"
 
 const initialState = {
   detailsTab: true,
@@ -58,7 +59,12 @@ class CreateContest extends Component {
     const { contest_name } = this.state;
     const data = this.state;
     // remove some of the unwanted data. sending unwanted data
-    axios.post(`contest/${contest_name}`, data).then(response => {
+    axios.post(`contest/${contest_name}`, data,
+    {
+      headers:{
+        Authorization: this.props.token
+      }
+    }).then(response => {
       this.setState({ ...initialState });
     });
   };
@@ -130,4 +136,8 @@ class CreateContest extends Component {
   }
 }
 
-export default CreateContest;
+const mapStateToProps = state => ({
+  token: state.authReducer.token
+})
+
+export default connect(mapStateToProps)(CreateContest);
