@@ -39,29 +39,13 @@ const SingleChallenge = ({
   const location = useLocation();
   const languagesList = ["javascript", "python"];
   let data = "";
-  useEffect(() => {
-    async function getChallenges() {
-      try {
-        const response = await axios.get(`/challenge/${challengeId}`, {
-          headers: {
-            Authorization: token
-          }
-        });
-        setSingleChallenge(response.data.challenge);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error);
-      }
-    }
-    getChallenges();
-  }, []);
-
   // set placeholder data
-  useEffect(() => {
+  const setPlaceHolderData = () => {
     data = localStorage.getItem("bStore");
-    if (!data) {
+    if (!data || !data[`${email}__${contestId}__${challengeId}__${language}__default`]) {
       data = {};
       languagesList.forEach(a => {
+        console.log(a,email,contestId,challengeId)
         if (a == "javascript") {
           data[`${email}__${contestId}__${challengeId}__${a}__default`] =
             "function process(input){\n\t// write code below\n\treturn input\n}";
@@ -79,7 +63,24 @@ const SingleChallenge = ({
       data = JSON.parse(data);
     }
     setCode(data[`${email}__${contestId}__${challengeId}__${language}`]);
-  }, [singleChallenge]);
+  }
+  useEffect(() => {
+    async function getChallenges() {
+      try {
+        const response = await axios.get(`/challenge/${challengeId}`, {
+          headers: {
+            Authorization: token
+          }
+        });
+        setSingleChallenge(response.data.challenge);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      }
+    }
+    getChallenges();
+    setPlaceHolderData()
+  }, []);
 
   useEffect(() => {
     data = localStorage.getItem("bStore");
