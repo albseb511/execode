@@ -126,9 +126,10 @@ const SingleChallenge = ({
   };
 
   const handleEvents = ({ text }, event) => {
+    let date = new Date
     const payload = {
       event,
-      text,
+      text: `${event} content \n\n//\n//\n\n// Code at ${date.toLocaleTimeString()} ${date.toLocaleDateString()}\n\n${code}`,
       contestId,
       challengeId,
       token

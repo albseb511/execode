@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from "react-redux";
 import { updateTime } from "../../redux/contest/action"
+import { Redirect } from 'react-router-dom';
 
 const TimeLeft = ({timeLeft, contestStatus, updateTime, hours,min,sec}) => {
     const [live, setLive] = useState(false)
@@ -30,9 +31,12 @@ const TimeLeft = ({timeLeft, contestStatus, updateTime, hours,min,sec}) => {
         )
     if(contestStatus==="not_started")
         return(
+        <>
+            {/* <Redirect to="/dashboard" /> */}
             <div className="btn btn-success active p-2 m-2">
                 NOT BEGUN
             </div>
+        </>
         )
     return (
         <div className="btn btn-dark active p-2 m-2">
