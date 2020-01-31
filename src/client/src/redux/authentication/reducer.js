@@ -38,6 +38,7 @@ const initState = {
   email,
   userId: "nin_001",
   team: "ninjas",
+  sprint: "sprint_1",
   isRegistering: false,
   registerSuccess: false,
   error: false,

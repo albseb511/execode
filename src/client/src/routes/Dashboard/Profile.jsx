@@ -11,7 +11,10 @@ const Profile = ({ email, team, code }) => {
             className="rounded mx-auto d-block img-thumbnail"
             alt="profile pic"
           /> */}
-          <img src="https://img.icons8.com/cotton/64/000000/gender-neutral-user--v1.png" />
+          <img 
+            src="https://img.icons8.com/cotton/64/000000/gender-neutral-user--v1.png"
+            alt="profile pic"
+               />
           <h1 className="font-weight-bold mt-2">{email.split("@")[0]}</h1>
           <p className="lead">Masai School</p>
           <p className="lead">email: {email}</p>

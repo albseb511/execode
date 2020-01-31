@@ -12,7 +12,7 @@ const NavBar = ({ location: { pathname }, userType, logoutUser, token }) => {
       { name: "Create Contest", path: "create-contest" },
       { name: "Create Challenge", path: "create-challenge" }
     ].map(link => (
-      <li role="presentation" className="nav-item">
+      <li key={link.path} role="presentation" className="nav-item">
         <Link
           className="nav-link text-light"
           to={`/dashboard/admin/${link.path}`}

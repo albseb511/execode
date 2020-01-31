@@ -24,7 +24,7 @@ const AdminDashboard = () => {
             linkTitle: "Create Problems"
           }
         ].map(card => (
-          <div className="row border mb-3 mt-5">
+          <div key={card.path} className="row border mb-3 mt-5">
             <div className="col-md-7">
               <div className="py-2">
                 <div className="card-body">{card.body}</div>
