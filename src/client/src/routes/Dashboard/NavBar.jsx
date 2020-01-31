@@ -58,6 +58,13 @@ const NavBar = ({ location: { pathname }, userType, logoutUser, token }) => {
                   </Link>
                 </li>
               )}
+              {userType === "admin" && (
+                <li role="presentation" className="nav-item">
+                  <Link className="nav-link text-light" to="/dashboard/admin/settings">
+                    Settings
+                  </Link>
+                </li>
+              )}
               <li role="presentation" className="nav-item">
                 <Link className="nav-link text-light" to="/dashboard/profile">
                   Profile

@@ -36,7 +36,7 @@ class ContestLeaderBoardUser extends React.Component {
     const { leaderboard } = this.state;
     return (
       <>
-        <div className="row d-flex justify-content-center">
+        <div className="row d-flex justify-content-center px-5 mx-5">
           <table
             className="table table-striped text-center border border-dark col-md-8"
             style={{ marginTop: "100px" }}

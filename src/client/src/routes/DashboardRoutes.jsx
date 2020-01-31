@@ -19,8 +19,11 @@ import UserSubmissionsEvents from "./Dashboard/Admin/Contest/UserSubmissionsEven
 import CreateChallenge from "./Dashboard/Admin/CreateChallenge/CreateChallenge";
 import CreateContest from "./Dashboard/Admin/CreateContest/CreateContest";
 import ContestDetails from "./Dashboard/User/Contest/ContestDetails";
-import ContestLeaderboardUser from "./Dashboard/User/Contest/ContestLeaderboardUser"
-import AdminRoutes from "../components/common/AdminRoutes"
+import ContestLeaderboardUser from "./Dashboard/User/Contest/ContestLeaderboardUser";
+import AdminRoutes from "../components/common/AdminRoutes";
+import AdminSettings from "./Dashboard/Admin/CPanel/AdminSettings";
+import CreateUsers from "./Dashboard/Admin/CPanel/CreateUsers";
+import ViewUsers from "./Dashboard/Admin/CPanel/ViewUsers";
 import { logoutUser, setRedirectUrl, resetRedirectUrl } from "../redux/authentication/actions";
 
 const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser, path, setRedirectUrl, resetRedirectUrl }) => {
@@ -141,6 +144,23 @@ const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser, path, set
           exact
           render={() => <CreateContest />}
         />
+        <AdminRoutes userType={userType}>
+          <Route
+            path="/dashboard/admin/settings"
+            exact
+            render={() => <AdminSettings />}
+          />
+          <Route
+            path="/dashboard/admin/users"
+            exact
+            render={() => <ViewUsers />}
+          />
+          <Route
+            path="/dashboard/admin/users-create"
+            exact
+            render={() => <CreateUsers />}
+          />
+        </AdminRoutes>
       </AdminRoutes>
     </>
   ) : (
