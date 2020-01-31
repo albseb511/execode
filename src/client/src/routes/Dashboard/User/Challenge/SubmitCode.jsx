@@ -27,10 +27,10 @@ const SubmitChallenge = ({
 }) => {
   const history = useHistory();
   const location = useLocation();
-  const path = location.pathname.split("submit").join("");
-  // if(!isSubmit){
-  //   history.push(`${path}`)
-  // }
+  const path = location.pathname.split("/submit")[0];
+  if(!isSubmit){
+    history.push(`${path}`)
+  }
 
   let testPass = null;
 
@@ -98,7 +98,10 @@ const SubmitChallenge = ({
           </div>
         </div>
       ) : (
-        <div className="row">{testPass}</div>
+        <>
+          <b className="row ml-5">{error && errorMessage}</b>
+          <div className="row">{!error && testPass}</div>
+        </>
       )}
       <div>
         <hr />
