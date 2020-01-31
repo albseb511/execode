@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 let initData = [
     {
@@ -10,7 +10,7 @@ let initData = [
         sprint: "1"
     },
     {
-        selected: true,
+        selected: false,
         code: "nin_002",
         name: "Bala Krishna",
         email: "bala_kris@gmail.com",
@@ -26,7 +26,7 @@ let initData = [
         sprint: "3"
     },
     {
-        selected: true,
+        selected: false,
         code: "nin_004",
         name: "Sanjay Anand",
         email: "sanjay@gmail.com",
@@ -38,9 +38,15 @@ const ViewUsers = () => {
     const [temp, setTemp] = useState(initData);
     const [cohort, setCohort] = useState("all");
     const [sprint, setSprint] = useState("all");
-    const handleChange = () => {
-
+    const handleChange = (e) => {
+        let id = e.target.id
+        let newTemp = temp.map(item=>item.code===id?{...item,selected:!item.selected}:item)
+        setTemp(newTemp)
     }
+    useEffect(()=>{
+        let newTemp = temp.map(item=>({...item, selected:false}))
+        setTemp(newTemp)
+    },[cohort,sprint])
     return (
         <div className="container">
             <div className="row d-flex justify-content-center px-5 mx-5">
@@ -95,7 +101,10 @@ const ViewUsers = () => {
                             <tr key={ele.email}>
                                 <td>
                                     <input type="checkbox" 
-                                           checked={ele.selected}/>
+                                           checked={ele.selected}
+                                           onChange={handleChange}
+                                           id={ele.code}
+                                           />
                                 </td>
                                 <td>{ele.code}</td>
                                 <td>{ele.name}</td>
