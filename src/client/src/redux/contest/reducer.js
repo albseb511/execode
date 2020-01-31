@@ -3,7 +3,8 @@ import {
     UPDATE_CONTEST_TIME, 
     CONTEST_END,
     CONTEST_NOT_STARTED,
-    CONTEST_START 
+    CONTEST_START,
+    CONTEST_RESET
 } from "./actionTypes"
 
 const initialState = {
@@ -55,6 +56,11 @@ export default (state = initialState, { type, payload }) => {
         return {
             ...state,
             contestStatus: "not_started"
+        }
+    case CONTEST_RESET:
+        return {
+            ...state,
+            contestStatus: "pending"
         }
     default:
         return state

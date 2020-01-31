@@ -5,17 +5,13 @@ import { Redirect } from 'react-router-dom';
 
 const TimeLeft = ({timeLeft, contestStatus, updateTime, hours,min,sec}) => {
     const [live, setLive] = useState(false)
-    console.log(timeLeft, contestStatus, live)
     if(contestStatus==="live" && !live)
         setLive(true)
     useEffect(()=>{
-        console.log('setting time')
         var timer = setInterval(()=>{
-            console.log('updating')
             updateTime()
         },1000)
         var clear = setTimeout(()=>{
-            console.log('timed out')
             clearInterval(timer)
         },(timeLeft+1)*1000)
         return ()=>{
@@ -23,21 +19,29 @@ const TimeLeft = ({timeLeft, contestStatus, updateTime, hours,min,sec}) => {
             clearTimeout(clear)
         }
     },[live])
+    if(contestStatus==="pending")
+        return(
+            <div className="btn btn-dark active p-2 m-2">
+                PENDING
+            </div>
+        )
     if(contestStatus==="ended")
         return(
-            <div className="btn btn-success active p-2 m-2">
+            <div className="btn btn-danger active p-2 m-2">
                 ENDED
             </div>
         )
-    if(contestStatus==="not_started")
+    if(contestStatus==="not_started"){
+        alert("contest has not started")
         return(
         <>
-            {/* <Redirect to="/dashboard" /> */}
+            <Redirect to="/dashboard" />
             <div className="btn btn-success active p-2 m-2">
                 NOT BEGUN
             </div>
         </>
         )
+    }
     return (
         <div className="btn btn-dark active p-2 m-2">
             { hours>0?(hours>10?(hours):("0"+hours)):("00") }:

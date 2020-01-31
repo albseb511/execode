@@ -3,7 +3,8 @@ import {
     UPDATE_CONTEST_TIME,
     CONTEST_NOT_STARTED,
     CONTEST_START,
-    CONTEST_END
+    CONTEST_END,
+    CONTEST_RESET
 } from "./actionTypes";
 
 export const setContestEndTime = (payload) => ({
@@ -29,3 +30,9 @@ export const contestNotStarted = (payload) => ({
     type: CONTEST_NOT_STARTED,
     payload
 })
+
+export const contestReset = (payload) => ({
+    type: CONTEST_RESET,
+    payload
+})
+

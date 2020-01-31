@@ -3,17 +3,18 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "../../../../utils/axiosInterceptor";
 import { connect } from "react-redux"
-import {setContestEndTime, contestEnded, contestNotStarted, contestStart} from "../../../../redux/contest/action"
+import {setContestEndTime, contestEnded, contestNotStarted, contestStart, contestReset} from "../../../../redux/contest/action"
 import TimeLeft from "../../../../components/common/TimeLeft"
 
 // eslint-disable-next-line react/prop-types
-const ContestDetails = ({ contestId, path, setContestEndTime, contestEnded, contestNotStarted, contestStart }) => {
+const ContestDetails = ({ contestId, path, setContestEndTime, contestEnded, contestNotStarted, contestStart, contestReset }) => {
   const [challenges, setChallenges] = useState([]);
   const [aboutchallenges, setAboutchallenges] = useState([]);
 
   useEffect(() => {
     async function getChallenges() {
       try {
+        contestReset()
         const response = await axios.get(`/contest/${contestId}`);
         setChallenges(response.data.data);
         setAboutchallenges(response.data.contest_data);
@@ -23,6 +24,7 @@ const ContestDetails = ({ contestId, path, setContestEndTime, contestEnded, cont
       }
     }
     getChallenges();
+    return ()=>contestReset()
   }, []);
 
   useEffect(()=>{
@@ -148,7 +150,8 @@ const mapDispatchToProps = dispatch => ({
   setContestEndTime: payload => dispatch(setContestEndTime(payload)),
   contestNotStarted: () => dispatch(contestNotStarted()),
   contestStart: payload => dispatch(contestStart(payload)),
-  contestEnded: payload => dispatch(contestEnded(payload))
+  contestEnded: payload => dispatch(contestEnded(payload)),
+  contestReset: () => dispatch(contestReset())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContestDetails);
