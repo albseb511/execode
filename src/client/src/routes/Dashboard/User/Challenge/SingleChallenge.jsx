@@ -32,7 +32,7 @@ const SingleChallenge = ({
 }) => {
   const [singleChallenge, setSingleChallenge] = useState([]);
   const [theme, setthemeUpdate] = useState("monokai");
-  const [language, setLanguage] = useState("javascript");
+  const [language, setLanguage] = useState("");
   const [code, setCode] = useState("");
   const [runCodeResponse, setRunCodeResponse] = useState({});
   const history = useHistory();
@@ -43,7 +43,8 @@ const SingleChallenge = ({
   const setPlaceHolderData = () => {
     data = JSON.parse(localStorage.getItem("bStore"));
     if (!data || !data[`${email}__${contestId}__${challengeId}__${language}__default`]) {
-      data = {};
+      if(!data)
+        data = {};
       languagesList.forEach(a => {
         if (a == "javascript") {
           data[`${email}__${contestId}__${challengeId}__${a}__default`] =
@@ -57,9 +58,15 @@ const SingleChallenge = ({
             "# write code here. python3";
         }
       });
+      if(!data[`${email}__default`]){
+        console.log(data)
+        alert('pop')
+        data[`${email}__default`] = languagesList[0]
+      }
       localStorage.setItem("bStore", JSON.stringify(data));
     }
     setCode(data[`${email}__${contestId}__${challengeId}__${language}`]);
+    setLanguage(data[`${email}__default`])
   }
   useEffect(() => {
     async function getChallenges() {
@@ -82,6 +89,8 @@ const SingleChallenge = ({
   useEffect(() => {
     data = localStorage.getItem("bStore");
     data = JSON.parse(data);
+    data[`${email}__default`] = language
+    localStorage.setItem("bStore",JSON.stringify(data))
     setCode(data[`${email}__${contestId}__${challengeId}__${language}`]);
   }, [language]);
 
@@ -203,6 +212,7 @@ const SingleChallenge = ({
                 className="browser-default custom-select"
                 onChange={e => setLanguage(e.target.value)}
                 onBlur={e => setLanguage(e.target.value)}
+                value={language}
               >
                 {languagesList.map(prolang => (
                   <option key={prolang} value={prolang}>
