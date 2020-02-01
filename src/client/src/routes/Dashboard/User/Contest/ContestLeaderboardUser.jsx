@@ -20,7 +20,7 @@ class ContestLeaderBoardUser extends React.Component {
     // get the leader board data and set state
     // set auth header
     const { contestId } = this.props;
-    axios.get(`contest/${contestId}/leaderboard`).then(res => {
+    axios.get(`/contest/${contestId}/leaderboard`).then(res => {
       if (res.data && res.data.leaderboard) {
         this.setState({ leaderboard: res.data.leaderboard });
       }

@@ -84,15 +84,17 @@ const ContestDetails = ({ contestId, path, setContestEndTime, contestEnded, cont
                     {aboutchallenges.end_time}
                 </div>
               </li>
-              <hr />
+            </ul>
+          </div>
+          <div className="d-flex m-auto">
+              <div >
               STATUS: <TimeLeft/>
-              <hr />
-              <Link to={`${path.split("user/"+contestId)[0]}leaderboard/${contestId}`}>
+              </div>
+              <Link className="mx-5"to={`${path.split("user/"+contestId)[0]}leaderboard/${contestId}`}>
                 <li className="btn btn-dark active">
                   LEADERBOARD      
                 </li>
               </Link>
-            </ul>
           </div>
         </div>
 
