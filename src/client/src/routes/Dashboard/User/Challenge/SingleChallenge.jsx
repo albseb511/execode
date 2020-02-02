@@ -42,15 +42,19 @@ const SingleChallenge = ({
   // set placeholder data
   const setPlaceHolderData = () => {
     data = JSON.parse(localStorage.getItem("bStore"));
-    if (!data || !data[`${email}__${contestId}__${challengeId}__${language}__default`]) {
+    let defLang = data[`${email}_default`]
+    console.log(data,!data, !data[`${email}__${contestId}__${challengeId}__${defLang}__default`],`${email}__${contestId}__${challengeId}__${language}__default`)
+    if (!data || !data[`${email}__${contestId}__${challengeId}__${defLang}__default`]) {
       if(!data)
         data = {};
       languagesList.forEach(a => {
         if (a == "javascript") {
           data[`${email}__${contestId}__${challengeId}__${a}__default`] =
             "function process(input){\n\t// write code below\n\treturn input\n}";
-          data[`${email}__${contestId}__${challengeId}__${a}`] =
+          if(!data[`${email}__${contestId}__${challengeId}__${a}`]){
+            data[`${email}__${contestId}__${challengeId}__${a}`] =
             "function process(input){\n\t// write code below\n\treturn input\n}";
+          }
         } else {
           data[`${email}__${contestId}__${challengeId}__${a}__default`] =
             "# write code here. python3";
@@ -65,7 +69,7 @@ const SingleChallenge = ({
       }
       localStorage.setItem("bStore", JSON.stringify(data));
     }
-    setCode(data[`${email}__${contestId}__${challengeId}__${language}`]);
+    setCode(data[`${email}__${contestId}__${challengeId}__${defLang}`]);
     setLanguage(data[`${email}__default`])
   }
   useEffect(() => {
