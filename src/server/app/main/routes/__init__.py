@@ -1,4 +1,4 @@
-from app.main.routes.auth_controller import UserLogin, LogoutAPI, UserSignUp, FacebookAuthorize, GithubAuthorize
+from app.main.routes.auth_controller import UserLogin, LogoutAPI, UserSignUp, FacebookAuthorize, GithubAuthorize, UserAll
 from app.main import api
 from app.main.routes.Contest import Contest
 from app.main.routes.UserLeaderboard import UserLeaderboard
@@ -24,6 +24,7 @@ def add_resources(app):
     api.add_resource(UserLogin, '/login')
     api.add_resource(EventsHandle, '/event/<user_id>')
     api.add_resource(EventsHandleAdd, '/event')
+    api.add_resource(UserAll, '/users')
     api.add_resource(JwtValidation, '/validate')
     api.add_resource(LogoutAPI, '/logout')
     api.add_resource(UserSignUp, '/signup')
