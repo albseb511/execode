@@ -29,6 +29,7 @@ def get_raw_data(contest_id,user_id):
         ist_created_at = row['created_at'] - datetime.timedelta(minutes=-330)
         temp_dict['created_at'] = ist_created_at.strftime("%m-%d-%Y %H:%M:%S")
         temp_dict['score'] = row['score']
+        temp_dict['contest_name'] = row['contest_name']
         names.append(temp_dict)
     # print(names)
     resp = {"challenges": names,"comment":"success"}

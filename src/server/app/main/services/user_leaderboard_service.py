@@ -21,6 +21,7 @@ def get_raw_data(contest_id):
         temp_dict['total'] = int(row['total'])
         temp_dict['name'] = row['name']
         temp_dict['email'] = row['email']
+        temp_dict['contest_name'] = row['contest_name']
         names.append(temp_dict)
 
     names = sorted(names, key = lambda i: i['total'])
