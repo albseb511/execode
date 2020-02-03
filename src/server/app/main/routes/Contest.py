@@ -1,6 +1,6 @@
 from flask import request
 from flask_restful import Resource, reqparse
-from ..services.contest_detail import get_contests_challenges, get_contests, add_contest
+from ..services.contest_detail import get_contests_challenges, get_contests, add_contest, update_contest
 from app.main.services.decode_auth_token import decode_auth_token
 from app.main import db
 
@@ -20,6 +20,8 @@ class Contest(Resource):
                         help="End Time is needed")
     parser.add_argument('details', type=str, required=True,
                         help="Details is needed")
+    parser.add_argument('action', type=str, required=False,
+                        help="Action is needed")
     parser.add_argument('show_leaderboard', type=bool,
                         required=True, help="Show leaderboard is needed")
     parser.add_argument('challenge_ids', type=list,
@@ -46,12 +48,19 @@ class Contest(Resource):
         user_id = decode_auth_token(auth_token)
         if user_id:
             data = Contest.parser.parse_args()
-            # Add contest to database
-            created = add_contest(data, contest_name, user_id)
-            if created:
-                return {"comment": "contest created successfully"}, 200
+            if data['action'] == 'update':
+                updated = update_contest(data, contest_name, user_id)
+                if updated:
+                    return {"comment": "contest updated successfully"}, 200
+                else:
+                    return {"comment": "error in contest updation"}, 501
             else:
-                return {"comment": "error in contest creation"}, 501
+                # Add contest to database
+                created = add_contest(data, contest_name, user_id)
+                if created:
+                    return {"comment": "contest created successfully"}, 200
+                else:
+                    return {"comment": "error in contest creation"}, 501
         else:
             return {"comment": "JWT Expired or Invalid"}, 401
 

@@ -107,3 +107,39 @@ def add_contest(data, contest_name, user_id):
         new_asset = db.engine.execute(
             "insert into contests_challenges (challenge_id,contest_id) values ({},{})".format(challenge_id, contest_id))
     return True
+
+def update_contest(data, contest_name, user_id):
+    contest = ContestsModel.query.filter_by(contest_name = contest_name).first()
+
+    if contest.owner == user_id:
+        #update
+        end = data['end_date']+" "+data['end_time']
+        start = data['start_date']+" "+data['start_time']
+
+        db.session.query(ContestsModel).filter(ContestsModel.id == contest.id).update({ContestsModel.start : start, ContestsModel.end : end, ContestsModel.details : data['details'], ContestsModel.show_leaderboard : data['show_leaderboard']})
+        db.session.commit()
+
+        challenges_db = []
+        
+        data_raw = db.engine.execute("select challenge_id from contests_challenges where contest_id = %s"%(contest.id))
+
+        for row in data_raw:
+            challenges_db.append(row['challenge_id'])
+
+        for challenge_id in data["challenge_ids"]:
+            if challenge_id in challenges_db:
+                continue
+            else:
+                db.engine.execute("insert into contests_challenges (challenge_id,contest_id) values (%s,%s)"%(contest.id, challenge_id))
+        
+        deleted_challenges = []
+
+        for cid in challenges_db:
+            if cid in data['challenge_id']:
+                continue
+            else:
+                db.execute.engine("Delete from contests_challenges where challenge_id = %s, contest_id = %s"%(cid, contest.id))
+        return True
+    else:
+        print("User is not authorized for updating the contest!")
+        return False
