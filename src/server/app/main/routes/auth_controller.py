@@ -25,7 +25,8 @@ class UserAll(Resource):
         auth_token = request.headers.get("Authorization")
         user_id = decode_auth_token(auth_token)
         if user_id:
-            return get_all_users
+            data = get_all_users()
+            return {'data':data, 'comment':'all users'}
         else:
             return {'comment': "Not Authorized"}, 401
 

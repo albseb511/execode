@@ -41,8 +41,20 @@ def save_new_user(data):
 
 
 def get_all_users():
-    return UserModel.query.all()
 
+    users = UserModel.query.all()
+    data = []
+    for user in users:
+        temp_dict = {}
+        temp_dict['name'] = user.name
+        temp_dict['email'] = user.email
+        temp_dict['id'] = user.id
+        temp_dict['role'] = user.role
+        ist_created_at = user.created_at - datetime.timedelta(minutes=-330)
+        temp_dict['created_at'] = ist_created_at.strftime("%m-%d-%Y %H:%M:%S")
+        data.append(temp_dict)
+    
+    return data
 
 def login(email, password):
     user = UserModel.query.filter_by(email=email).first()
