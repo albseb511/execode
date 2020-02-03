@@ -134,6 +134,10 @@ def generate_output_error(input_path, code_path, path, my_lang, output_file_name
         f_output.close()
         f_error = open(error_path ,'w')
         f_error.close()
+    
+    elif my_lang == 'test_javascript':
+        os.system("node %s %s 1>%s 2>%s"%(
+            code_path, input_path, output_path, error_path))
 
     elif my_lang == "python":
         try:
@@ -211,6 +215,8 @@ def getResults(sample_input, sample_output, language, user_id, code):
         expected_path = make_sample_output(sample_output, path)
 
         if my_lang == "javascript":
+            code_file_path = make_js_file(code, path)
+        elif my_lang == "test_javascript":
             code_file_path = make_js_file(code, path)
         elif my_lang == "python":
             code_file_path = make_python_codefile(code, path)
