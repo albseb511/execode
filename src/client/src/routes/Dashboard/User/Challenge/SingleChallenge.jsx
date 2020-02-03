@@ -37,43 +37,48 @@ const SingleChallenge = ({
   const [runCodeResponse, setRunCodeResponse] = useState({});
   const history = useHistory();
   const location = useLocation();
-  const languagesList = ["javascript", "python"];
+  const languagesList = ["javascript", "python", "cpp"];
   let data = "";
   // set placeholder data
   const setPlaceHolderData = () => {
     data = localStorage.getItem("bStore");
-    if(data && data!=""){
-      data = JSON.parse(data)      
+    if (data && data !== "") {
+      data = JSON.parse(data);
     }
-    let defLang = data[`${email}_default`] || languagesList[0]
-    if (!data || !data[`${email}__${contestId}__${challengeId}__${defLang}__default`]) {
-      if(!data)
-        data = {};
+    const defLang = data
+      ? data[`${email}_default`] || languagesList[0]
+      : languagesList[0];
+
+    if (
+      !data ||
+      !data[`${email}__${contestId}__${challengeId}__${defLang}__default`]
+    ) {
+      if (!data) data = {};
       languagesList.forEach(a => {
-        if (a == "javascript") {
+        if (a === "javascript") {
           data[`${email}__${contestId}__${challengeId}__${a}__default`] =
-            "function process(input){\n\t// write code below\n\treturn input\n}";
-          if(!data[`${email}__${contestId}__${challengeId}__${a}`]){
+            'function runProgram(input){\n  // Write code here\n    console.log(input)\n}\nprocess.stdin.resume();\nprocess.stdin.setEncoding("ascii");\nlet read = "";\nprocess.stdin.on("data", function (input) {\n    read += input;\n});\nprocess.stdin.on("end", function () {\n    read = read.replace(/\\n$/,"")\n   runProgram(read);\n});';
+          if (!data[`${email}__${contestId}__${challengeId}__${a}`]) {
             data[`${email}__${contestId}__${challengeId}__${a}`] =
-            "function process(input){\n\t// write code below\n\treturn input\n}";
+              'function runProgram(input){\n  // Write code here\n    console.log(input)\n}\nprocess.stdin.resume();\nprocess.stdin.setEncoding("ascii");\nlet read = "";\nprocess.stdin.on("data", function (input) {\n    read += input;\n});\nprocess.stdin.on("end", function () {\n    read = read.replace(/\\n$/,"")\n   runProgram(read);\n});';
           }
-        } else {
+        } else if (a === "python") {
           data[`${email}__${contestId}__${challengeId}__${a}__default`] =
             "# write code here. python3";
-          if(!data[`${email}__${contestId}__${challengeId}__${a}`]){
+          if (!data[`${email}__${contestId}__${challengeId}__${a}`]) {
             data[`${email}__${contestId}__${challengeId}__${a}`] =
               "# write code here. python3";
           }
         }
       });
-      if(!data[`${email}__default`]){
-        data[`${email}__default`] = languagesList[0]
+      if (!data[`${email}__default`]) {
+        [data[`${email}__default`]] = languagesList;
       }
       localStorage.setItem("bStore", JSON.stringify(data));
     }
     setCode(data[`${email}__${contestId}__${challengeId}__${defLang}`]);
-    setLanguage(data[`${email}__default`])
-  }
+    setLanguage(data[`${email}__default`]);
+  };
   useEffect(() => {
     async function getChallenges() {
       try {
@@ -89,14 +94,14 @@ const SingleChallenge = ({
       }
     }
     getChallenges();
-    setPlaceHolderData()
+    setPlaceHolderData();
   }, []);
 
   useEffect(() => {
     data = localStorage.getItem("bStore");
     data = JSON.parse(data);
-    data[`${email}__default`] = language
-    localStorage.setItem("bStore",JSON.stringify(data))
+    data[`${email}__default`] = language;
+    localStorage.setItem("bStore", JSON.stringify(data));
     setCode(data[`${email}__${contestId}__${challengeId}__${language}`]);
   }, [language]);
 
@@ -139,7 +144,7 @@ const SingleChallenge = ({
   };
 
   const handleEvents = ({ text }, event) => {
-    let date = new Date
+    const date = new Date();
     const payload = {
       event,
       text: `${event} content \n\n//\n//\n\n// Code at ${date.toLocaleTimeString()} ${date.toLocaleDateString()}\n\n${code}`,
