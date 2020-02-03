@@ -59,7 +59,7 @@ const SubmitChallenge = ({
       if (a.passed) {
         return (
           <div key={a.test_case_id} className="col-md-2 mt-4 mb-3 text-center">
-            <div key={a.test_case_id}>
+            <div>
               <div>
                 <i className="fas fa-check-circle fa-lg text-success fa-2x mb-2" />
               </div>
@@ -69,8 +69,8 @@ const SubmitChallenge = ({
         );
       }
       return (
-        <div className="col-md-2 mt-4 mb-3 text-center">
-          <div key={a.test_case_id}>
+        <div  key={a.test_case_id} className="col-md-2 mt-4 mb-3 text-center">
+          <div >
             <div>
               <i className="fas fa-times-circle fa-lg text-danger fa-2x mb-2" />
             </div>
@@ -114,7 +114,7 @@ const SubmitChallenge = ({
               mode="python"
               theme="github"
               value={code}
-              readOnly="true"
+              readOnly
               name="UNIQUE_ID_OF_DIV"
               editorProps={{ $blockScrolling: true }}
             />
