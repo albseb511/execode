@@ -185,14 +185,6 @@ def compare_output(output_path, expected_path):
 
 
 def getResults(sample_input, sample_output, language, user_id, code):
-    #if language == 'javascript':
-    #    output_boolean = False
-    #    error = ''
-    #    ctx = execjs.compile(code)
-    #    temp_output = ctx.call('process', sample_input)
-    #    if temp_output == sample_output:
-    #        output_boolean = True
-    #    return temp_output, error, output_boolean
 
     path = makeRunCodeFolder(user_id)
     my_lang = language.lower()
