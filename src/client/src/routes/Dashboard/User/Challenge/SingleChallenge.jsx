@@ -41,9 +41,11 @@ const SingleChallenge = ({
   let data = "";
   // set placeholder data
   const setPlaceHolderData = () => {
-    data = JSON.parse(localStorage.getItem("bStore"));
-    let defLang = data[`${email}_default`]
-    console.log(data,!data, !data[`${email}__${contestId}__${challengeId}__${defLang}__default`],`${email}__${contestId}__${challengeId}__${language}__default`)
+    data = localStorage.getItem("bStore");
+    if(data && data!=""){
+      data = JSON.parse(data)      
+    }
+    let defLang = data[`${email}_default`] || languagesList[0]
     if (!data || !data[`${email}__${contestId}__${challengeId}__${defLang}__default`]) {
       if(!data)
         data = {};
@@ -65,8 +67,6 @@ const SingleChallenge = ({
         }
       });
       if(!data[`${email}__default`]){
-        console.log(data)
-        alert('pop')
         data[`${email}__default`] = languagesList[0]
       }
       localStorage.setItem("bStore", JSON.stringify(data));
