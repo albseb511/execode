@@ -22,7 +22,7 @@ def add_event(data,user_id):
     return save_changes(new_assest)
 
 def get_events(user_id):
-    data_event = db.engine.execute("select a.event as event, a.created_at as created_at, a.event_text as text, b.name as name, d.challenge_name from events as a join contests_challenges as c on c.id = a.contests_challenges_id join challenges as d on d.id = c.challenge_id join users as b on b.id = a.id where a.user_id = '%s';"%(user_id))
+    data_event = db.engine.execute("select a.event as event, a.created_at as created_at, a.event_text as text, b.name as name, d.challenge_name from events as a join contests_challenges as c on c.id = a.contests_challenges_id join challenges as d on d.id = c.challenge_id join users as b on b.id = a.user_id where a.user_id = %s ORDER BY YEAR(a.created_at) DESC, MONTH(a.created_at) DESC, DAY(a.created_at) DESC, HOUR(a.created_at) DESC, MINUTE(a.created_at) DESC, SECOND(a.created_at) DESC;;"%(user_id))
     events = []
     for row in data_event:
         temp_dict = {}
@@ -31,4 +31,5 @@ def get_events(user_id):
         temp_dict['name'] = row.name
         temp_dict['challenge_name'] = row.challenge_name
         temp_dict['created_at'] = row.created_at.strftime("%m-%d-%Y %H:%M:%S")
+        events.append(temp_dict)
     return events

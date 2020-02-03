@@ -19,6 +19,16 @@ class UserSignUp(Resource):
         data = request.json
         return save_new_user(data=data)
 
+class UserAll(Resource):
+
+    def get(self):
+        auth_token = request.headers.get("Authorization")
+        user_id = decode_auth_token(auth_token)
+        if user_id:
+            data = get_all_users()
+            return {'data':data, 'comment':'all users'}
+        else:
+            return {'comment': "Not Authorized"}, 401
 
 class UserLogin(Resource):
     """

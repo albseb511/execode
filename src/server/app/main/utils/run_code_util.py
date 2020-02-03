@@ -82,6 +82,12 @@ def make_js_file(code, path):
     wf.close()
     return path+"/code.js"
 
+def make_cpp_file(code, path):
+    wf = open(path+"/code.cpp", "w")
+    wf.write(code)
+    wf.close()
+    return path+"/code.cpp"
+
 @exit_after(1)
 def run_python_code(code_path, input_path, output_path, error_path):
     print("started run code")
@@ -94,6 +100,13 @@ def run_python2_code(code_path, input_path, output_path, error_path):
     os.system("python3 %s 0<%s 1>%s 2>%s"%(
             code_path, input_path, output_path, error_path))
 
+@exit_after(1)
+def run_cpp_code(code_path, input_path, output_path, error_path):
+    print("started cpp run code")
+
+    os.system('g++ %s -o %s 2>%s'%(code_path, code_path.strip('.cpp'), error_path))
+    os.system("./%s <%s >%s "%(
+            code_path.strip('.cpp'), input_path, output_path))
 
 @exit_after(1)
 def run_js_code(code, input_test):
@@ -132,6 +145,13 @@ def generate_output_error(input_path, code_path, path, my_lang, output_file_name
     elif my_lang == "python2":
         try:
             run_python2_code(
+            code_path, input_path, output_path, error_path)
+        except Exception as e:
+            return False, "Infinite Loop"
+    
+    elif my_lang == "cpp":
+        try:
+            run_cpp_code(
             code_path, input_path, output_path, error_path)
         except Exception as e:
             return False, "Infinite Loop"
@@ -194,6 +214,8 @@ def getResults(sample_input, sample_output, language, user_id, code):
             code_file_path = make_js_file(code, path)
         elif my_lang == "python":
             code_file_path = make_python_codefile(code, path)
+        elif my_lang == 'cpp':
+            code_file_path = make_cpp_file(code, path)
 
         output_path, error_path = generate_output_error(
             input_path, code_file_path, path, my_lang)

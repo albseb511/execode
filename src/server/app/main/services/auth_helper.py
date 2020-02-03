@@ -37,13 +37,13 @@ class Auth:
     @staticmethod
     def logout_user(data):
         if data:
-            auth_token = data.split(" ")[1]
+            auth_token = data
         else:
             auth_token = ''
         if auth_token:
             resp = UserModel.decode_auth_token(auth_token)
             if resp == True:
-                
+
                 response_object = {
                     'status': 'success',
                     'message': 'Token Deactivated'
