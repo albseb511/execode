@@ -21,13 +21,13 @@ const TimeLeft = ({timeLeft, contestStatus, updateTime, hours,min,sec}) => {
     },[live])
     if(contestStatus==="pending")
         return(
-            <div className="btn btn-dark active p-2 m-2">
+            <div className="btn btn-dark active p-2">
                 PENDING
             </div>
         )
     if(contestStatus==="ended")
         return(
-            <div className="btn btn-danger active p-2 m-2">
+            <div className="btn btn-danger active p-2">
                 ENDED
             </div>
         )
@@ -36,14 +36,14 @@ const TimeLeft = ({timeLeft, contestStatus, updateTime, hours,min,sec}) => {
         return(
         <>
             <Redirect to="/dashboard" />
-            <div className="btn btn-success active p-2 m-2">
+            <div className="btn btn-success active p-2">
                 NOT BEGUN
             </div>
         </>
         )
     }
     return (
-        <div className="btn btn-dark active p-2 m-2">
+        <div className="btn btn-dark active p-2">
             { hours>0?(hours>10?(hours):("0"+hours)):("00") }:
             { min>0?(min>10?(min):("0"+min)):("00") }:
             { sec>0?(sec>10?(sec):("0"+sec)):("00") }
