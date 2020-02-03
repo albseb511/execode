@@ -58,8 +58,10 @@ const SingleChallenge = ({
         } else {
           data[`${email}__${contestId}__${challengeId}__${a}__default`] =
             "# write code here. python3";
-          data[`${email}__${contestId}__${challengeId}__${a}`] =
-            "# write code here. python3";
+          if(!data[`${email}__${contestId}__${challengeId}__${a}`]){
+            data[`${email}__${contestId}__${challengeId}__${a}`] =
+              "# write code here. python3";
+          }
         }
       });
       if(!data[`${email}__default`]){
