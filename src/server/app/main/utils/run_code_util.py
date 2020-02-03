@@ -121,7 +121,7 @@ def generate_output_error(input_path, code_path, path, my_lang, output_file_name
 
     if my_lang == 'javascript':
         try:
-            run_python_code(
+            run_js_code(
             code_path, input_path, output_path, error_path)
         except Exception as e:
             return False, e
