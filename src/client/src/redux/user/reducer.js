@@ -6,7 +6,10 @@ import {
   SUBMIT_CODE_FAILURE,
   SUBMIT_TEST_CASE_REQUEST,
   SUBMIT_TEST_CASE_FAILURE,
-  SUBMIT_TEST_CASE_SUCCESS
+  SUBMIT_TEST_CASE_SUCCESS,
+  SUBMIT_TEST_CASE_ENDED_FAILURE,
+  SUBMIT_TEST_CASE_ENDED_SUCCESS,
+  SUBMIT_TEST_CASE_ENDED_REQUEST
 } from "./actionTypes";
 
 let data = localStorage.getItem("bStore");
@@ -17,19 +20,22 @@ if (!data) {
 
 const initialState = {
   isSubmit: false,
-  submitCode: "print('hello')",
-  language: "python",
+  submitCode: "",
+  language: "",
   isLoading: false,
   error: false,
+  errorType: "",
   errorMessage: "",
   isTestCasesDataReady: false,
   testCaseResults: [],
-  sumbissonId: "",
+  submissionId: "",
   timeLimit: "",
   codeFilePath: "",
   submitPath: "",
   testCasePending: null,
-  score: 0
+  score: 0,
+  getTestCaseEnded: false,
+  isFinalSubmitting: false,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -50,12 +56,14 @@ export default (state = initialState, { type, payload }) => {
         language: "",
         isTestCasesDataReady: false,
         testCaseResults: [],
-        sumbissonId: "",
+        submissionId: "",
         timeLimit: "",
         codeFilePath: "",
         submitPath: "",
         testCasePending: null,
-        score: 0
+        score: 0,
+        getTestCaseEnded: false,
+        isFinalSubmitting: false
       };
 
     case SUBMIT_CODE_REQUEST: {
@@ -78,7 +86,7 @@ export default (state = initialState, { type, payload }) => {
         codeFilePath: payload.code_file_path,
         submitPath: payload.path,
         timeLimit: payload.time_limit,
-        sumbissonId: payload.submission_id,
+        submissionId: payload.submission_id,
         testCasePending: payload.test_cases.length
       };
     }
@@ -88,6 +96,7 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         isLoading: false,
         error: true,
+        errorType: "submit code",
         errorMessage: "submit code failed"
       };
     }
@@ -101,21 +110,44 @@ export default (state = initialState, { type, payload }) => {
     case SUBMIT_TEST_CASE_SUCCESS:{
       let result = payload.sample_result
       let id = payload.test_case_id
+      let testCaseEnded = state.testCasePending===1?true:false 
       return {
         ...state,
         testCasePending: state.testCasePending - 1,
-        testCaseResults: state.testCaseResults.map(a=>id===a.id?result?{...a, result:true}:{...a,result:false}:{...a})
+        testCaseResults: state.testCaseResults.map(a=>id===a.id?result?{...a, result:true}:{...a,result:false}:{...a}),
+        getTestCaseEnded: testCaseEnded
       }
     }
     case SUBMIT_TEST_CASE_FAILURE:{
-      let result = payload.sample_result
       let id = payload.test_case_id
+      let testCaseEnded = state.testCasePending===1?true:false 
       return {
         ...state,
         testCasePending: state.testCasePending -1,
-        testCaseResults: state.testCaseResults.map(a=>id===a.id || payload.timeout?{...a, result:false}:{...a})
+        testCaseResults: state.testCaseResults.map(a=>id===a.id || payload.timeout?{...a, result:false}:{...a}),
+        getTestCaseEnded: testCaseEnded
       }
     }
+    case SUBMIT_TEST_CASE_ENDED_REQUEST:
+      return {
+        ...state,
+        isFinalSubmitting: true
+      }
+
+    case SUBMIT_TEST_CASE_ENDED_SUCCESS:
+      return {
+        ...state,
+        isFinalSubmitting: false
+      }
+      
+    case SUBMIT_TEST_CASE_ENDED_FAILURE:
+      return {
+        ...state,
+        error: true,
+        errorType: "marks submit",
+        errorMessage: "final submit of marks failed"
+      }
+
     default:
       return state;
   }

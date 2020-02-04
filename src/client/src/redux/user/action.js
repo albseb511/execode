@@ -10,7 +10,10 @@ import {
   EVENT_CODE_FAILURE,
   SUBMIT_TEST_CASE_REQUEST,
   SUBMIT_TEST_CASE_SUCCESS,
-  SUBMIT_TEST_CASE_FAILURE
+  SUBMIT_TEST_CASE_FAILURE,
+  SUBMIT_TEST_CASE_ENDED_REQUEST,
+  SUBMIT_TEST_CASE_ENDED_SUCCESS,
+  SUBMIT_TEST_CASE_ENDED_FAILURE
 
 } from "./actionTypes";
 import axios from "../../utils/axiosInterceptor";
@@ -134,10 +137,46 @@ export const submitTestCase = payload => {
           headers: {
             Authorization: payload.token
           },
-          timeout: 100
+          timeout: payload.timeLimit
         }
       )
       .then(res => dispatch(submitTestCaseSuccess(res.data)))
       .catch(err => dispatch(submitTestCaseFailure({...err,timeout:true})));
+  };
+};
+
+export const submitTestCaseEndRequest = () => ({
+  type: SUBMIT_TEST_CASE_ENDED_REQUEST
+});
+
+export const submitTestCaseEndSuccess = payload => ({
+  type: SUBMIT_TEST_CASE_ENDED_SUCCESS,
+  payload
+});
+
+export const submitTestCaseEndFailure = payload => ({
+  type: SUBMIT_TEST_CASE_ENDED_FAILURE,
+  payload
+});
+
+export const submitTestCaseEnd = payload => {
+  submitTestCaseEndRequest();
+  return dispatch => {
+    axios
+      .post(
+        "/submitupdate",
+        {
+          submission_id: payload.submission_id,
+          path: payload.path,
+          test_case_info: payload.test_case_info
+        },
+        {
+          headers: {
+            Authorization: payload.token
+          },
+        }
+      )
+      .then(res => dispatch(submitTestCaseEndSuccess(res.data)))
+      .catch(err => dispatch(submitTestCaseEndFailure(err)));
   };
 };

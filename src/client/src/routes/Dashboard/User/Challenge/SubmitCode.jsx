@@ -8,7 +8,8 @@ import { useHistory, useLocation } from "react-router-dom";
 import {
   submitPageRouteExit,
   getSubmitResults,
-  submitTestCase
+  submitTestCase,
+  submitTestCaseEnd
 } from "../../../../redux/user/action";
 import "./spinner.css"
 
@@ -30,7 +31,10 @@ const SubmitChallenge = ({
   codeFilePath,
   submitPath,
   testCasePending,
-  timeLimit
+  timeLimit,
+  getTestCaseEnded,
+  submissionId,
+  submitTestCaseEnd
 }) => {
   const history = useHistory();
   const location = useLocation();
@@ -83,6 +87,22 @@ const SubmitChallenge = ({
     let newScore = testCaseResults.reduce((acc,test)=>test.result?acc+test.strength:acc,0)
     setScore(newScore)
   },[testCasePending])
+
+  useEffect(()=>{
+    if(testCasePending===0){
+      let test_case_info = {}
+      testCaseResults.forEach((test,i)=>{
+        test_case_info[`tco${i+1}`] = test.result
+      })
+      let payload = {
+          submission_id: submissionId,
+          path: submitPath,
+          test_case_info,
+          token
+      }
+      submitTestCaseEnd(payload)
+    }
+  },[getTestCaseEnded])
 
   if (!isLoading && isSubmit && testCaseResults) {
     testPass = testCaseResults.map((a, i) => {
@@ -180,13 +200,16 @@ const mapStateToProps = state => ({
   codeFilePath: state.user.codeFilePath,
   testCasePending: state.user.testCasePending,
   isTestCasesDataReady: state.user.isTestCasesDataReady,
-  timeLimit: state.user.timeLimit
+  timeLimit: state.user.timeLimit,
+  getTestCaseEnded: state.user.getTestCaseEnded,
+  submissionId: state.user.submissionId
 });
 
 const mapDispatchToProps = dispatch => ({
   unmount: () => dispatch(submitPageRouteExit()),
   getResults: payload => dispatch(getSubmitResults(payload)),
-  submitTestCase: payload => dispatch(submitTestCase(payload))
+  submitTestCase: payload => dispatch(submitTestCase(payload)),
+  submitTestCaseEnd: payload => dispatch(submitTestCaseEnd(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SubmitChallenge);
