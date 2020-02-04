@@ -3,8 +3,8 @@ import os
 import subprocess
 import fileinput
 import multiprocessing
-
 import sys
+import time
 import threading
 from time import sleep
 try:
@@ -14,10 +14,15 @@ except ImportError:
 
 
 def quit_function(fn_name):
-    # print to stderr, unbuffered in Python 2.
-    print('{0} took too long'.format(fn_name), file=sys.stderr)
-    sys.stderr.flush() # Python 3 stderr is likely buffered.
-    thread.interrupt_main() # raises KeyboardInterrupt
+    try:
+        print('{0} took too long'.format(fn_name), file=sys.stderr)
+        sys.stderr.flush()
+        #thread.interrupt_main()
+        raise KeyboardInterrupt
+    except KeyboardInterrupt:
+        print("stopped")
+    finally:
+        return False, "error"
 
 def exit_after(s):
     '''
@@ -87,19 +92,19 @@ def make_cpp_file(code, path):
     wf.close()
     return path+"/code.cpp"
 
-@exit_after(1)
+@exit_after(2)
 def run_python_code(code_path, input_path, output_path, error_path):
     print("started run code")
     os.system("python3 %s 0<%s 1>%s 2>%s"%(
             code_path, input_path, output_path, error_path))
 
-@exit_after(1)
+@exit_after(2)
 def run_python2_code(code_path, input_path, output_path, error_path):
     print("started run code")
     os.system("python3 %s 0<%s 1>%s 2>%s"%(
             code_path, input_path, output_path, error_path))
 
-@exit_after(1)
+@exit_after(2)
 def run_cpp_code(code_path, input_path, output_path, error_path):
     print("started cpp run code")
 
@@ -107,7 +112,7 @@ def run_cpp_code(code_path, input_path, output_path, error_path):
     os.system("%s.o <%s >%s "%(
             code_path.strip('.cpp'), input_path, output_path))
 
-@exit_after(1)
+@exit_after(2)
 def run_js_code(code_path, input_path, output_path, error_path):
     os.system("node %s 0<%s 1>%s 2>%s"%(
             code_path, input_path, output_path, error_path))
@@ -130,8 +135,8 @@ def generate_output_error(input_path, code_path, path, my_lang, output_file_name
         try:
             run_python_code(
             code_path, input_path, output_path, error_path)
-        except Exception as e:
-            return False, e
+        except KeyboardInterrupt:
+            print('IT is working__________________')
 
     elif my_lang == "python2":
         try:

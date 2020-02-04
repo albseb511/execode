@@ -24,7 +24,7 @@ class RuncodeResource(Resource):
                 output, error, is_correct = getResults(
                     details.sample_input, details.sample_output, data['language'], user_id, data["code"])
                 
-                if error == '':
+                if len(error) != 0:
                     return {
                     "comment": "runcode successful",
                     "user_output": "",
@@ -53,4 +53,4 @@ class RuncodeResource(Resource):
             else:
                 return {"comment": "Incorrect Challenge Id", "error": True}, 404
         else:
-            return {"comment": "User not Found"}, 401
+            return {"comment": "User not Found or jwt expired"}, 401

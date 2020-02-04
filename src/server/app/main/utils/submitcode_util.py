@@ -1,7 +1,7 @@
 import os
 import subprocess
 import fileinput
-from app.main.utils.run_code_util import is_error, make_python_codefile, generate_output_error, compare_output
+from app.main.utils.run_code_util import is_error, make_python_codefile, generate_output_error, compare_output, read_error
 import json
 from app.main.models.SubmissionsModel import SubmissionsModel
 from app.main import db
@@ -21,6 +21,26 @@ def make_submit_folder(submission_id):
             return False
     return path
 
+def make_marks_file(path):
+    wf = open(path+"/marks.txt", "w")
+    wf.write('0')
+    wf.close()
+    return path+"/marks.txt"
+
+def increment_marks_file(path, strength):
+    wf = open(path+"/marks.txt", "r")
+    marks = int(wf.read())
+    wf.close()
+    wf = open(path+"/marks.txt", "w")
+    wf.write(str(marks+strength))
+    wf.close()
+    return path+"/marks.txt"
+
+def read_marks_file(path):
+    wf = open(path+"/marks.txt", "r")
+    marks = int(wf.read())
+    wf.close()
+    return marks
 
 def get_results(submission_id, test_cases, code, language, max_score):
     # after inserting into submissionsfolder
@@ -67,3 +87,40 @@ def get_results(submission_id, test_cases, code, language, max_score):
         return False, False, False
     else:
         return False, False, False
+
+def get_result_test_case(path, code_file_path, input_file, expected_output_file, language, strength, test_id):
+
+    language = language.lower()
+
+    if language == "python" or language == 'javascript':
+        if path:
+            output_path, error_path = generate_output_error(
+                '%s.txt'%(input_file), code_file_path, path, language, output_file_name="tco"+str(test_id), error_file_name="tce"+str(test_id))
+
+            check_error = is_error(error_path)
+            if check_error == True:
+                return False, read_error(error_path), False
+
+            if output_path == False:
+                return False, "Infinite Loop", False
+
+            is_correct, output = compare_output(output_path, expected_output_file+'.txt')
+
+            if is_correct:
+                increment_marks_file(path, strength)
+
+            return (''.join(output), read_error(error_path), is_correct and (not is_error(error_path)))
+
+        return False, 'Path not found', False
+    else:
+        return False, 'Language not supported', False
+
+def update_submission_marks(path, submission_id, test_case_info):
+    marks = read_marks_file(path)
+    try:
+        db.session.query(SubmissionsModel).filter(SubmissionsModel.id == submission_id).update({SubmissionsModel.score : marks, SubmissionsModel.test_cases_info: json.dumps(test_case_info)})
+        db.session.commit()
+        return True
+    except:
+        db.session.rollback()
+        return False

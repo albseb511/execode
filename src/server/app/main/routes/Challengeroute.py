@@ -18,7 +18,7 @@ class Challenge(Resource):
         if user_id:
             # check if he is admin
             return get_challenge(challenge_id)
-        return {"comment":"Not Authorized"}, 401
+        return {"comment":"Not Authorized or jwt expired"}, 401
 
     def post(self,challenge_id):
         # auth token 
