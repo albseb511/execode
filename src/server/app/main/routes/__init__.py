@@ -4,7 +4,7 @@ from app.main.routes.Contest import Contest
 from app.main.routes.UserLeaderboard import UserLeaderboard
 from app.main.routes.AdminLeaderboard import AdminLeaderboard
 from app.main.routes.RuncodeResource import RuncodeResource
-from app.main.routes.SubmitCodeResource import SubmitCodeResource
+from app.main.routes.SubmitCodeResource import SubmitCodeResource, SubmitCodeResourceTestCaseList, SubmitCodeResourceTestCaseRun , SubmitCodeResourceUpdate
 from app.main.routes.AllChallenge import AllChallenge
 from app.main.routes.Challengeroute import Challenge
 from app.main.routes.Contests import Contests
@@ -25,6 +25,9 @@ def add_resources(app):
     api.add_resource(EventsHandle, '/event/<user_id>')
     api.add_resource(EventsHandleAdd, '/event')
     api.add_resource(UserAll, '/users')
+    api.add_resource(SubmitCodeResourceTestCaseList, '/submitcodelist')
+    api.add_resource(SubmitCodeResourceTestCaseRun, '/testcaserun')
+    api.add_resource(SubmitCodeResourceUpdate, '/submitupdate')
     api.add_resource(JwtValidation, '/validate')
     api.add_resource(LogoutAPI, '/logout')
     api.add_resource(UserSignUp, '/signup')
