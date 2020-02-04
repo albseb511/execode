@@ -38,6 +38,7 @@ const SingleChallenge = ({
   const history = useHistory();
   const location = useLocation();
   const languagesList = ["javascript", "python", "cpp"];
+  const [isLoading, setIsLoading] = useState(false)
   let data = "";
   // set placeholder data
   const setPlaceHolderData = () => {
@@ -57,10 +58,10 @@ const SingleChallenge = ({
       languagesList.forEach(a => {
         if (a === "javascript") {
           data[`${email}__${contestId}__${challengeId}__${a}__default`] =
-            'function runProgram(input){\n  // Write code here\n    console.log(input)\n}\nprocess.stdin.resume();\nprocess.stdin.setEncoding("ascii");\nlet read = "";\nprocess.stdin.on("data", function (input) {\n    read += input;\n});\nprocess.stdin.on("end", function () {\n    read = read.replace(/\\n$/,"")\n   runProgram(read);\n});';
+            'function runProgram(input){\n  // Write code here\n    console.log(input)\n}\n\n\n\n\nprocess.stdin.resume();\nprocess.stdin.setEncoding("ascii");\nlet read = "";\nprocess.stdin.on("data", function (input) {\n    read += input;\n});\nprocess.stdin.on("end", function () {\n    read = read.replace(/\\n$/,"")\n   runProgram(read);\n});';
           if (!data[`${email}__${contestId}__${challengeId}__${a}`]) {
             data[`${email}__${contestId}__${challengeId}__${a}`] =
-              'function runProgram(input){\n  // Write code here\n    console.log(input)\n}\nprocess.stdin.resume();\nprocess.stdin.setEncoding("ascii");\nlet read = "";\nprocess.stdin.on("data", function (input) {\n    read += input;\n});\nprocess.stdin.on("end", function () {\n    read = read.replace(/\\n$/,"")\n   runProgram(read);\n});';
+              'function runProgram(input){\n  // Write code here\n    console.log(input)\n}\n\n\n\n\nprocess.stdin.resume();\nprocess.stdin.setEncoding("ascii");\nlet read = "";\nprocess.stdin.on("data", function (input) {\n    read += input;\n});\nprocess.stdin.on("end", function () {\n    read = read.replace(/\\n$/,"")\n   runProgram(read);\n});';
           }
         } else if (a === "python") {
           data[`${email}__${contestId}__${challengeId}__${a}__default`] =
@@ -106,6 +107,7 @@ const SingleChallenge = ({
   }, [language]);
 
   const runCode = () => {
+    setIsLoading(true)
     axios
       .post(
         "/runcode",
@@ -122,7 +124,10 @@ const SingleChallenge = ({
           }
         }
       )
-      .then(response => setRunCodeResponse(response.data))
+      .then(response => {
+        setRunCodeResponse(response.data)
+        setIsLoading(false)
+      })
       .catch(err => console.log("error while running code", err.message));
   };
 
@@ -304,12 +309,25 @@ const SingleChallenge = ({
             </div>
             <div>
               <h6 className="text-primary">Output</h6>
+              <hr />
+              {runCodeResponse && 
+                runCodeResponse.hasOwnProperty('is_error') &&
+                runCodeResponse.is_error && 
+                runCodeResponse.user_error.length!==0 &&
+                <h6 className="text-danger">Error</h6>}
               <div className="py-3">
                 <pre className="execode-code">
                   <code>
-                    {runCodeResponse &&
+                    {isLoading && "loading..."}
+                    {!isLoading &&
+                      runCodeResponse &&
                       runCodeResponse.user_output &&
                       runCodeResponse.user_output.join("")}
+                    {!isLoading && 
+                      runCodeResponse && 
+                      runCodeResponse.hasOwnProperty('is_error') &&
+                      runCodeResponse.is_error &&
+                        runCodeResponse.user_error}
                   </code>
                 </pre>
               </div>
