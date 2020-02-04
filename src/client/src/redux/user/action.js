@@ -133,10 +133,11 @@ export const submitTestCase = payload => {
         {
           headers: {
             Authorization: payload.token
-          }
+          },
+          timeout: 100
         }
       )
       .then(res => dispatch(submitTestCaseSuccess(res.data)))
-      .catch(err => dispatch(submitTestCaseFailure(err)));
+      .catch(err => dispatch(submitTestCaseFailure({...err,timeout:true})));
   };
 };

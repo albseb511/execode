@@ -47,15 +47,7 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         isSubmit: false,
         submitCode: "",
-        language: ""
-      };
-
-    case SUBMIT_CODE_REQUEST: {
-      return {
-        ...state,
-        isLoading: true,
-        error: false,
-        errorMessage: "",
+        language: "",
         isTestCasesDataReady: false,
         testCaseResults: [],
         sumbissonId: "",
@@ -64,6 +56,14 @@ export default (state = initialState, { type, payload }) => {
         submitPath: "",
         testCasePending: null,
         score: 0
+      };
+
+    case SUBMIT_CODE_REQUEST: {
+      return {
+        ...state,
+        isLoading: true,
+        error: false,
+        errorMessage: ""
       };
     }
 
@@ -78,7 +78,8 @@ export default (state = initialState, { type, payload }) => {
         codeFilePath: payload.code_file_path,
         submitPath: payload.path,
         timeLimit: payload.time_limit,
-        sumbissonId: payload.submission_id
+        sumbissonId: payload.submission_id,
+        testCasePending: payload.test_cases.length
       };
     }
 
@@ -112,7 +113,7 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         testCasePending: state.testCasePending -1,
-        testCaseResults: state.testCaseResults.map(a=>id===a.id?result?{...a, result:true}:{...a,result:false}:{...a})
+        testCaseResults: state.testCaseResults.map(a=>id===a.id || payload.timeout?{...a, result:false}:{...a})
       }
     }
     default:

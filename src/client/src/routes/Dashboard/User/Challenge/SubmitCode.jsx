@@ -29,7 +29,8 @@ const SubmitChallenge = ({
   submitTestCase,
   codeFilePath,
   submitPath,
-  testCasePending
+  testCasePending,
+  timeLimit
 }) => {
   const history = useHistory();
   const location = useLocation();
@@ -71,7 +72,8 @@ const SubmitChallenge = ({
         output_file,
         path: submitPath,
         code_file_path: codeFilePath,
-        token
+        token,
+        timeLimit
       }
       submitTestCase(payload)
     }
@@ -178,6 +180,7 @@ const mapStateToProps = state => ({
   codeFilePath: state.user.codeFilePath,
   testCasePending: state.user.testCasePending,
   isTestCasesDataReady: state.user.isTestCasesDataReady,
+  timeLimit: state.user.timeLimit
 });
 
 const mapDispatchToProps = dispatch => ({

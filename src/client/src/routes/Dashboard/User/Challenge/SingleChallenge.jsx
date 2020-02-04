@@ -58,10 +58,10 @@ const SingleChallenge = ({
       languagesList.forEach(a => {
         if (a === "javascript") {
           data[`${email}__${contestId}__${challengeId}__${a}__default`] =
-            'function runProgram(input){\n  // Write code here\n    console.log(input)\n}\n\n\n\n\nprocess.stdin.resume();\nprocess.stdin.setEncoding("ascii");\nlet read = "";\nprocess.stdin.on("data", function (input) {\n    read += input;\n});\nprocess.stdin.on("end", function () {\n    read = read.replace(/\\n$/,"")\n   runProgram(read);\n});';
+            'function runProgram(input){\n  // Write code here\n    console.log(input)\n}\n\n\n\n\nprocess.stdin.resume();\nprocess.stdin.setEncoding("ascii");\nlet read = "";\nprocess.stdin.on("data", function (input) {\n    read += input;\n});\nprocess.stdin.on("end", function () {\n\tread = read.replace(/\n$/,"")\n\tread = read.replace(/\\n$/,"")\n   runProgram(read);\n});';
           if (!data[`${email}__${contestId}__${challengeId}__${a}`]) {
             data[`${email}__${contestId}__${challengeId}__${a}`] =
-              'function runProgram(input){\n  // Write code here\n    console.log(input)\n}\n\n\n\n\nprocess.stdin.resume();\nprocess.stdin.setEncoding("ascii");\nlet read = "";\nprocess.stdin.on("data", function (input) {\n    read += input;\n});\nprocess.stdin.on("end", function () {\n    read = read.replace(/\\n$/,"")\n   runProgram(read);\n});';
+              'function runProgram(input){\n  // Write code here\n    console.log(input)\n}\n\n\n\n\nprocess.stdin.resume();\nprocess.stdin.setEncoding("ascii");\nlet read = "";\nprocess.stdin.on("data", function (input) {\n    read += input;\n});\nprocess.stdin.on("end", function () {\n\tread = read.replace(/\n$/,"")\n\tread = read.replace(/\\n$/,"")\n   runProgram(read);\n});';
           }
         } else if (a === "python") {
           data[`${email}__${contestId}__${challengeId}__${a}__default`] =
