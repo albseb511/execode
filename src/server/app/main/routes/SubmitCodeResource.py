@@ -61,7 +61,7 @@ class SubmitCodeResource(Resource):
                 else:
                     return {"comment": "No output"}, 400
         else:
-            return {"comment": "User not Found"}, 401
+            return {"comment": "User not Found or jwt expired"}, 401
 
 class SubmitCodeResourceTestCaseList(Resource):
     parser = reqparse.RequestParser()
@@ -113,7 +113,7 @@ class SubmitCodeResourceTestCaseList(Resource):
             else:
                 return {'status': 'fail', 'comment': 'error in fetching test cases, contest_challenge_id not found'}
         else:
-            return {"comment": "User not Found"}, 401
+            return {"comment": "User not Found or jwt expired"}, 401
 
 class SubmitCodeResourceTestCaseRun(Resource):
     parser = reqparse.RequestParser()
@@ -166,7 +166,7 @@ class SubmitCodeResourceTestCaseRun(Resource):
             }, 200
 
         else:
-            return {"comment": "User not Found"}, 401
+            return {"comment": "User not Found or jwt expired"}, 401
 
 class SubmitCodeResourceUpdate(Resource):
     parser = reqparse.RequestParser()
@@ -189,4 +189,4 @@ class SubmitCodeResourceUpdate(Resource):
                 return{'status':'fail', 'comment': 'error in updation'}
             
         else:
-            return {'status':'fail', 'comment':'user not found'}
+            return {'status':'fail', 'comment':'user not found or jwt expired'}

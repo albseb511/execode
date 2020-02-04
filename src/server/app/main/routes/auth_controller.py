@@ -4,6 +4,7 @@ from ..services.user_service import save_new_user, get_all_users
 import requests
 from app.main.services.auth_helper import Auth
 from app.main.utils.oauth_utils import github, oauth, facebook, g
+from app.main.services.decode_auth_token import decode_auth_token
 
 
 class UserSignUp(Resource):
@@ -28,7 +29,7 @@ class UserAll(Resource):
             data = get_all_users()
             return {'data':data, 'comment':'all users'}
         else:
-            return {'comment': "Not Authorized"}, 401
+            return {'comment': "Not Authorized or jwt expired"}, 401
 
 class UserLogin(Resource):
     """

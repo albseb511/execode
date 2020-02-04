@@ -53,4 +53,4 @@ class RuncodeResource(Resource):
             else:
                 return {"comment": "Incorrect Challenge Id", "error": True}, 404
         else:
-            return {"comment": "User not Found"}, 401
+            return {"comment": "User not Found or jwt expired"}, 401
