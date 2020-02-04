@@ -22,6 +22,7 @@ import ContestDetails from "./Dashboard/User/Contest/ContestDetails";
 import ContestLeaderboardUser from "./Dashboard/User/Contest/ContestLeaderboardUser";
 import AdminRoutes from "../components/common/AdminRoutes";
 import AdminSettings from "./Dashboard/Admin/CPanel/AdminSettings";
+import EditContestDetails from "./Dashboard/Admin/CreateContest/EditContestDetails";
 import CreateUsers from "./Dashboard/Admin/CPanel/CreateUsers";
 import ViewUsers from "./Dashboard/Admin/CPanel/ViewUsers";
 import { logoutUser, setRedirectUrl, resetRedirectUrl } from "../redux/authentication/actions";
@@ -122,6 +123,13 @@ const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser, path, set
             exact
             render={({ match }) => (
               <ContestLeaderboard contestId={match.params.contestId} />
+            )}
+          />
+            <Route
+            path="/dashboard/admin/:contestId/edit/"
+            exact
+            render={({ match }) => (
+              <EditContestDetails contestId={match.params.contestId} />
             )}
           />
           <Route
