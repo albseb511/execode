@@ -7,7 +7,11 @@ import {
   SUBMIT_PAGE_ROUTE_EXIT,
   EVENT_CODE_REQUEST,
   EVENT_CODE_SUCCESS,
-  EVENT_CODE_FAILURE
+  EVENT_CODE_FAILURE,
+  SUBMIT_TEST_CASE_REQUEST,
+  SUBMIT_TEST_CASE_SUCCESS,
+  SUBMIT_TEST_CASE_FAILURE
+
 } from "./actionTypes";
 import axios from "../../utils/axiosInterceptor";
 
@@ -40,7 +44,7 @@ export const getSubmitResults = payload => {
   return dispatch => {
     axios
       .post(
-        "/submit",
+        "/submitcodelist",
         {
           challenge_id: payload.challenge_id,
           contest_id: payload.contest_id,
@@ -94,5 +98,45 @@ export const eventCodeSubmit = payload => {
       )
       .then(res => dispatch(eventCodeSuccess(res.data)))
       .catch(err => dispatch(eventCodeFailure(err)));
+  };
+};
+
+export const submitTestCaseRequest = () => ({
+  type: SUBMIT_TEST_CASE_REQUEST
+});
+
+export const submitTestCaseSuccess = payload => ({
+  type: SUBMIT_TEST_CASE_SUCCESS,
+  payload
+});
+
+export const submitTestCaseFailure = payload => ({
+  type: SUBMIT_TEST_CASE_FAILURE,
+  payload
+});
+
+export const submitTestCase = payload => {
+  submitTestCaseRequest();
+  return dispatch => {
+    axios
+      .post(
+        "/testcaserun",
+        {
+          language: payload.language,
+          test_id: payload.test_id,
+          strength: payload.strength,
+          input_file: payload.input_file,
+          output_file: payload.output_file,
+          path: payload.path,
+          code_file_path: payload.code_file_path
+        },
+        {
+          headers: {
+            Authorization: payload.token
+          }
+        }
+      )
+      .then(res => dispatch(submitTestCaseSuccess(res.data)))
+      .catch(err => dispatch(submitTestCaseFailure(err)));
   };
 };

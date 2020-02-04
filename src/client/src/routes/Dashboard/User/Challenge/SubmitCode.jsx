@@ -7,8 +7,10 @@ import { connect } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import {
   submitPageRouteExit,
-  getSubmitResults
+  getSubmitResults,
+  submitTestCase
 } from "../../../../redux/user/action";
+import "./spinner.css"
 
 const SubmitChallenge = ({
   contestId,
@@ -23,10 +25,15 @@ const SubmitChallenge = ({
   unmount,
   getResults,
   testCaseResults,
-  score
+  isTestCasesDataReady,
+  submitTestCase,
+  codeFilePath,
+  submitPath,
+  testCasePending
 }) => {
   const history = useHistory();
   const location = useLocation();
+  const [score, setScore] = useState(0);
   const path = location.pathname.split("/submit")[0];
   if(!isSubmit){
     history.push(`${path}`)
@@ -53,10 +60,43 @@ const SubmitChallenge = ({
     };
   }, []);
 
+  useEffect(()=>{
+    for(let i=0; i<testCaseResults.length; i++){
+      let {id, strength, input_file, output_file} = testCaseResults[i]
+      let payload = {
+        language,
+        test_id: id,
+        strength,
+        input_file,
+        output_file,
+        path: submitPath,
+        code_file_path: codeFilePath,
+        token
+      }
+      submitTestCase(payload)
+    }
+  },[isTestCasesDataReady])
+
+  useEffect(()=>{
+    let newScore = testCaseResults.reduce((acc,test)=>test.result?acc+test.strength:acc,0)
+    setScore(newScore)
+  },[testCasePending])
+
   if (!isLoading && isSubmit && testCaseResults) {
-    console.log("test cases mapping");
     testPass = testCaseResults.map((a, i) => {
-      if (a.passed) {
+      if (a.result==="pending"){
+        return(
+          <div key={a.id} className="col-md-2 mt-4 mb-3 text-center">
+            <div className="spinner-border" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div>
+              {`Test Case ${i + 1}`}
+            </div>
+          </div>
+        )
+      }
+      if (a.result) {
         return (
           <div key={a.test_case_id} className="col-md-2 mt-4 mb-3 text-center">
             <div>
@@ -134,12 +174,16 @@ const mapStateToProps = state => ({
   errorMessage: state.user.errorMessage,
   testCaseResults: state.user.testCaseResults,
   isSubmit: state.user.isSubmit,
-  score: state.user.score
+  submitPath: state.user.submitPath,
+  codeFilePath: state.user.codeFilePath,
+  testCasePending: state.user.testCasePending,
+  isTestCasesDataReady: state.user.isTestCasesDataReady,
 });
 
 const mapDispatchToProps = dispatch => ({
   unmount: () => dispatch(submitPageRouteExit()),
-  getResults: payload => dispatch(getSubmitResults(payload))
+  getResults: payload => dispatch(getSubmitResults(payload)),
+  submitTestCase: payload => dispatch(submitTestCase(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SubmitChallenge);
