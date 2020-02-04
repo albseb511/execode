@@ -148,7 +148,8 @@ class SubmitCodeResourceTestCaseRun(Resource):
                 "user_output": "",
                 "user_error": error,
                 "sample_result": False,
-                "is_error": True
+                "is_error": True,
+                "test_case_id": data['test_id']
             }, 200
 
             if output == False:
@@ -157,7 +158,8 @@ class SubmitCodeResourceTestCaseRun(Resource):
                 "user_output": "",
                 "user_error": "Timeout Exception",
                 "sample_result": False,
-                "is_error": True
+                "is_error": True,
+                "test_case_id": data['test_id']
             }, 200
 
             return {
@@ -165,7 +167,8 @@ class SubmitCodeResourceTestCaseRun(Resource):
                 "user_output": output,
                 "user_error": error,
                 "sample_result": is_correct,
-                "is_error": False
+                "is_error": False,
+                "test_case_id": data['test_id']
             }, 200
 
         else:
