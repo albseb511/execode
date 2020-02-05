@@ -118,7 +118,18 @@ def get_result_test_case(path, code_file_path, input_file, expected_output_file,
 def update_submission_marks(path, submission_id, test_case_info):
     marks = read_marks_file(path)
     try:
-        db.session.query(SubmissionsModel).filter(SubmissionsModel.id == submission_id).update({SubmissionsModel.score : marks, SubmissionsModel.test_cases_info: json.dumps(test_case_info)})
+        db.session.query(SubmissionsModel).filter(SubmissionsModel.id == submission_id).update({SubmissionsModel.score : marks, SubmissionsModel.test_cases_info: json.dumps(test_case_info), SubmissionsModel.code_file: path+})
+        db.session.commit()
+        return True
+    except:
+        db.session.rollback()
+        return False
+
+
+def update_submission_code_file_path(code_file_path, submission_id):
+    marks = read_marks_file(path)
+    try:
+        db.session.query(SubmissionsModel).filter(SubmissionsModel.id == submission_id).update({SubmissionsModel.code_file: code_file_path})
         db.session.commit()
         return True
     except:
