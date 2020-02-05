@@ -35,7 +35,7 @@ const initialState = {
   testCasePending: null,
   score: 0,
   getTestCaseEnded: false,
-  isFinalSubmitting: false,
+  isFinalSubmitting: false
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -80,7 +80,10 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         isLoading: false,
         error: false,
-        testCaseResults: payload.test_cases.map(a=>({ ...a, result: "pending" })),
+        testCaseResults: payload.test_cases.map(a => ({
+          ...a,
+          result: "pending"
+        })),
         isTestCasesDataReady: true,
         score: payload.total_marks,
         codeFilePath: payload.code_file_path,
@@ -105,48 +108,56 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         testCasePending: state.testCaseResults.length
-      }
-    
-    case SUBMIT_TEST_CASE_SUCCESS:{
-      let result = payload.sample_result
-      let id = payload.test_case_id
-      let testCaseEnded = state.testCasePending===1?true:false 
+      };
+
+    case SUBMIT_TEST_CASE_SUCCESS: {
+      const result = payload.sample_result;
+      const id = payload.test_case_id;
+      const testCaseEnded = state.testCasePending === 1;
       return {
         ...state,
         testCasePending: state.testCasePending - 1,
-        testCaseResults: state.testCaseResults.map(a=>id===a.id?result?{...a, result:true}:{...a,result:false}:{...a}),
+        testCaseResults: state.testCaseResults.map(a =>
+          id === a.id
+            ? result
+              ? { ...a, result: true }
+              : { ...a, result: false }
+            : { ...a }
+        ),
         getTestCaseEnded: testCaseEnded
-      }
+      };
     }
-    case SUBMIT_TEST_CASE_FAILURE:{
-      let id = payload.test_case_id
-      let testCaseEnded = state.testCasePending===1?true:false 
+    case SUBMIT_TEST_CASE_FAILURE: {
+      const id = payload.test_case_id;
+      const testCaseEnded = state.testCasePending === 1;
       return {
         ...state,
-        testCasePending: state.testCasePending -1,
-        testCaseResults: state.testCaseResults.map(a=>id===a.id || payload.timeout?{...a, result:false}:{...a}),
+        testCasePending: state.testCasePending - 1,
+        testCaseResults: state.testCaseResults.map(a =>
+          id === a.id || payload.timeout ? { ...a, result: false } : { ...a }
+        ),
         getTestCaseEnded: testCaseEnded
-      }
+      };
     }
     case SUBMIT_TEST_CASE_ENDED_REQUEST:
       return {
         ...state,
         isFinalSubmitting: true
-      }
+      };
 
     case SUBMIT_TEST_CASE_ENDED_SUCCESS:
       return {
         ...state,
         isFinalSubmitting: false
-      }
-      
+      };
+
     case SUBMIT_TEST_CASE_ENDED_FAILURE:
       return {
         ...state,
         error: true,
         errorType: "marks submit",
         errorMessage: "final submit of marks failed"
-      }
+      };
 
     default:
       return state;

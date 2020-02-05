@@ -163,13 +163,13 @@ const reducer = (state = initState, { type, payload }) => {
         ...state,
         redirectUrl: payload,
         redirect: true
-      }
+      };
     case RESET_REDIRECT_URL:
       return {
         ...state,
         redirectUrl: "",
         redirect: false
-      }
+      };
     default:
       return state;
   }

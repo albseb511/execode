@@ -144,8 +144,8 @@ export const tokenValidateUser = payload => {
 export const setRedirectUrl = payload => ({
   type: REDIRECT_URL,
   payload
-})
+});
 
 export const resetRedirectUrl = () => ({
-  type: RESET_REDIRECT_URL,
-})
+  type: RESET_REDIRECT_URL
+});

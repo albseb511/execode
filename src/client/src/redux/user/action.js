@@ -14,7 +14,6 @@ import {
   SUBMIT_TEST_CASE_ENDED_REQUEST,
   SUBMIT_TEST_CASE_ENDED_SUCCESS,
   SUBMIT_TEST_CASE_ENDED_FAILURE
-
 } from "./actionTypes";
 import axios from "../../utils/axiosInterceptor";
 
@@ -141,7 +140,7 @@ export const submitTestCase = payload => {
         }
       )
       .then(res => dispatch(submitTestCaseSuccess(res.data)))
-      .catch(err => dispatch(submitTestCaseFailure({...err,timeout:true})));
+      .catch(err => dispatch(submitTestCaseFailure({ ...err, timeout: true })));
   };
 };
 
@@ -173,7 +172,7 @@ export const submitTestCaseEnd = payload => {
         {
           headers: {
             Authorization: payload.token
-          },
+          }
         }
       )
       .then(res => dispatch(submitTestCaseEndSuccess(res.data)))
