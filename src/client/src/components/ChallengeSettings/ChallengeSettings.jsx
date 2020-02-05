@@ -6,8 +6,8 @@ class ChallengeSettings extends Component {
     super(props);
     this.state = {
       language: "",
-      timeLimit: 100,
-      memoryLimit: 100
+      timeLimit: "",
+      memoryLimit: ""
     };
   }
 
@@ -36,8 +36,8 @@ class ChallengeSettings extends Component {
               required
             >
               <option>Choose Language...</option>
-              <option value="Python">Python</option>
-              <option value="Javascript">Javascript</option>
+              <option value="python">Python</option>
+              <option value="javascript">Javascript</option>
             </select>
           </div>
           <div className="col-sm-6 col-md-3">
@@ -47,7 +47,7 @@ class ChallengeSettings extends Component {
               className="form-control"
               id="time limit"
               value={timeLimit}
-              placeholder="Time LIMIT"
+              placeholder="Time limit [ms]"
               name="timeLimit"
               required
             />
@@ -59,7 +59,7 @@ class ChallengeSettings extends Component {
               className="form-control"
               id="memory limit"
               value={memoryLimit}
-              placeholder="Memory Limit"
+              placeholder="Memory Limit [kb]"
               name="memoryLimit"
             />
           </div>

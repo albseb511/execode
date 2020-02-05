@@ -31,7 +31,7 @@ class UserSubmissions extends Component {
   getUserSubmissions = () => {
     // send auth token
     const { userId, contestId } = this.props;
-    Axios.get(`contest/${contestId}/leaderboard/${userId}`).then(res => {
+    Axios.get(`/contest/${contestId}/leaderboard/${userId}`).then(res => {
       if (res && res.data && res.data.challenges) {
         this.setState({
           submissions: res.data.challenges
@@ -43,7 +43,7 @@ class UserSubmissions extends Component {
   getSubmittedCode = submission_id => {
     const { userId, contestId } = this.props;
     Axios.get(
-      `contest/${contestId}/leaderboard/${userId}/code/${submission_id}`
+      `/contest/${contestId}/leaderboard/${userId}/code/${submission_id}`
     ).then(res => {
       if (res && res.data && res.data.code) {
         this.setState({
@@ -65,8 +65,8 @@ class UserSubmissions extends Component {
     // fetchCode(id);
     this.getSubmittedCode(id);
   };
-
   render() {
+    console.log(this.state.testCaseInfo)
     // submissions from props : changed to submissions from state, code as well
     const { language, path } = this.props;
     const { submissions, code } = this.state;
@@ -82,7 +82,9 @@ class UserSubmissions extends Component {
           <div>
             <div className="row text-center">
               {this.state.testCaseInfo &&
-                Object.values(this.state.testCaseInfo).map((res, index) => (
+                Object.values(this.state.testCaseInfo).map((res, index) => {
+                  console.log("test case,",index+1) 
+                  return(
                   <div key={index}>
                     <span className="text-center">Test {index + 1} </span>
                     <div>
@@ -101,7 +103,7 @@ class UserSubmissions extends Component {
                       )}
                     </div>
                   </div>
-                ))}
+                )})}
             </div>
           </div>
           <div className="d-block mb-5 mt-4 disabled">

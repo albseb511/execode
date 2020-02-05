@@ -137,7 +137,7 @@ export const submitTestCase = payload => {
           headers: {
             Authorization: payload.token
           },
-          timeout: payload.timeLimit
+          timeout: 10000
         }
       )
       .then(res => dispatch(submitTestCaseSuccess(res.data)))
