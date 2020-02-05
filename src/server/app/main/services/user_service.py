@@ -37,7 +37,7 @@ def save_new_user(data):
             'status': 'fail',
             'message': 'User already exists. Please Log in.',
         }
-        return response_object, 409
+        return response_object, 200
 
 
 def get_all_users():
