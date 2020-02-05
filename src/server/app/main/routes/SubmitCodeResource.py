@@ -6,8 +6,8 @@ from app.main.services.contests_challenges_services import get_contest_challenge
 from app.main.services.test_cases_service import get_challenge_test_cases
 from app.main.services.submitcode_service import add_submission, update_submission, add_submission_output
 from app.main.services.attempts_service import get_prev_best_attempt
-from app.main.utils.submitcode_util import get_results, make_submit_folder, make_marks_file, get_result_test_case, update_submission_marks
-from app.main.utils.run_code_util import is_error, make_python_codefile, generate_output_error, compare_output
+from app.main.utils.submitcode_util import get_results, make_submit_folder, make_marks_file, get_result_test_case, update_submission_marks, update_submission_code_file_path
+from app.main.utils.run_code_util import is_error, make_python_codefile, generate_output_error, compare_output, make_js_file, make_cpp_file
 from app.main.services.challenge_details_service import getDetailsById
 from app.main.services.attempts_service import add_new_best_attempt
 from ..models.ChallengeSettingsModel import ChallengeSettings
@@ -100,7 +100,21 @@ class SubmitCodeResourceTestCaseList(Resource):
 
                 path = make_submit_folder(submission_id)
 
-                code_file_path = make_python_codefile(data['code'], path)
+                if data['language'] == 'python':
+                    code_file_path = make_python_codefile(data['code'], path)
+                elif data['language'] == 'javascript':
+                    code_file_path = make_js_file(data['code'], path)
+                elif data['language'] == 'cpp':
+                    code_file_path = make_cpp_file(data['code'], path)
+                else:
+                    return {'status':'fail',
+                            'comment':'language not supported'}
+
+                updated_code_path = update_submission_code_file_path(code_file_path, submission_id)
+
+                if updated_code_path == False:
+                    return {'status':'fail',
+                            'comment':'unable to update code_file_path'}
 
                 marks_file_path = make_marks_file(path)
 
