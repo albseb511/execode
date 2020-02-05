@@ -10,7 +10,7 @@ import datetime
 
 
 def get_raw_data(contest_id,user_id):
-    data_raw = db.engine.execute("select a.id as submission_id, a.score as score, c.id as challenge_id,c.challenge_name ,d.name, a.created_at as created_at,  e.contest_name from submissions as a join contests_challenges as b  on a.contest_challenge_id=b.id join challenges as c on c.id = b.challenge_id join users as d on d.id = a.user_id join contests as e on e.id = b.contest_id where b.contest_id = '{}' and a.user_id = '{}' ORDER BY YEAR(a.created_at) DESC, MONTH(a.created_at) DESC, DAY(a.created_at) DESC, HOUR(a.created_at) DESC, MINUTE(a.created_at) DESC, SECOND(a.created_at) DESC;".format(contest_id,user_id))
+    data_raw = db.engine.execute("select a.id as submission_id, a.score as score, c.id as challenge_id,c.challenge_name ,d.name, a.created_at as created_at,  e.contest_name from submissions as a join contests_challenges as b  on a.contest_challenge_id=b.id join challenges as c on c.id = b.challenge_id join users as d on d.id = a.user_id join contests as e on e.id = b.contest_id where b.contest_id = '{}' and a.user_id = '{}' ORDER BY YEAR(a.created_at) DESC, MONTH(a.created_at) DESC, DAY(a.created_at) DESC, HOUR(a.created_at) DESC, MINUTE(a.created_at) DESC, SECOND(a.created_at) DESC, a.id DESC;".format(contest_id,user_id))
     print(data_raw)
 
     contest_entity = ContestsModel.query.filter_by(id=contest_id).first()

@@ -19,4 +19,6 @@ def get_raw_data(contest_id, user_id, submission_id):
     resp_data['code'] = f_code.read()
     resp_data['comment'] = 'success'
     resp_data['test_case_info'] = json.loads(names[0]['tci'])
+    if type(resp_data['test_case_info']) == str:
+        resp_data['test_case_info'] = json.loads(resp_data['test_case_info'])
     return resp_data

@@ -127,7 +127,6 @@ def update_submission_marks(path, submission_id, test_case_info):
 
 
 def update_submission_code_file_path(code_file_path, submission_id):
-    marks = read_marks_file(path)
     try:
         db.session.query(SubmissionsModel).filter(SubmissionsModel.id == submission_id).update({SubmissionsModel.code_file: code_file_path})
         db.session.commit()
