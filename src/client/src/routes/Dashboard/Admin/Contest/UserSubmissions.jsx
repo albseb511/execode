@@ -46,12 +46,14 @@ class UserSubmissions extends Component {
       `/contest/${contestId}/leaderboard/${userId}/code/${submission_id}`
     ).then(res => {
       if (res && res.data && res.data.code) {
+        console.log(res)
         this.setState({
           code: res.data.code,
           testCaseInfo: res.data.test_case_info
         });
       }
-    });
+    })
+    .catch(err=>console.log(err));
   };
 
   componentDidMount() {
@@ -70,6 +72,7 @@ class UserSubmissions extends Component {
     // submissions from props : changed to submissions from state, code as well
     const { language, path } = this.props;
     const { submissions, code } = this.state;
+    console.log(this.state)
     return (
       <div>
         <div className="container">
@@ -83,7 +86,7 @@ class UserSubmissions extends Component {
             <div className="row text-center">
               {this.state.testCaseInfo &&
                 Object.values(this.state.testCaseInfo).map((res, index) => {
-                  console.log("test case,",index+1) 
+                  console.log("test case,",res,index+1) 
                   return(
                   <div key={index}>
                     <span className="text-center">Test {index + 1} </span>
@@ -137,6 +140,7 @@ class UserSubmissions extends Component {
               <table className="table text-center">
                 <thead className="thead-dark">
                   <tr className="text-white">
+                    <th scope="col">ID</th>
                     <th scope="col">Challenge Name</th>
                     <th scope="col">Score</th>
                     <th scope="col">User Name</th>
@@ -149,6 +153,7 @@ class UserSubmissions extends Component {
                     submissions.map(ele => {
                       return (
                         <tr key={ele.submission_id}>
+                          <td>{ele.submission_id}</td>
                           <td>{ele.challenge_name}</td>
                           <td>{ele.score}</td>
                           <td>{ele.name}</td>

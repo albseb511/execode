@@ -158,16 +158,19 @@ class CreateChallenge extends Component {
     }
     // console.log(form)
     const { token } = this.props;
+    console.log(form, JSON.stringify(form))
     axios
       .post(`/challenge/${this.state.challenge_name}`, form, {
         headers: {
           Authorization: token
         }
       })
-      .then(res => {
-        this.setState({ ...initialState });
-      });
+      .catch(err=>console.log(err))
   };
+
+  handleReset = () => {
+    this.setState({...initialState})
+  }
 
   render() {
     const {
@@ -243,6 +246,10 @@ class CreateChallenge extends Component {
           </li>
         </ul>
         {viewTab}
+        <button className="btn btn-dark active text-right"
+                onClick={this.handleReset}>
+          RESET DATA
+        </button>
         <button
           type="button"
           onClick={this.createChallenge}

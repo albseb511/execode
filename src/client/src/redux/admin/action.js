@@ -6,7 +6,10 @@ import {
   FETCH_ALL_CONTESTS_FAILURE,
   FETCH_ALL_USERS_FAILURE,
   FETCH_ALL_USERS_SUCCESS,
-  FETCH_ALL_USERS_REQUEST
+  FETCH_ALL_USERS_REQUEST,
+  CREATE_CHALLENGE_REQUEST,
+  CREATE_CHALLENGE_SUCCESS,
+  CREATE_CHALLENGE_FAILURE
 } from "./actionType";
 import axios from "../../utils/axiosInterceptor";
 
@@ -86,5 +89,36 @@ export const fetchAllUsers = payload => {
         dispatch(fetchAllUsersSuccess(res.data));
       })
       .catch(() => dispatch(fetchAllUsersFailure()));
+  };
+};
+
+export const createChallengeRequest = payload => ({
+  type: CREATE_CHALLENGE_REQUEST,
+  payload
+});
+
+export const createChallengeSuccess = payload => ({
+  type: CREATE_CHALLENGE_SUCCESS,
+  payload
+});
+
+export const createChallengeFailure = payload => ({
+  type: CREATE_CHALLENGE_FAILURE,
+  payload
+});
+
+export const createChallenge = payload => {
+  return dispatch => {
+    dispatch(createChallengeRequest());
+    return axios
+      .get("/users", {
+        headers: {
+          Authorization: payload.token
+        }
+      })
+      .then(res => {
+        dispatch(createChallengeSuccess(res.data));
+      })
+      .catch(() => dispatch(createChallengeFailure()));
   };
 };
