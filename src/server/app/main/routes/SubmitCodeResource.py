@@ -106,6 +106,10 @@ class SubmitCodeResourceTestCaseList(Resource):
                     code_file_path = make_js_file(data['code'], path)
                 elif data['language'] == 'cpp':
                     code_file_path = make_cpp_file(data['code'], path)
+                else:
+                    return {'status':'fail',
+                            'comment':'language not supported'}
+
                 updated_code_path = update_submission_code_file_path(code_file_path, submission_id)
 
                 if updated_code_path == False:
