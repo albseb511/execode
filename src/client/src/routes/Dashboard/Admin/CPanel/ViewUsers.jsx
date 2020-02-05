@@ -1,124 +1,112 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { fetchAllUsers } from "../../../../redux/admin/action";
 
-let initData = [
-    {
-        selected: false,
-        code: "nin_001",
-        name: "Vishu Prasad",
-        email: "vishnu009@gmail.com",
-        batch: "ninja",
-        sprint: "1"
-    },
-    {
-        selected: false,
-        code: "nin_002",
-        name: "Bala Krishna",
-        email: "bala_kris@gmail.com",
-        batch: "samurai",
-        sprint: "1"
-    },
-    {
-        selected: false,
-        code: "nin_003",
-        name: "Mihir Kumar",
-        email: "mihir@gmail.com",
-        batch: "ninja",
-        sprint: "3"
-    },
-    {
-        selected: false,
-        code: "nin_004",
-        name: "Sanjay Anand",
-        email: "sanjay@gmail.com",
-        batch: "samurai",
-        sprint: "2"
-    },
-]
-const ViewUsers = () => {
-    const [temp, setTemp] = useState(initData);
-    const [cohort, setCohort] = useState("all");
-    const [sprint, setSprint] = useState("all");
-    const handleChange = (e) => {
-        let id = e.target.id
-        let newTemp = temp.map(item=>item.code===id?{...item,selected:!item.selected}:item)
-        setTemp(newTemp)
-    }
-    useEffect(()=>{
-        let newTemp = temp.map(item=>({...item, selected:false}))
-        setTemp(newTemp)
-    },[cohort,sprint])
-    return (
-        <div className="container">
-            <div className="row d-flex justify-content-center px-5 mx-5">
-                <table
-                    className="table table-striped text-center border border-dark col-md-8"
-                    style={{ marginTop: "100px" }}
-                >
-                    <thead>
-                    <tr className="p-3 mb-2 thead-dark">
-                        <th scope="col">Select</th>
-                        <th scope="col">Code</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">email</th>
-                        <th scope="col row">
-                            batch: 
-                            <select className="ml-2" 
-                                    onChange={(e)=>setCohort(e.target.value)}>
-                                {
-                                [
-                                    "all",
-                                    "samurai",
-                                    "ninja"
-                                ]
-                                .map(list=><option key={list} value={list}>{list}</option>)
-                                }
-                            </select>
-                        </th>
-                        <th scope="col">
-                            sprint: 
-                            <select className="ml-2" 
-                                    onChange={(e)=>setSprint(e.target.value)}>
-                                {
-                                [
-                                    "all",
-                                    "1",
-                                    "2",
-                                    "3"
-                                ]
-                                .map(list=><option key={list} value={list}>{list}</option>)
-                                }
-                            </select>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {temp &&
-                        temp
-                        .filter(ele=>cohort==="all"?ele:(ele.batch===cohort?ele:null))
-                        .filter(ele=>sprint==="all"?ele:(ele.sprint===sprint?ele:null))
-                        .map((ele) => {
-                        return (
-                            <tr key={ele.email}>
-                                <td>
-                                    <input type="checkbox" 
-                                           checked={ele.selected}
-                                           onChange={handleChange}
-                                           id={ele.code}
-                                           />
-                                </td>
-                                <td>{ele.code}</td>
-                                <td>{ele.name}</td>
-                                <td>{ele.email}</td>
-                                <td>{ele.batch}</td>
-                                <td>{ele.sprint}</td>
-                            </tr>
-                        );
-                        })}
-                    </tbody>
-                </table>
-                </div>
-        </div>
-    )
-}
+const initData = [
+  {
+    selected: false,
+    code: "nin_001",
+    name: "Vishu Prasad",
+    email: "vishnu009@gmail.com",
+    batch: "ninja",
+    sprint: "1"
+  },
+  {
+    selected: false,
+    code: "nin_002",
+    name: "Bala Krishna",
+    email: "bala_kris@gmail.com",
+    batch: "samurai",
+    sprint: "1"
+  },
+  {
+    selected: false,
+    code: "nin_003",
+    name: "Mihir Kumar",
+    email: "mihir@gmail.com",
+    batch: "ninja",
+    sprint: "3"
+  },
+  {
+    selected: false,
+    code: "nin_004",
+    name: "Sanjay Anand",
+    email: "sanjay@gmail.com",
+    batch: "samurai",
+    sprint: "2"
+  }
+];
+const ViewUsers = ({ fetchAllUsers, token, users }) => {
+  const [cohort, setCohort] = useState("all");
 
-export default ViewUsers
+  useEffect(() => {
+    const payload = {
+      token
+    };
+    fetchAllUsers(payload);
+  }, []);
+
+  return (
+    <div className="container">
+      <div className="row d-flex justify-content-center px-5 mx-5 mb-5">
+        <table
+          className="table table-striped text-center border border-dark col-md-8"
+          style={{ marginTop: "100px" }}
+        >
+          <thead>
+            <tr className="p-3 mb-2 thead-dark">
+              <th scope="col">Select</th>
+              <th scope="col">role</th>
+              <th scope="col">name</th>
+              <th scope="col">email</th>
+              <th scope="col">created at</th>
+              <th scope="col row">
+                tags:
+                <select className="ml-2">
+                  {["all", "samurai", "ninja"].map(list => (
+                    <option key={list} value={list}>
+                      {list}
+                    </option>
+                  ))}
+                </select>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {users &&
+              users.map(ele => {
+                return (
+                  <tr key={ele.email}>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={ele.selected}
+                        onChange={() => {}}
+                        id={ele.code}
+                      />
+                    </td>
+                    <td>{ele.role}</td>
+                    <td>{ele.name}</td>
+                    <td>{ele.email}</td>
+                    <td>{ele.created_at}</td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+const mapStateToProps = state => ({
+  users: state.admin.users,
+  token: state.authReducer.token,
+  isLoading: state.admin.isLoading
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchAllUsers: payload => dispatch(fetchAllUsers(payload))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewUsers);

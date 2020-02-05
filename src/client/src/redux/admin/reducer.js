@@ -3,7 +3,10 @@ import {
   VIEW_USER_CODE,
   FETCH_ALL_CONTESTS_FAILURE,
   FETCH_ALL_CONTESTS_SUCCESS,
-  FETCH_ALL_CONTESTS_REQUEST
+  FETCH_ALL_CONTESTS_REQUEST,
+  FETCH_ALL_USERS_FAILURE,
+  FETCH_ALL_USERS_SUCCESS,
+  FETCH_ALL_USERS_REQUEST
 } from "./actionType";
 
 const initState = {
@@ -16,7 +19,8 @@ const initState = {
   isLoading: false,
   error: false,
   errorType: "",
-  errorMessage: ""
+  errorMessage: "",
+  users: []
 };
 
 export default (state = initState, action) => {
@@ -43,6 +47,29 @@ export default (state = initState, action) => {
         error: true,
         errorType: "contest",
         errorMessage: "Fetching contest has failed"
+      };
+    case FETCH_ALL_USERS_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        error: false,
+        errorType: "",
+        errorMessage: "",
+        users: []
+      };
+    case FETCH_ALL_USERS_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        users: payload.data
+      };
+    case FETCH_ALL_USERS_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        error: true,
+        errorType: "get users",
+        errorMessage: "Fetching users has failed"
       };
     // NOT VERIFIED
     case FETCH_USER_SUBMISSIONS: {

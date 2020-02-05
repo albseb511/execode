@@ -3,7 +3,10 @@ import {
   VIEW_USER_CODE,
   FETCH_ALL_CONTESTS_REQUEST,
   FETCH_ALL_CONTESTS_SUCCESS,
-  FETCH_ALL_CONTESTS_FAILURE
+  FETCH_ALL_CONTESTS_FAILURE,
+  FETCH_ALL_USERS_FAILURE,
+  FETCH_ALL_USERS_SUCCESS,
+  FETCH_ALL_USERS_REQUEST
 } from "./actionType";
 import axios from "../../utils/axiosInterceptor";
 
@@ -52,5 +55,36 @@ export const fetchAllContests = payload => {
         dispatch(fetchAllContestsSuccess(res.data));
       })
       .catch(() => dispatch(fetchAllContestsFailure()));
+  };
+};
+
+export const fetchAllUsersRequest = payload => ({
+  type: FETCH_ALL_USERS_REQUEST,
+  payload
+});
+
+export const fetchAllUsersSuccess = payload => ({
+  type: FETCH_ALL_USERS_SUCCESS,
+  payload
+});
+
+export const fetchAllUsersFailure = payload => ({
+  type: FETCH_ALL_USERS_FAILURE,
+  payload
+});
+
+export const fetchAllUsers = payload => {
+  return dispatch => {
+    dispatch(fetchAllUsersRequest());
+    return axios
+      .get("/users", {
+        headers: {
+          Authorization: payload.token
+        }
+      })
+      .then(res => {
+        dispatch(fetchAllUsersSuccess(res.data));
+      })
+      .catch(() => dispatch(fetchAllUsersFailure()));
   };
 };
