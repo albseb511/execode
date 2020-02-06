@@ -195,15 +195,21 @@ class SubmitCodeResourceUpdate(Resource):
     parser.add_argument('submission_id', type=int,
                         required=True, help="Submission id is needed")
     parser.add_argument('test_case_info', type=str, required=True, help = 'test_case_info is needed')
+    parser.add_argument('contest_id', type=int,
+                        required=True, help="contest id is needed")
+    parser.add_argument('challenge_id', type=int,
+                        required=True, help="Challenge id is needed")
 
     def post(self):
         auth_token = request.headers.get("Authorization")
         user_id = decode_auth_token(auth_token)
         if user_id:
             data = SubmitCodeResourceUpdate.parser.parse_args()
-            updated = update_submission_marks(data['path'], data['submission_id'], data['test_case_info'])
+            updated, total_marks = update_submission_marks(data['path'], data['submission_id'], data['test_case_info'])
 
             if updated:
+                add_new_best_attempt(
+                        data["contest_id"], total_marks, data['submission_id'], user_id, data["challenge_id"])
                 return{'status':'ok', 'comment':'marks updated'}
             else:
                 return{'status':'fail', 'comment': 'error in updation'}
