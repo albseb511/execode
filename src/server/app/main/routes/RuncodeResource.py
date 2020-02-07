@@ -11,6 +11,8 @@ class RuncodeResource(Resource):
                         required=True, help="Challenge ID is needed")
     parser.add_argument('code', type=str, required=True, help="Code is needed")
     parser.add_argument('language', type=str, required=True, help="language is needed")
+    parser.add_argument('custom_input', type=str, required=False, help="Custom Input is needed")
+    parser.add_argument('is_custom_input', type=bool, required=True, help="is_custom_input flag is needed")
 
     def post(self):
         auth_token = request.headers.get("Authorization")
@@ -21,9 +23,12 @@ class RuncodeResource(Resource):
             details = getDetailsById(data["challenge_id"])
             output_resp = list()
             if details:
-                output, error, is_correct = getResults(
-                    details.sample_input, details.sample_output, data['language'], user_id, data["code"])
-                
+                if data['is_custom_input'] == False:
+                    output, error, is_correct = getResults(
+                        details.sample_input, details.sample_output, data['language'], user_id, data["code"], data['is_custom_input'])
+                else:
+                    output, error, is_correct = getResults(
+                        data['custom_input'], '', data['language'], user_id, data["code"], data['is_custom_input'])
                 if len(error) != 0:
                     return {
                     "comment": "runcode successful",
