@@ -7,7 +7,7 @@ import {setContestEndTime, contestEnded, contestNotStarted, contestStart, contes
 import TimeLeft from "../../../../components/common/TimeLeft"
 
 // eslint-disable-next-line react/prop-types
-const ContestDetails = ({ contestId, path, setContestEndTime, contestEnded, contestNotStarted, contestStart, contestReset }) => {
+const ContestDetails = ({ contestId, path, setContestEndTime, contestEnded, contestNotStarted, contestStart, contestReset, token }) => {
   const [challenges, setChallenges] = useState([]);
   const [aboutchallenges, setAboutchallenges] = useState([]);
 
@@ -15,7 +15,11 @@ const ContestDetails = ({ contestId, path, setContestEndTime, contestEnded, cont
     async function getChallenges() {
       try {
         contestReset()
-        const response = await axios.get(`/contest/${contestId}`);
+        const response = await axios.get(`/contest/${contestId}`,{
+          headers:{
+            Authorization:token
+          }
+        });
         setChallenges(response.data.data);
         setAboutchallenges(response.data.contest_data);
       } catch (error) {
@@ -130,10 +134,12 @@ const ContestDetails = ({ contestId, path, setContestEndTime, contestEnded, cont
                   </h6>
 
                   <Link
-                    className="btn btn-outline-dark btn-block text-uppercase mt-3"
+                    className={`btn ${challenge.submit_status?"btn-success active":"btn-outline-dark"} btn-block text-uppercase mt-3`}
                     to={`/dashboard/user/${contestId}/${challenge.challenge_id}`}
                   >
-                    Attempt
+                    {challenge.submit_status===null?
+                        "ATTEMPT":
+                        challenge.submit_status?"DONE":"TRY AGAIN"}
                   </Link>
                 </div>
               </div>
@@ -145,7 +151,8 @@ const ContestDetails = ({ contestId, path, setContestEndTime, contestEnded, cont
 };
 
 const mapStateToProps = state => ({
-  endTime: state.contest.endTimeLeft
+  endTime: state.contest.endTimeLeft,
+  token: state.authReducer.token
 })
 
 const mapDispatchToProps = dispatch => ({
