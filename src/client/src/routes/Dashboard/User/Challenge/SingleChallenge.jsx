@@ -39,6 +39,8 @@ const SingleChallenge = ({
   const location = useLocation();
   const languagesList = ["javascript", "python", "cpp"];
   const [isLoading, setIsLoading] = useState(false)
+  const [isCustomInput, setIsCustomInput] = useState(false)
+  const [customInput, setCustomInput] = useState('')
   // set placeholder data
   const setPlaceHolderData = () => {
     let data = localStorage.getItem("bStore");
@@ -115,7 +117,9 @@ const SingleChallenge = ({
           challenge_id: challengeId,
           language,
           code,
-          action: "run code"
+          action: "run code",
+          is_custom_input: isCustomInput,
+          custom_input: customInput
         },
         {
           headers: {
@@ -281,14 +285,32 @@ const SingleChallenge = ({
               }}
             />
           </div>
-          <div className="row">
-            <div className="col-md-10 text-left">
+          <div className="row col-md-12 p-5">
+            <div className="col-md-3 text-left">
                 <div className="btn btn-dark active"
                       onClick={handleResetCode}>
                   RESET CODE
                 </div>
             </div>
-            <div className="col-md-10 text-right">
+            <div className="col-md-4 text-center">
+              <div className="row">
+                <input type="checkbox" 
+                       checked={isCustomInput}
+                       onChange={e=>setIsCustomInput(!isCustomInput)}/>
+                <p className="ml-2 mt-3"
+                   onClick={e=>setIsCustomInput(!isCustomInput)}>Custom Input</p>
+                </div>
+                {isCustomInput && 
+                  <>
+                    <textarea className="col-md-8" 
+                         value={customInput} 
+                         onChange={e=>setCustomInput(e.target.value)}
+                         className="p-2"
+                         style={{height:100, overflow:"scroll"}} />
+                  </>
+                         }
+            </div>
+            <div className="col-md-3 text-right">
               <button
                 type="button"
                 className="btn btn-outline-dark"
