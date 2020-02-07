@@ -5,7 +5,9 @@ import datetime
 
 from app.main.models.ContestsModel import ContestsModel
 from app.main.models.ChallengesModel import ChallengesModel
+from app.main.models.AttemptsModel import AttemptsModel
 from app.main.models.ContestsChallengesModel import contests_challenges
+from app.main.services.test_cases_service import get_challenge_test_cases
 import time
 
 
@@ -26,14 +28,12 @@ def find_by_name(cls, contest_name):
     return cls.query.filter_by(contest_name=contest_name)
 
 
-def get_contests_challenges(contest_id):
-    
-    #challenge_data = {}
-    # import pdb; pdb.set_trace()
+def get_contests_challenges(contest_id, user_id):
     data_raw = db.engine.execute(
         "select * from contests join contests_challenges on contests.id=contests_challenges.contest_id join challenges on contests_challenges.challenge_id=challenges.id where contests.id={}".format(contest_id))
     names = [dict(row) for row in data_raw]
     challenges_arr = []
+    challenge_ids = []
     data = {}
     for i in names:
         challenge_data = {}
@@ -44,10 +44,12 @@ def get_contests_challenges(contest_id):
         data['end_date'] = str(i['end'].strftime("%m/%d/%Y"))
         data['end_time'] = str(i['end'].strftime("%H:%M"))
         data['details'] = i['details']
+        data['max_score'] = i['max_score']
         data['show_leaderboard'] = i['show_leaderboard']
         data['created_at'] = str(i['created_at'])
         challenge_data['description'] = i['description']
         challenge_data['challenge_id'] = i['challenge_id']
+        challenge_ids.append(i['challenge_id'])
         challenge_data['problem_statement'] = i['problem_statement']
         challenge_data['input_format'] = i['input_format']
         challenge_data['output_format'] = i['output_format']
@@ -57,11 +59,22 @@ def get_contests_challenges(contest_id):
         challenge_data['created_at'] = str(
             i['created_at'].strftime("%m/%d/%Y"))
         challenges_arr.append(challenge_data)
-        #data['challenges'] = challenges_arr
-       # data_date =(names[0]['start'].strftime("%m/%d/%Y"))
-    resp = {"data": challenges_arr, "contest_data": data}
-    # for item in resp["data"]:
-    #     print(item)
+
+    submit_data = {}
+    
+    for challenge_id in challenge_ids:
+        prev_attempt = AttemptsModel.query.filter_by(
+            contest_id=contest_id, user_id = user_id, challenge_id = challenge_id).first()
+        if prev_attempt:
+            if prev_attempt.max_score == data['max_score']:
+                submit_data[challenge_id] = True
+            else:
+                submit_data[challenge_id] = False
+        else:
+            submit_data[challenge_id] = None
+            
+
+    resp = {"data": challenges_arr, "contest_data": data, "submit_data": submit_data}
     return resp
 
 def get_contests():
@@ -89,12 +102,21 @@ def get_contests():
 def add_contest(data, contest_name, user_id):
     end = data['end_date']+" "+data['end_time']
     start = data['start_date']+" "+data['start_time']
+    total_marks = 0
+
+    for challenge_id in data["challenge_ids"]:
+        test_cases = get_challenge_test_cases(challenge_id)
+        for test_case in test_cases:
+            total_marks = total_marks + int(test_case['strength'])
+
+
     new_asset = ContestsModel(contest_name=contest_name, 
                                 start=start,
                                 end=end, 
                                 details=data["details"], 
                                 show_leaderboard=data["show_leaderboard"],
-                                owner = user_id)
+                                owner = user_id,
+                                max_score = total_marks)
 
     save_changes(new_asset)
     print('add contest saved')
