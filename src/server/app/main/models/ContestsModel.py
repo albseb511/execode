@@ -22,6 +22,7 @@ class ContestsModel(db.Model):
     start = db.Column(db.DateTime(120), unique=True, nullable=False)
     end = db.Column(db.DateTime(timezone=False), nullable=False)
     details = db.Column(db.Text, nullable=False)
+    max_score = db.Column(db.Integer, nullable=False)
     show_leaderboard = db.Column(db.Boolean, nullable=False, default=True)
     created_at = db.Column(db.DateTime(timezone=False),
                            nullable=False, default=datetime.datetime.now())

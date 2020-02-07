@@ -38,8 +38,13 @@ class Contest(Resource):
         # contests_details = ContestsModel.get_contests_challenges(contest_name)
         # print(contests_details)
         # return {"message": "data"}
-        print(contest_name)
-        return get_contests_challenges(contest_name)
+        auth_token = request.headers.get("Authorization")
+        user_id = decode_auth_token(auth_token)
+        if user_id:
+            print(contest_name)
+            return get_contests_challenges(contest_name, user_id)
+        else:
+            return {"comment": "JWT Expired or Invalid"}, 401
 
     @classmethod
     def post(self, contest_name):
