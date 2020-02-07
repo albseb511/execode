@@ -94,9 +94,14 @@ const ContestDetails = ({ contestId, path, setContestEndTime, contestEnded, cont
               <div >
               STATUS: <TimeLeft/>
               </div>
-              <Link className="mx-5"to={`${path.split("user/"+contestId)[0]}leaderboard/${contestId}`}>
+              <Link className="ml-5"to={`${path.split("user/")[0]}leaderboard/${contestId}`}>
                 <li className="btn btn-dark active">
                   LEADERBOARD      
+                </li>
+              </Link>
+              <Link className="ml-5"to={`${path.split("user/")[0]}view-submissions/${contestId}`}>
+                <li className="btn btn-dark active">
+                  VIEW SUBMISSIONS      
                 </li>
               </Link>
           </div>

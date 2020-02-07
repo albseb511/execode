@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // import UserDashboard from "./Dashboard/User/UserDashboard";
@@ -27,6 +27,7 @@ import CreateUsers from "./Dashboard/Admin/CPanel/CreateUsers";
 import ViewUsers from "./Dashboard/Admin/CPanel/ViewUsers";
 import { logoutUser, setRedirectUrl, resetRedirectUrl, tokenValidateUser } from "../redux/authentication/actions";
 import ErrorBoundary from "../components/common/ErrorBoundary"
+import ViewSubmissions from "./Dashboard/User/Contest/ViewSubmissions"
 
 const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser, path, setRedirectUrl, resetRedirectUrl, validateUser, error }) => {
   if (!isAuth) {
@@ -79,6 +80,17 @@ const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser, path, set
           </ErrorBoundary>
         )}
       />
+      <Route
+            path="/dashboard/view-submissions/:contestId"
+            exact
+            render={({ match, location }) => (
+              <ViewSubmissions
+                contestId={match.params.contestId}
+                // userId={match.params.userId}
+                path={location.pathname}
+              />
+            )}
+          />
       <Route
         path="/dashboard/user/:contestId/:challengeId"
         exact
