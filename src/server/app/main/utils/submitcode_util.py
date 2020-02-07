@@ -92,7 +92,7 @@ def get_result_test_case(path, code_file_path, input_file, expected_output_file,
 
     language = language.lower()
 
-    if language == "python" or language == 'javascript':
+    if language == "python" or language == 'javascript' or language == 'cpp':
         if path:
             output_path, error_path = generate_output_error(
                 '%s.txt'%(input_file), code_file_path, path, language, output_file_name="tco"+str(test_id), error_file_name="tce"+str(test_id))
@@ -120,10 +120,10 @@ def update_submission_marks(path, submission_id, test_case_info):
     try:
         db.session.query(SubmissionsModel).filter(SubmissionsModel.id == submission_id).update({SubmissionsModel.score : marks, SubmissionsModel.test_cases_info: json.dumps(test_case_info)})
         db.session.commit()
-        return True
+        return True, marks
     except:
         db.session.rollback()
-        return False
+        return False, marks
 
 
 def update_submission_code_file_path(code_file_path, submission_id):

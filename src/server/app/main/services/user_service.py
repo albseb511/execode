@@ -1,6 +1,7 @@
 from app.main.models.UsersModel import UserModel
 from app.main import login_manager, db
 import uuid
+import datetime
 
 
 @login_manager.user_loader
@@ -53,7 +54,7 @@ def get_all_users():
         ist_created_at = user.created_at - datetime.timedelta(minutes=-330)
         temp_dict['created_at'] = ist_created_at.strftime("%m-%d-%Y %H:%M:%S")
         data.append(temp_dict)
-    
+
     return data
 
 def login(email, password):

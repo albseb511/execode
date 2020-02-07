@@ -180,9 +180,10 @@ def compare_output(output_path, expected_path):
     expected_lines = expected_output.readlines()
     user_output.close()
     expected_output.close()
+
     if len(output_lines) == len(expected_lines):
         for i in range(len(output_lines)):
-            if output_lines[i] != expected_lines[i]:
+            if output_lines[i].strip('\n') != expected_lines[i].strip('\n'):
                 return False, output_lines
         return True, output_lines
     else:
