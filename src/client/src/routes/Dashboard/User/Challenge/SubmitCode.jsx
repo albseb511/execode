@@ -12,6 +12,7 @@ import {
   submitTestCaseEnd
 } from "../../../../redux/user/action";
 import "./spinner.css"
+import { Link } from "react-router-dom"
 
 const SubmitChallenge = ({
   contestId,
@@ -34,7 +35,7 @@ const SubmitChallenge = ({
   timeLimit,
   getTestCaseEnded,
   submissionId,
-  submitTestCaseEnd
+  submitTestCaseEnd,
 }) => {
   const history = useHistory();
   const location = useLocation();
@@ -98,6 +99,8 @@ const SubmitChallenge = ({
           submission_id: submissionId,
           path: submitPath,
           test_case_info,
+          contest_id: contestId,
+          challenge_id: challengeId,
           token
       }
       submitTestCaseEnd(payload)
@@ -145,6 +148,12 @@ const SubmitChallenge = ({
 
   return (
     <div className="container mb-5">
+      <div className="d-flex p-2">
+            <h4 className="font-weight-bold">Result</h4>
+            <Link to={path} className="ml-auto">
+              <div className="btn btn-dark active">GO BACK</div>
+            </Link>
+          </div>
       <h6 className="text-left mt-4 mb-3">
         Submitted a few seconds ago •
         <b className="text-primary font-weight-bold"> Score: </b>

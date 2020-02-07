@@ -39,10 +39,9 @@ const SingleChallenge = ({
   const location = useLocation();
   const languagesList = ["javascript", "python", "cpp"];
   const [isLoading, setIsLoading] = useState(false)
-  let data = "";
   // set placeholder data
   const setPlaceHolderData = () => {
-    data = localStorage.getItem("bStore");
+    let data = localStorage.getItem("bStore");
     if (data && data !== "") {
       data = JSON.parse(data);
     }
@@ -58,10 +57,10 @@ const SingleChallenge = ({
       languagesList.forEach(a => {
         if (a === "javascript") {
           data[`${email}__${contestId}__${challengeId}__${a}__default`] =
-            'function runProgram(input){\n  // Write code here\n    console.log(input)\n}\n\n\n\n\nprocess.stdin.resume();\nprocess.stdin.setEncoding("ascii");\nlet read = "";\nprocess.stdin.on("data", function (input) {\n    read += input;\n});\nprocess.stdin.on("end", function () {\n\tread = read.replace(/\n$/,"")\n\tread = read.replace(/\\n$/,"")\n   runProgram(read);\n});';
+            'function runProgram(input){\n  // Write code here\n    console.log(input)\n}\n\n\n\n\nprocess.stdin.resume();\nprocess.stdin.setEncoding("ascii");\nlet read = "";\nprocess.stdin.on("data", function (input) {\n    read += input;\n});\nprocess.stdin.on("end", function () {\n\tread = read.replace(/\\n$/,"")\n\tread = read.replace(/\\n$/,"")\n   runProgram(read);\n});';
           if (!data[`${email}__${contestId}__${challengeId}__${a}`]) {
             data[`${email}__${contestId}__${challengeId}__${a}`] =
-              'function runProgram(input){\n  // Write code here\n    console.log(input)\n}\n\n\n\n\nprocess.stdin.resume();\nprocess.stdin.setEncoding("ascii");\nlet read = "";\nprocess.stdin.on("data", function (input) {\n    read += input;\n});\nprocess.stdin.on("end", function () {\n\tread = read.replace(/\n$/,"")\n\tread = read.replace(/\\n$/,"")\n   runProgram(read);\n});';
+              'function runProgram(input){\n  // Write code here\n    console.log(input)\n}\n\n\n\n\nprocess.stdin.resume();\nprocess.stdin.setEncoding("ascii");\nlet read = "";\nprocess.stdin.on("data", function (input) {\n    read += input;\n});\nprocess.stdin.on("end", function () {\n\tread = read.replace(/\\n$/,"")\n\tread = read.replace(/\\n$/,"")\n   runProgram(read);\n});';
           }
         } else if (a === "python") {
           data[`${email}__${contestId}__${challengeId}__${a}__default`] =
@@ -99,7 +98,7 @@ const SingleChallenge = ({
   }, []);
 
   useEffect(() => {
-    data = localStorage.getItem("bStore");
+    let data = localStorage.getItem("bStore");
     data = JSON.parse(data);
     data[`${email}__default`] = language;
     localStorage.setItem("bStore", JSON.stringify(data));
@@ -133,7 +132,7 @@ const SingleChallenge = ({
 
   const handleChangeCode = e => {
     setCode(e);
-    data = localStorage.getItem("bStore");
+    let data = localStorage.getItem("bStore");
     data = JSON.parse(data);
     data[`${email}__${contestId}__${challengeId}__${language}`] = e;
     localStorage.setItem("bStore", JSON.stringify(data));
@@ -152,13 +151,19 @@ const SingleChallenge = ({
     const date = new Date();
     const payload = {
       event,
-      text: `${event} content \n\n//\n//\n\n// Code at ${date.toLocaleTimeString()} ${date.toLocaleDateString()}\n\n${code}`,
+      text: `${event} content\n\n ${text} \n\n//\n//\n\n// Code at ${date.toLocaleTimeString()} ${date.toLocaleDateString()}\n\n${code}`,
       contestId,
       challengeId,
       token
     };
     eventSubmit(payload);
   };
+
+  const handleResetCode = () => {
+    let data = localStorage.getItem("bStore");
+    data = JSON.parse(data);
+    setCode(data[`${email}__${contestId}__${challengeId}__${language}__default`])
+  }
 
   return (
     <div>
@@ -277,6 +282,12 @@ const SingleChallenge = ({
             />
           </div>
           <div className="row">
+            <div className="col-md-10 text-left">
+                <div className="btn btn-dark active"
+                      onClick={handleResetCode}>
+                  RESET CODE
+                </div>
+            </div>
             <div className="col-md-10 text-right">
               <button
                 type="button"
