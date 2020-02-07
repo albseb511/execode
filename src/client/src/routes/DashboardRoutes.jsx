@@ -25,13 +25,14 @@ import AdminSettings from "./Dashboard/Admin/CPanel/AdminSettings";
 import EditContestDetails from "./Dashboard/Admin/CreateContest/EditContestDetails";
 import CreateUsers from "./Dashboard/Admin/CPanel/CreateUsers";
 import ViewUsers from "./Dashboard/Admin/CPanel/ViewUsers";
-import { logoutUser, setRedirectUrl, resetRedirectUrl } from "../redux/authentication/actions";
+import { logoutUser, setRedirectUrl, resetRedirectUrl, tokenValidateUser } from "../redux/authentication/actions";
 import ErrorBoundary from "../components/common/ErrorBoundary"
 
-const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser, path, setRedirectUrl, resetRedirectUrl }) => {
-  useEffect(()=>{
-    !isAuth?setRedirectUrl(path):resetRedirectUrl()
-  },[])
+const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser, path, setRedirectUrl, resetRedirectUrl, validateUser, error }) => {
+  if (!isAuth) {
+    validateUser(token)
+  };
+  console.log(error)
   return isAuth ? (
     <>
       <Route
@@ -185,7 +186,7 @@ const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser, path, set
       </ErrorBoundary>
     </>
   ) : (
-    <Redirect to="/login" />
+    error && <Redirect to="/login" />
   );
 };
 
@@ -197,13 +198,15 @@ const mapStateToProps = state => ({
   isAuth: state.authReducer.isAuth,
   token: state.authReducer.token,
   userType: state.authReducer.userType,
-  email: state.authReducer.email
+  email: state.authReducer.email,
+  error: state.authReducer.error
 });
 
 const mapDispatchToProps = dispatch => ({
   logoutUser: payload => dispatch(logoutUser(payload)),
   setRedirectUrl: payload => dispatch(setRedirectUrl(payload)),
-  resetRedirectUrl: () => dispatch(resetRedirectUrl())
+  resetRedirectUrl: () => dispatch(resetRedirectUrl()),
+  validateUser: payload => dispatch(tokenValidateUser(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardRoutes);
