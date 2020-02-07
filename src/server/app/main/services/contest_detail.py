@@ -30,26 +30,24 @@ def find_by_name(cls, contest_name):
 
 def get_contests_challenges(contest_id, user_id):
     data_raw = db.engine.execute(
-        "select * from contests join contests_challenges on contests.id=contests_challenges.contest_id join challenges on contests_challenges.challenge_id=challenges.id where contests.id={}".format(contest_id))
+        "select a.contest_name as contest_name, a.id as contest_id, a.start as start, a.end as end, a.details as details, a.max_score as contest_max_score, a.show_leaderboard as show_leaderboard, a.created_at as created_at, c.description as description, c.id as challenge_id, c.problem_statement as problem_statement, c.input_format as input_format, c.output_format as output_format, c.difficulty as difficulty, c.sample_input as sample_input, c.sample_output as sample_output, c.created_at as challenge_created_at, c.max_score as challenge_max_score from contests as a join contests_challenges as b on a.id=b.contest_id join challenges as c on b.challenge_id=c.id where a.id={}".format(contest_id))
     names = [dict(row) for row in data_raw]
     challenges_arr = []
-    challenge_ids = []
     data = {}
     for i in names:
         challenge_data = {}
         data['contest_name'] = i['contest_name']
-        data['contest_id'] = i['id']
+        data['contest_id'] = i['contest_id']
         data['start_date'] = str(i['start'].strftime("%m/%d/%Y"))
         data['start_time'] = str(i['start'].strftime("%H:%M"))
         data['end_date'] = str(i['end'].strftime("%m/%d/%Y"))
         data['end_time'] = str(i['end'].strftime("%H:%M"))
         data['details'] = i['details']
-        data['max_score'] = i['max_score']
+        data['max_score'] = i['contest_max_score']
         data['show_leaderboard'] = i['show_leaderboard']
         data['created_at'] = str(i['created_at'])
         challenge_data['description'] = i['description']
         challenge_data['challenge_id'] = i['challenge_id']
-        challenge_ids.append(i['challenge_id'])
         challenge_data['problem_statement'] = i['problem_statement']
         challenge_data['input_format'] = i['input_format']
         challenge_data['output_format'] = i['output_format']
@@ -57,21 +55,22 @@ def get_contests_challenges(contest_id, user_id):
         challenge_data['sample_input'] = i['sample_input']
         challenge_data['sample_output'] = i['sample_output']
         challenge_data['created_at'] = str(
-            i['created_at'].strftime("%m/%d/%Y"))
+            i['challenge_created_at'].strftime("%m/%d/%Y"))
+        challenge_data['max_score'] = i['challenge_max_score']
         challenges_arr.append(challenge_data)
 
     submit_data = {}
     
-    for challenge_id in challenge_ids:
+    for challenge in challenges_arr:
         prev_attempt = AttemptsModel.query.filter_by(
-            contest_id=contest_id, user_id = user_id, challenge_id = challenge_id).first()
+            contest_id=contest_id, user_id = user_id, challenge_id = challenge['challenge_id']).first()
         if prev_attempt:
-            if prev_attempt.max_score == data['max_score']:
-                submit_data[challenge_id] = True
+            if prev_attempt.max_score == challenge['max_score']:
+                challenge['submit_status'] = True
             else:
-                submit_data[challenge_id] = False
+                challenge['submit_status'] = False
         else:
-            submit_data[challenge_id] = None
+            challenge['submit_status'] = None
             
 
     resp = {"data": challenges_arr, "contest_data": data, "submit_data": submit_data}

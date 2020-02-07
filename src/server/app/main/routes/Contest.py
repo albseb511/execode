@@ -44,7 +44,7 @@ class Contest(Resource):
             print(contest_name)
             return get_contests_challenges(contest_name, user_id)
         else:
-            return {"comment": "JWT Expired or Invalid"}, 401
+            return {"comment": "JWT Expired or Invalid"}, 200
 
     @classmethod
     def post(self, contest_name):

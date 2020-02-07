@@ -33,6 +33,10 @@ class Challenge(Resource):
             out_count = 0
             test_input = []
             test_output = []
+            max_score = 0
+
+            for test_case in test_cases:
+                max_score = max_score + int(test_case['strength'])
             for key, val in request.files.items():
                 if key == 'test_case_input'+ str(inp_count):
                     test_input.append(val)
@@ -40,7 +44,7 @@ class Challenge(Resource):
                 elif key== 'test_case_output'+str(out_count):
                     test_output.append(val)        
                     out_count = out_count + 1
-            challenge_id = add_challenge(**Info, challenge_name=challenge_id, user_id=user_id) 
+            challenge_id = add_challenge(**Info, challenge_name=challenge_id, user_id=user_id, max_score=max_score) 
 
             if challenge_id == None:
                 return {"comment": "Error in Challenge Creation, check session.commit()"}, 501
