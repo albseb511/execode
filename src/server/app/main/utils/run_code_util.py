@@ -214,11 +214,12 @@ def getResults(sample_input, sample_output, language, user_id, code, is_custom_i
 
         if output_path == False:
             return False, "Infinite Loop", False
-        
+
+        is_correct, output = compare_output(output_path, expected_path)
+
         if is_custom_input:
             return (''.join(output), read_error(error_path), None)
 
-        is_correct, output = compare_output(output_path, expected_path)
         return (''.join(output), read_error(error_path), is_correct and (not is_error(error_path)))
 
     return None, None, False
