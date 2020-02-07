@@ -190,7 +190,7 @@ def compare_output(output_path, expected_path):
         return False, output_lines
 
 
-def getResults(sample_input, sample_output, language, user_id, code):
+def getResults(sample_input, sample_output, language, user_id, code, is_custom_input):
 
     path = makeRunCodeFolder(user_id)
     my_lang = language.lower()
@@ -216,6 +216,10 @@ def getResults(sample_input, sample_output, language, user_id, code):
             return False, "Infinite Loop", False
 
         is_correct, output = compare_output(output_path, expected_path)
+
+        if is_custom_input:
+            return (''.join(output), read_error(error_path), None)
+
         return (''.join(output), read_error(error_path), is_correct and (not is_error(error_path)))
 
     return None, None, False

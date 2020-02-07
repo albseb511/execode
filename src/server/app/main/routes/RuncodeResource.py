@@ -11,6 +11,8 @@ class RuncodeResource(Resource):
                         required=True, help="Challenge ID is needed")
     parser.add_argument('code', type=str, required=True, help="Code is needed")
     parser.add_argument('language', type=str, required=True, help="language is needed")
+    parser.add_argument('custom_input', type=str, required=False, help="Custom Input is needed")
+    parser.add_argument('is_custom_input', type=bool, required=True, help="is_custom_input flag is needed")
 
     def post(self):
         auth_token = request.headers.get("Authorization")
@@ -21,16 +23,21 @@ class RuncodeResource(Resource):
             details = getDetailsById(data["challenge_id"])
             output_resp = list()
             if details:
-                output, error, is_correct = getResults(
-                    details.sample_input, details.sample_output, data['language'], user_id, data["code"])
-                
+                if data['is_custom_input'] == False:
+                    output, error, is_correct = getResults(
+                        details.sample_input, details.sample_output, data['language'], user_id, data["code"], data['is_custom_input'])
+                else:
+                    output, error, is_correct = getResults(
+                        data['custom_input'], '', data['language'], user_id, data["code"], data['is_custom_input'])
                 if len(error) != 0:
                     return {
                     "comment": "runcode successful",
                     "user_output": "",
                     "user_error": error,
                     "sample_result": False,
-                    "is_error": True
+                    "is_error": True,
+                    "is_custom_input": data['is_custom_input'],
+                    "custom_input": data['custom_input']
                 }, 200
                 
                 if output == False:
@@ -39,7 +46,9 @@ class RuncodeResource(Resource):
                     "user_output": "",
                     "user_error": "Timeout Exception",
                     "sample_result": False,
-                    "is_error": True
+                    "is_error": True,
+                    "is_custom_input": data['is_custom_input'],
+                    "custom_input": data['custom_input']
                 }, 200
                 output_resp.append(output.strip())
                 
@@ -48,7 +57,9 @@ class RuncodeResource(Resource):
                     "user_output": output_resp,
                     "user_error": error,
                     "sample_result": is_correct,
-                    "is_error": False
+                    "is_error": False,
+                    "is_custom_input": data['is_custom_input'],
+                    "custom_input": data['custom_input']
                 }, 200
             else:
                 return {"comment": "Incorrect Challenge Id", "error": True}, 404
