@@ -24,7 +24,8 @@ class UserSubmissions extends Component {
     this.state = {
       submissions: [],
       code: "",
-      testCaseInfo: {}
+      testCaseInfo: {},
+      modalTestNo: ""
     };
   }
 
@@ -74,6 +75,7 @@ class UserSubmissions extends Component {
     const { submissions, code } = this.state;
     console.log(this.state)
     return (
+      <>
       <div>
         <div className="container">
           <div className="d-flex p-2">
@@ -88,7 +90,7 @@ class UserSubmissions extends Component {
                 Object.values(this.state.testCaseInfo).map((res, index) => {
                   console.log("test case,",res,index+1) 
                   return(
-                  <div key={index}>
+                  <div key={index} className="btn" data-toggle="modal" data-target="#testModal" onClick={()=>this.setState({modalTestNo: index+1})}>
                     <span className="text-center">Test {index + 1} </span>
                     <div>
                       {res ? (
@@ -178,6 +180,23 @@ class UserSubmissions extends Component {
           </div>
         </div>
       </div>
+      <div className="modal fade" id="testModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal-dialog" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">Test {this.state.modalTestNo}</h5>
+                </div>
+                <div className="modal-body text-center">
+                  <div className="btn btn-dark active mr-4">Input</div>
+                  <div className="btn btn-dark active">Output</div>
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+      </>
     );
   }
 }
