@@ -340,6 +340,18 @@ const SingleChallenge = ({
                 </pre>
               </div>
             </div>
+            {runCodeResponse &&
+              runCodeResponse.hasOwnProperty('is_custom_input') &&
+              runCodeResponse.is_custom_input &&
+                <div className="mb-3">
+                  <h6 className="text-success">Custom Input</h6>
+                  <div className="py-3">
+                    <pre className="execode-code">
+                      <code>{runCodeResponse.custom_input}</code>
+                    </pre>
+                  </div>
+                </div>
+              }
             <div>
               <h6 className="text-primary">Output</h6>
               <hr />
