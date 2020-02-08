@@ -14,3 +14,17 @@ class AdminLeaderboard(Resource):
         """
         # print(Challenges_details)
         return get_raw_data(contest_id,user_id)
+
+class SingleUserSubmissions(Resource):
+    """"
+    Get Admin Leaderboard details 
+        """
+    @classmethod
+    def get(cls,contest_id):
+        auth_token = request.headers.get("Authorization")
+        user_id = decode_auth_token(auth_token)
+        if user_id:
+            return get_raw_data(contest_id,user_id)
+        else:
+            return {"comment": "JWT Expired or Invalid"}, 200
+        
