@@ -83,7 +83,7 @@ class ChallengeSettings extends Component {
                     <li>
                       Language:{setting.language} | Time Limit:
                       {setting.timeLimit} | Memory Limit:{setting.memoryLimit}
-                      <button type="button" class="close" onClick={()=>delSettings(setting.language)} aria-label="Close">
+                      <button type="button" className="close" onClick={()=>delSettings(setting.language)} aria-label="Close">
                         <span aria-hidden="true">×</span>
                       </button>
                     </li>

@@ -46,7 +46,6 @@ class CreateChallenge extends Component {
   };
 
   addTestCase = testCase => {
-    console.log(testCase);
     if (
       testCase.testCaseName &&
       testCase.visibility &&
@@ -54,6 +53,10 @@ class CreateChallenge extends Component {
       testCase.strength &&
       testCase.outputFile
     ) {
+      if(this.state.test_cases.find(ele=>ele.testCaseName===testCase.testCaseName)){
+        alert("test case name already exists")
+        return false
+      }
       this.setState(state => {
         return {
           test_cases: [...state.test_cases, testCase],
@@ -65,6 +68,15 @@ class CreateChallenge extends Component {
       alert("All fields are mandatory");
     }
   };
+
+  delTestCase = testCaseName => {
+    let {test_cases,test_input,test_output} = this.state
+    let index = test_cases.findIndex(test=>test.testCaseName===testCaseName)
+    test_cases = test_cases.filter((a,i)=>i!=index)
+    test_input = test_input.filter((a,i)=>i!=index)
+    test_output = test_output.filter((a,i)=>i!=index)
+    this.setState({test_cases,test_input,test_output}) 
+  }
 
   addSettings = setting => {
     this.setState(state => {
@@ -220,7 +232,7 @@ class CreateChallenge extends Component {
       );
     } else {
       viewTab = (
-        <AddTestCases test_cases={testCases} addTestCase={this.addTestCase} />
+        <AddTestCases delTestCase={this.delTestCase} test_cases={testCases} addTestCase={this.addTestCase} />
       );
     }
     return (

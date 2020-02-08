@@ -27,15 +27,9 @@ class AddTestCases extends Component {
     });
   };
 
-  // handleFiles = e => {
-  //   this.setState({
-  //     [e.target.name]: e.target.files[0]
-  //   });
-  // };
-
   render() {
     const { testCaseName, visibility, strength } = this.state;
-    const { test_cases: testCases, addTestCase } = this.props;
+    const { test_cases: testCases, addTestCase, delTestCase } = this.props;
     return (
       <div className="p-3">
         <div className="form-group row">
@@ -141,6 +135,7 @@ class AddTestCases extends Component {
               <th scope="col">Strengths</th>
               <th scope="col">Action</th>
               <th scope="col">Visibility</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -154,6 +149,11 @@ class AddTestCases extends Component {
                     <td>{tCase.strength}</td>
                     <td>No actions yet</td>
                     <td>{tCase.visibility ? "Visible" : "Not Visible"}</td>
+                    <td>
+                      <button type="button" className="close" onClick={()=>delTestCase(tCase.testCaseName)} aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </td>
                   </tr>
                 ))
               : null}
