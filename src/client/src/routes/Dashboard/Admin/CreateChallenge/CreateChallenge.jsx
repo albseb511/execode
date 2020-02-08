@@ -72,6 +72,12 @@ class CreateChallenge extends Component {
     });
   };
 
+  delSettings = language => {
+    let {settings:newSetting} = this.state
+    newSetting = newSetting.filter(item=>item.language!=language)
+    this.setState({settings:newSetting})
+  }
+
   handleTabChange = tab => {
     if (tab === "details") {
       this.setState({
@@ -207,7 +213,10 @@ class CreateChallenge extends Component {
       );
     } else if (settingsTab) {
       viewTab = (
-        <ChallengeSettings addSettings={this.addSettings} settings={settings} />
+        <ChallengeSettings addSettings={this.addSettings}
+                           settings={settings} 
+                           delSettings={this.delSettings}
+                           />
       );
     } else {
       viewTab = (

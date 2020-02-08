@@ -19,7 +19,7 @@ class ChallengeSettings extends Component {
 
   render() {
     const { language, timeLimit, memoryLimit } = this.state;
-    const { addSettings, settings } = this.props;
+    const { addSettings, settings, delSettings } = this.props;
     return (
       <div>
         <h3>Challenge Settings</h3>
@@ -36,6 +36,7 @@ class ChallengeSettings extends Component {
               required
             >
               <option>Choose Language...</option>
+              <option value="cpp">C++</option>
               <option value="python">Python</option>
               <option value="javascript">Javascript</option>
             </select>
@@ -82,6 +83,9 @@ class ChallengeSettings extends Component {
                     <li>
                       Language:{setting.language} | Time Limit:
                       {setting.timeLimit} | Memory Limit:{setting.memoryLimit}
+                      <button type="button" class="close" onClick={()=>delSettings(setting.language)} aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                      </button>
                     </li>
                   ))
                 : null}
