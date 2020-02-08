@@ -37,7 +37,8 @@ class RuncodeResource(Resource):
                     "sample_result": False,
                     "is_error": True,
                     "is_custom_input": data['is_custom_input'],
-                    "custom_input": data['custom_input']
+                    "custom_input": data['custom_input'],
+                    "error_type": "Runtime Error"
                 }, 200
                 
                 if output == False:
@@ -48,7 +49,8 @@ class RuncodeResource(Resource):
                     "sample_result": False,
                     "is_error": True,
                     "is_custom_input": data['is_custom_input'],
-                    "custom_input": data['custom_input']
+                    "custom_input": data['custom_input'],
+                    "error_type": "Output Mismatch Error"
                 }, 200
                 output_resp.append(output.strip())
                 
@@ -59,7 +61,8 @@ class RuncodeResource(Resource):
                     "sample_result": is_correct,
                     "is_error": False,
                     "is_custom_input": data['is_custom_input'],
-                    "custom_input": data['custom_input']
+                    "custom_input": data['custom_input'],
+                    "error_type": "No Error"
                 }, 200
             else:
                 return {"comment": "Incorrect Challenge Id", "error": True}, 404

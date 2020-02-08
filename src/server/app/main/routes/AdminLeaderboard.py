@@ -2,6 +2,7 @@ from flask import request
 from flask_restful import Resource
 # from ..models.ChallengesModel import ChallengesModel
 from ..services.admin_leaderboard_service import get_raw_data
+from app.main.services.decode_auth_token import decode_auth_token
 
 class AdminLeaderboard(Resource):
     """"
