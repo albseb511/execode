@@ -118,11 +118,22 @@ const reducer = (state = initState, { type, payload }) => {
         registerSuccess: false
       };
     case REGISTER_USER_SUCCESS:
+      if (payload.status === "success") {
+        return {
+          ...state,
+          isRegistering: false,
+          registerSuccess: true
+        };
+      }
       return {
         ...state,
         isRegistering: false,
-        registerSuccess: true
+        registerSuccess: false,
+        error: true,
+        errorType: "register",
+        errorMessage: payload.message
       };
+
     case REGISTER_USER_FAILURE:
       return {
         ...state,

@@ -161,14 +161,16 @@ export const submitTestCaseEndFailure = payload => ({
 export const submitTestCaseEnd = payload => {
   submitTestCaseEndRequest();
   return dispatch => {
-    console.log(JSON.stringify(payload.test_case_info))
+    console.log(JSON.stringify(payload.test_case_info));
     axios
       .post(
         "/submitupdate",
         {
           submission_id: payload.submission_id,
           path: payload.path,
-          test_case_info: JSON.stringify(payload.test_case_info)
+          test_case_info: JSON.stringify(payload.test_case_info),
+          challenge_id: payload.challenge_id,
+          contest_id: payload.contest_id
         },
         {
           headers: {

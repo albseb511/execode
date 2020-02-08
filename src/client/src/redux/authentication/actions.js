@@ -71,7 +71,7 @@ export const registerUser = payload => {
         password: payload.password
       })
       .then(res => {
-        dispatch(registerUserSuccess(res));
+        dispatch(registerUserSuccess(res.data));
       })
       .catch(() => dispatch(registerUserFail()));
   };
