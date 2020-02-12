@@ -440,6 +440,8 @@ Success (Status Code - 202)
 ​
 ​
 ```
+
+## Code of Submission
 ​
 GET `/contest/<contest_id>/leaderboard/<user_id>/code/<submission_id>`
 ​
@@ -459,6 +461,8 @@ Success (Status Code - 202)
                 }
 }
 ```
+
+## Submit Code
 
 POST `/submitcodelist`
 
@@ -571,6 +575,8 @@ Required Headers - `Authorization: <access_token>`
 }
 ```
 
+## Single user submissions
+
 GET `/contest/<contest_id>/leaderboard/singleuser`
 ​
 Required Headers - `Authorization: <access_token>`
@@ -599,6 +605,8 @@ Success (Status Code - 200)
 }
 ```
 
+## All users
+
 GET `/users`
 ​
 Required Headers - `Authorization: <access_token>`
@@ -622,6 +630,8 @@ Success (Status Code - 200)
 
 ```
 
+## Validation
+
 GET `/validate`
 ​
 Required Headers - `Authorization: <access_token>`
@@ -634,6 +644,8 @@ Success (Status Code - 200)
             "suceess": "BOOLEAN"
 }
 ```
+
+## Event Adding
 
 GET `/event/<user_id>`
 ​
