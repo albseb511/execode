@@ -2,7 +2,7 @@ from app.main.routes.auth_controller import UserLogin, LogoutAPI, UserSignUp, Fa
 from app.main import api
 from app.main.routes.Contest import Contest
 from app.main.routes.UserLeaderboard import UserLeaderboard
-from app.main.routes.AdminLeaderboard import AdminLeaderboard
+from app.main.routes.AdminLeaderboard import AdminLeaderboard, SingleUserSubmissions
 from app.main.routes.RuncodeResource import RuncodeResource
 from app.main.routes.SubmitCodeResource import SubmitCodeResource, SubmitCodeResourceTestCaseList, SubmitCodeResourceTestCaseRun , SubmitCodeResourceUpdate
 from app.main.routes.AllChallenge import AllChallenge
@@ -38,6 +38,8 @@ def add_resources(app):
     api.add_resource(UserLeaderboard, '/contest/<contest_id>/leaderboard')
     api.add_resource(AdminLeaderboard,
                      '/contest/<contest_id>/leaderboard/<user_id>')
+    api.add_resource(SingleUserSubmissions,
+                     '/contest/<contest_id>/leaderboard/singleuser')
     api.add_resource(RuncodeResource, '/runcode')
     api.add_resource(SubmitCodeResource, '/submit')
     api.add_resource(Challenge, '/challenge/<challenge_id>')

@@ -163,7 +163,8 @@ class SubmitCodeResourceTestCaseRun(Resource):
                 "user_error": error,
                 "sample_result": False,
                 "is_error": True,
-                "test_case_id": data['test_id']
+                "test_case_id": data['test_id'],
+                "error_type": "Runtime Error"
             }, 200
 
             if output == False:
@@ -173,7 +174,8 @@ class SubmitCodeResourceTestCaseRun(Resource):
                 "user_error": "Timeout Exception",
                 "sample_result": False,
                 "is_error": True,
-                "test_case_id": data['test_id']
+                "test_case_id": data['test_id'],
+                "error_type": "Output Mismatch Error"
             }, 200
 
             return {
@@ -182,7 +184,8 @@ class SubmitCodeResourceTestCaseRun(Resource):
                 "user_error": error,
                 "sample_result": is_correct,
                 "is_error": False,
-                "test_case_id": data['test_id']
+                "test_case_id": data['test_id'],
+                "error_type": "No Error"
             }, 200
 
         else:

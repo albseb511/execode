@@ -42,7 +42,9 @@ POST `/login`
 {
     "status": "success",
     "message": "Successfully logged in.",
-    "Authorization": "<auth_token>"
+    "Authorization": "<auth_token>",
+    "role": "STRING",
+    "email": "STRING"
 ```
 
 ## Logout
@@ -85,7 +87,7 @@ Required Headers - `Authorization: <access_token>`
 Success (Status Code - 200)
 ```json
 {
-     "challenge_details":{
+     "challenge":{
                         "description":"STRING",
                         "problem_statement":"STRING",
                         "input_format":"STRING",
@@ -95,8 +97,10 @@ Success (Status Code - 200)
                         "sample_input":"STRING",
                         "sample_output":"STRING",
                         "marks":"INTEGER",
-    },
-    "comment": "List of Challenges",
+                        "challenge_name": "STRING",
+                        "challenge_id": "INTEGER",
+                        "constratints": "STRING"
+    }
 }
 ```
 ​
@@ -200,11 +204,9 @@ SUCCESS (Status Code - 200)
                 {
                 "challenge_name":"STRING",
                 "challenge_id":"INTEGER",
-                "max_Score":"INTEGER",
                 "test_case_count":"INTEGER",
             }
-            ],
-    "comment":"data of a challenge"
+            ]
 ​
 }
 ```
@@ -219,8 +221,6 @@ Required Headers - `Authorization: <access_token>`
 BODY
 ```json
 {
-            "contest_id":"INTEGER",
-            "contest_name":"STRING",
             "start_date":"DATETIME",
             "end_date":"DATETIME",
             "end_time":"INTEGER",
@@ -242,7 +242,7 @@ Success (Status Code - 201)
 }
 ```
 ​
-GET `/contest/<contest_name>`
+GET `/contest/<contest_id>`
 ​
 Required Headers - `Authorization: <access_token>`
 ​
@@ -251,26 +251,34 @@ Required Headers - `Authorization: <access_token>`
 Success (Status Code - 200)
 ```json
 {
-            "contest_name":"STRING",
-            "start_date":"DATETIME",
-            "end_date":"DATETIME",
-            "end_time":"DATETIME",
-            "details":"STRING",
-            "show_leader_board":"BOOLEAN",
-            "challenges":[{
-                            "challenge_id":"INTEGER",
-                            "description":"STRING",
-                            "problem_statement":"STRING",
-                            "input_format":"STRING",
-                            "output_format":"STRING",
-                            "constraints":"STRING",
-                            "difficulty":"INTEGER",
-                            "sample_input":"STRING",
-                            "sample_output":"STRING",
-                            "marks":""
-                            },{},{}],
-    "comments":"",
-​
+            "data": [
+                {
+                    "description": "STRING",
+                    "challenge_id": "INTEGER",
+                    "problem_statement": "STRING",
+                    "input_format": "STRING",
+                    "output_format": "STRING",
+                    "difficulty": "STRING",
+                    "sample_input": "STRING",
+                    "sample_output": "STRING",
+                    "created_at": "01/STRING/2020",
+                    "max_score": "INTEGER",
+                    "submit_status": "BOOLEAN"
+                }
+            ],
+            "contest_data": {
+                "contest_name": "STRING",
+                "contest_id": 1,
+                "start_date": "STRING",
+                "start_time": "STRING",
+                "end_date": "STRING",
+                "end_time": "STRING",
+                "details": "STRING",
+                "max_score": "INTEGER",
+                "show_leaderboard": "INTEGER",
+                "created_at": "STRING"
+            },
+            "submit_data": {}
 }
 ```
 ​
@@ -293,34 +301,9 @@ Success (Status Code - 200)
                         "end_time":"DATETIME",
                         "details":"STRING",
                         "show_leader_board":"BOOLEAN",
+                        "created_at": "STRING"
                     }],
             "comments":"",        
-​
-}
-```
-​
-## Signup Contest
-​
-GET `/signup/contest/<contest_id>`
-​
-Required Headers - `Authorization: <access_token>`
-​
-#### RESPONSE
-​
-Success (Status Code - 202)
-```json
-{
-            "comments":"successfully signed up",
-            "error":""
-​
-}
-```
-​
-Failure (Status Code - 403)
-```json
-{
-            "comments":"contest has not started",
-            "error":true
 ​
 }
 ```
@@ -349,10 +332,14 @@ Body
 Success (Status Code - 200)
 ```json
 {           
-        "comment":"",
-        "user_output":"STRING",
-        "user_Error":"STRING",
-        "sample_result": "BOOLEAN"
+            "comment": "STRING",
+            "user_output": "STRING",
+            "user_error": "STRING",
+            "sample_result": "BOOLEAN",
+            "is_error": "BOOLEAN",
+            "is_custom_input": "BOOLEAN",
+            "custom_input": "STRING",
+            "error_type": "STRING"
 ​
 }
 ```
@@ -409,9 +396,13 @@ Success (Status Code - 202)
 {
             "leaderboard":[
                 {
-                    "user_id":"INTEGER",
-                    "user_name":"STRING",
-                    "total_marks":"STRING",
+                    "contest_id": "INTEGER",
+                    "user_id": "INTEGER",
+                    "total": "INTEGER",
+                    "name": "STRING",
+                    "email": "STRING",
+                    "contest_name": "STRING",
+                    "rank": "INTEGER"
                     
                 }],
             "comment":""
@@ -429,22 +420,30 @@ Success (Status Code - 202)
 {
             "challenges":[
                 {
-                    "attempt_id":"INTEGER",
-                    "challenge_id":"INTEGER",
-                    "challenge_name":"STRING",
-                    "max_score":"INTEGER",
-                    "submission_id":"INTEGER"
-                    
-                }],
-            "comment":""
+                    "submission_id": "INTEGER",
+                    "challenge_id": "INTEGER",
+                    "challenge_name": "STRING",
+                    "name": "STRING",
+                    "time_taken": [
+                        "INTEGER",
+                        "INTEGER"
+                    ],
+                    "created_at": "STRING",
+                    "score": "INTEGER",
+                    "contest_name": "STRING"
+                            
+                        }],
+            "comment":"success"
 ​
 }
 ​
 ​
 ​
 ```
+
+## Code of Submission
 ​
-GET `/code/<submission_id>`
+GET `/contest/<contest_id>/leaderboard/<user_id>/code/<submission_id>`
 ​
 Required Headers - `Authorization: <access_token>`
 ​
@@ -453,8 +452,219 @@ Required Headers - `Authorization: <access_token>`
 Success (Status Code - 202)
 ```json
 {
-           "code":{},
-          "comment":""
+                "code_path": "STRING",
+                "code": "STRING",
+                "comment": "success",
+                "test_case_info": {
+                    "tco1": "BOOLEAN",
+                    "tco2": "BOOLEAN"
+                }
+}
+```
+
+## Submit Code
+
+POST `/submitcodelist`
+
+Required Headers - `Authorization: <access_token>`
+
+#### Request 
+
+```json
+{
+            "contest_id":"INTEGER",
+            "challenge_id":"INTEGER",
+            "language":"STRING",
+            "code":"STRING",
+            "action":"submitting the code"
+}
+```
+#### Response 
+
+```json
+{
+    "status": "ok",
+    "test_cases": [
+        {
+            "id": "INTEGER",
+            "name": "STRING",
+            "strength": "INTEGER",
+            "visibility": "BOOLEAN",
+            "input_file": "STRING",
+            "output_file": "STRING",
+            "challenge_id": 1
+        },
+        {
+            "id": "INTEGER",
+            "name": "STRING",
+            "strength": "INTEGER",
+            "visibility": "BOOLEAN",
+            "input_file": "STRING",
+            "output_file": "STRING",
+            "challenge_id": 1
+        }
+    ],
+    "time_limit": "INTEGER",
+    "submission_id": "INTEGER",
+    "path": "STRING",
+    "code_file_path": "STRING"
+}
+
+    {
+        "language":"STRING",
+        "strength": "INTEGER",
+        "input_file": "STRING",
+        "output_file": "STRING",
+        "path": "STRING",
+        "code_file_path": "STRING"
+    }
+```
+
+POST `/testcaserun`
+
+Required Headers - `Authorization: <access_token>`
+
+#### Request 
+
+
+```json
+    {
+        "language":"STRING",
+        "test_id":"INTEGER",
+        "strength": "INTEGER",
+        "input_file": "STRING",
+        "output_file": "STRING",
+        "path": "STRING",
+        "code_file_path": "STRING"
+    }
+```
+
+#### Response 
+
+```json
+{
+    "comment": "runcode successful",
+    "user_output": "STRING",
+    "user_error": [],
+    "sample_result": "BOOLEAN",
+    "is_error": "BOOLEAN"
+}
+```
+
+POST `/submitupdate`
+
+Required Headers - `Authorization: <access_token>`
+
+
+#### Request 
+
+```json
+    {
+    	"submission_id": "INTEGER",
+        "path": "STRING",
+        "test_case_info": "STRING"
+    }
+```
+
+#### Response 
+
+```json
+{
+    "status": "ok",
+    "comment": "marks updated"
+}
+```
+
+## Single user submissions
+
+GET `/contest/<contest_id>/leaderboard/singleuser`
 ​
+Required Headers - `Authorization: <access_token>`
+​
+#### RESPONSE
+​
+Success (Status Code - 200)
+```json
+{
+            "challenges": [
+                {
+                    "submission_id": "INTEGER",
+                    "challenge_id": "INTEGER",
+                    "challenge_name": "STRING",
+                    "name": "STRING",
+                    "time_taken": [
+                        "INTEGER",
+                        "INTEGER"
+                    ],
+                    "created_at": "STRING",
+                    "score": "INTEGER",
+                    "contest_name": "STRING"
+                }
+            ],
+            "comment": "success"
+}
+```
+
+## All users
+
+GET `/users`
+​
+Required Headers - `Authorization: <access_token>`
+​
+#### RESPONSE
+​
+Success (Status Code - 200)
+```json
+{
+            "data": [
+                {
+                    "name": "STRING",
+                    "email": "STRING",
+                    "id": "INTEGER",
+                    "role": "STRING",
+                    "created_at": "STRING"
+                }
+            ],
+            "comment": "all users"
+}
+
+```
+
+## Validation
+
+GET `/validate`
+​
+Required Headers - `Authorization: <access_token>`
+​
+#### RESPONSE
+​
+Success (Status Code - 200)
+```json
+{
+            "suceess": "BOOLEAN"
+}
+```
+
+## Event Adding
+
+GET `/event/<user_id>`
+​
+Required Headers - `Authorization: <access_token>`
+​
+#### RESPONSE
+​
+Success (Status Code - 200)
+```json
+{
+            "events": [
+            {
+                    "event": "STRING",
+                    "text": "STRING",
+                    "name": "STRING",
+                    "challenge_name": "STRING",
+                    "created_at": "STRING"
+                }
+            ],
+            "comment": "All the events of user <user_id>"
 }
 ```
