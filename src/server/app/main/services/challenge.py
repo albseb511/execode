@@ -23,12 +23,13 @@ def save_changes(data):
 
 def get_challenge(challenge_id):
     challenge = ChallengesModel.query.filter_by(id = challenge_id).first()
-    challenege1 = db.engine.execute("select * from challenges join test_cases on challenges.id = test_cases.challenge_id join challenge_settings on challenge_settings.challenge_id = challenges.id")
-    print(challenege1)
+    #challenege1 = db.engine.execute("select * from challenges join test_cases on challenges.id = test_cases.challenge_id join challenge_settings on challenge_settings.challenge_id = challenges.id")
+    #print(challenege1)
     # print(challenge)
     details = {
         "challenge_name":challenge.challenge_name,
-         "challenge_id":challenge.description,
+         "challenge_id":challenge_id,
+         "challenge_description": challenge.description,
          "problem_statement":challenge.problem_statement,
          "input_format":challenge.input_format,
          "output_format":challenge.output_format,
