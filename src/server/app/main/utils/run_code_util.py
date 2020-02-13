@@ -7,10 +7,28 @@ import sys
 import time
 import threading
 from time import sleep
+import requests
 try:
     import thread
 except ImportError:
     import _thread as thread
+
+def refresh_server():
+    username = 'parthmasai'
+    token = 'e0de7e1895acdf09f570f2b8af4a1c7d9c86ecff'
+
+    response = requests.post(
+    'https://www.pythonanywhere.com/api/v0/user/{username}/webapps/parthmasai.pythonanywhere.com/reload/'.format(
+        username=username
+    ),
+    headers={'Authorization': 'Token {token}'.format(token=token)}
+    )
+
+
+    if response.status_code == 200:
+        print(response.content)
+    else:
+        print('Got unexpected status code {}: {!r}'.format(response.status_code, response.content))
 
 
 def quit_function(fn_name):
@@ -18,9 +36,11 @@ def quit_function(fn_name):
         print('{0} took too long'.format(fn_name), file=sys.stderr)
         sys.stderr.flush()
         #thread.interrupt_main()
-        raise KeyboardInterrupt
-    except KeyboardInterrupt:
+        raise ValueError
+    except ValueError:
         print("stopped")
+        print('refreshing the server')
+        refresh_server()
     finally:
         return False, "error"
 
