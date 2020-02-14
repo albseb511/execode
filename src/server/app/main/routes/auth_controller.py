@@ -17,8 +17,9 @@ class UserSignUp(Resource):
 
     def post(self):
         """Creates a new User """
-        data = request.json
-        return save_new_user(data=data)
+        #data = request.json
+        #return save_new_user(data=data)
+        return {"comment": "Contact Admin parth@masaischool.com", "status": "fail"}
 
 class UserAll(Resource):
 

@@ -7,10 +7,29 @@ import sys
 import time
 import threading
 from time import sleep
+import requests
+import subprocess
 try:
     import thread
 except ImportError:
     import _thread as thread
+
+def refresh_server():
+    username = 'parthmasai'
+    token = 'e0de7e1895acdf09f570f2b8af4a1c7d9c86ecff'
+
+    response = requests.post(
+    'https://www.pythonanywhere.com/api/v0/user/{username}/webapps/parthmasai.pythonanywhere.com/reload/'.format(
+        username=username
+    ),
+    headers={'Authorization': 'Token {token}'.format(token=token)}
+    )
+
+
+    if response.status_code == 200:
+        print(response.content)
+    else:
+        print('Got unexpected status code {}: {!r}'.format(response.status_code, response.content))
 
 
 def quit_function(fn_name):
@@ -18,9 +37,11 @@ def quit_function(fn_name):
         print('{0} took too long'.format(fn_name), file=sys.stderr)
         sys.stderr.flush()
         #thread.interrupt_main()
-        raise KeyboardInterrupt
-    except KeyboardInterrupt:
+        raise ValueError
+    except ValueError:
         print("stopped")
+        print('refreshing the server')
+        refresh_server()
     finally:
         return False, "error"
 
@@ -71,6 +92,10 @@ def make_input_file(sample_input, path):
     wg.close()
     return path+"/in.txt"
 
+def make_file(path):
+    wg = open(path, "w")
+    wg.close()
+
 
 def make_sample_output(sample_output, path):
     wg = open(path+"/expected.txt", "w")
@@ -95,8 +120,20 @@ def make_cpp_file(code, path):
 @exit_after(2)
 def run_python_code(code_path, input_path, output_path, error_path):
     print("started run code")
-    os.system("python3 %s 0<%s 1>%s 2>%s"%(
-            code_path, input_path, output_path, error_path))
+    cmd = "python3 %s 0<%s 1>%s 2>%s"%(
+            code_path, input_path, output_path, error_path)
+    starttime = time.time()
+    proc = subprocess.Popen([cmd], shell=True, preexec_fn=os.setsid)
+    try:
+        print(proc.communicate(timeout=0.5))
+        t = proc.returncode
+    except subprocess.TimeoutExpired:
+        os.system("pkill Python")
+        os.system("pkill python3.7")
+        os.system("rm %s"%(output_path))
+        print('killed')
+        return False
+    return True
 
 @exit_after(2)
 def run_python2_code(code_path, input_path, output_path, error_path):
@@ -114,8 +151,21 @@ def run_cpp_code(code_path, input_path, output_path, error_path):
 
 @exit_after(2)
 def run_js_code(code_path, input_path, output_path, error_path):
-    os.system("node %s 0<%s 1>%s 2>%s"%(
-            code_path, input_path, output_path, error_path))
+    cmd = "node %s 0<%s 1>%s 2>%s"%(
+            code_path, input_path, output_path, error_path)
+
+    starttime = time.time()
+    proc = subprocess.Popen([cmd], shell=True, preexec_fn=os.setsid)
+    try:
+        print(proc.communicate(timeout=0.5))
+        t = proc.returncode
+    except subprocess.TimeoutExpired:
+        os.system("killall node")
+        os.system("killall nodejs")
+        os.system("rm %s"%(output_path))
+        print('killed')
+        return False
+    return True
 
 def generate_output_error(input_path, code_path, path, my_lang, output_file_name, error_file_name):
     """
@@ -123,20 +173,20 @@ def generate_output_error(input_path, code_path, path, my_lang, output_file_name
     """
     output_path = path+"/"+output_file_name+".txt"
     error_path = path+"/"+error_file_name+".txt"
+    make_file(output_path)
+    make_file(error_path)
 
     if my_lang == 'javascript':
-        try:
-            run_js_code(
+        flag = run_js_code(
             code_path, input_path, output_path, error_path)
-        except Exception as e:
-            return False, e
+        if flag == False:
+            return False, error_path
 
     elif my_lang == "python":
-        try:
-            run_python_code(
+        flag = run_python_code(
             code_path, input_path, output_path, error_path)
-        except KeyboardInterrupt:
-            print('IT is working__________________')
+        if flag == False:
+            return False, error_path
 
     elif my_lang == "python2":
         try:

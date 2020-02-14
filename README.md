@@ -38,4 +38,4 @@ https://github.com/masai-oss/open-template/wiki/Cypress-Guide
 
 https://github.com/masai-oss/open-template/wiki/OAuth-Guide
 ​
-It is very important to read these documents throughly before starting to code.
+#### It is very important to read these documents throughly before starting to code.
