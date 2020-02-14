@@ -92,6 +92,10 @@ def make_input_file(sample_input, path):
     wg.close()
     return path+"/in.txt"
 
+def make_file(path):
+    wg = open(path, "w")
+    wg.close()
+
 
 def make_sample_output(sample_output, path):
     wg = open(path+"/expected.txt", "w")
@@ -126,7 +130,7 @@ def run_python_code(code_path, input_path, output_path, error_path):
     except subprocess.TimeoutExpired:
         os.system("pkill Python")
         os.system("pkill python3.7")
-        
+        os.system("rm %s"%(output_path))
         print('killed')
         return False
     return True
@@ -153,12 +157,15 @@ def run_js_code(code_path, input_path, output_path, error_path):
     starttime = time.time()
     proc = subprocess.Popen([cmd], shell=True, preexec_fn=os.setsid)
     try:
-        print(proc.communicate(timeout=0.1))
+        print(proc.communicate(timeout=0.5))
         t = proc.returncode
     except subprocess.TimeoutExpired:
         os.system("killall node")
         os.system("killall nodejs")
+        os.system("rm %s"%(output_path))
         print('killed')
+        return False
+    return True
 
 def generate_output_error(input_path, code_path, path, my_lang, output_file_name, error_file_name):
     """
@@ -166,22 +173,20 @@ def generate_output_error(input_path, code_path, path, my_lang, output_file_name
     """
     output_path = path+"/"+output_file_name+".txt"
     error_path = path+"/"+error_file_name+".txt"
+    make_file(output_path)
+    make_file(error_path)
 
     if my_lang == 'javascript':
-        try:
-            run_js_code(
+        flag = run_js_code(
             code_path, input_path, output_path, error_path)
-        except Exception as e:
-            return False, e
+        if flag == False:
+            return False, error_path
 
     elif my_lang == "python":
-        try:
-            flag = run_python_code(
+        flag = run_python_code(
             code_path, input_path, output_path, error_path)
-            if flag == False:
-                return False, error_path
-        except KeyboardInterrupt:
-            print('IT is working__________________')
+        if flag == False:
+            return False, error_path
 
     elif my_lang == "python2":
         try:
