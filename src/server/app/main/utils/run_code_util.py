@@ -8,6 +8,7 @@ import time
 import threading
 from time import sleep
 import requests
+import subprocess
 try:
     import thread
 except ImportError:
@@ -115,8 +116,20 @@ def make_cpp_file(code, path):
 @exit_after(2)
 def run_python_code(code_path, input_path, output_path, error_path):
     print("started run code")
-    os.system("python3 %s 0<%s 1>%s 2>%s"%(
-            code_path, input_path, output_path, error_path))
+    cmd = "python3 %s 0<%s 1>%s 2>%s"%(
+            code_path, input_path, output_path, error_path)
+    starttime = time.time()
+    proc = subprocess.Popen([cmd], shell=True, preexec_fn=os.setsid)
+    try:
+        print(proc.communicate(timeout=0.5))
+        t = proc.returncode
+    except subprocess.TimeoutExpired:
+        os.system("pkill Python")
+        os.system("pkill python3.7")
+        
+        print('killed')
+        return False
+    return True
 
 @exit_after(2)
 def run_python2_code(code_path, input_path, output_path, error_path):
@@ -134,8 +147,18 @@ def run_cpp_code(code_path, input_path, output_path, error_path):
 
 @exit_after(2)
 def run_js_code(code_path, input_path, output_path, error_path):
-    os.system("node %s 0<%s 1>%s 2>%s"%(
-            code_path, input_path, output_path, error_path))
+    cmd = "node %s 0<%s 1>%s 2>%s"%(
+            code_path, input_path, output_path, error_path)
+
+    starttime = time.time()
+    proc = subprocess.Popen([cmd], shell=True, preexec_fn=os.setsid)
+    try:
+        print(proc.communicate(timeout=0.1))
+        t = proc.returncode
+    except subprocess.TimeoutExpired:
+        os.system("killall node")
+        os.system("killall nodejs")
+        print('killed')
 
 def generate_output_error(input_path, code_path, path, my_lang, output_file_name, error_file_name):
     """
@@ -153,8 +176,10 @@ def generate_output_error(input_path, code_path, path, my_lang, output_file_name
 
     elif my_lang == "python":
         try:
-            run_python_code(
+            flag = run_python_code(
             code_path, input_path, output_path, error_path)
+            if flag == False:
+                return False, error_path
         except KeyboardInterrupt:
             print('IT is working__________________')
 
