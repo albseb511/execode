@@ -6,5 +6,5 @@
 - Harshit Ghakar - https://github.com/harshit860
 - Krishna Kant Sharma - https://github.com/krishna7860
 - Mihir Lal Das - https://github.com/mihirlaldas
-- Gaurav Arya - https://github.com/krishna7860
+- Gaurav Arya - https://github.com/gauravarya12
 - Hasmuddin Ansari - https://github.com/hasmuddinansari
