@@ -58,7 +58,7 @@ A commit message consists of 3 parts:
 
 **Example:**
 
-setup.py: Change point' entrypoint
+setup.py: Change point entrypoint
 
 This entrypoint ensures that branch discovers the point correctly.
 It helps not writing more functions inside ``lib`` for this.
