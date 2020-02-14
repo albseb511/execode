@@ -26,14 +26,33 @@ import EditContestDetails from "./Dashboard/Admin/CreateContest/EditContestDetai
 import CreateUsers from "./Dashboard/Admin/CPanel/CreateUsers";
 import ViewUsers from "./Dashboard/Admin/CPanel/ViewUsers";
 import { logoutUser, setRedirectUrl, resetRedirectUrl, tokenValidateUser } from "../redux/authentication/actions";
-import ErrorBoundary from "../components/common/ErrorBoundary"
-import ViewSubmissions from "./Dashboard/User/Contest/ViewSubmissions"
+import ErrorBoundary from "../components/common/ErrorBoundary";
+import ViewSubmissions from "./Dashboard/User/Contest/ViewSubmissions";
+import AllChallenges from "./Dashboard/Admin/Challenge/AllChallenges";
+import ViewChallenge from "./Dashboard/Admin/Challenge/ViewChallenge"
+import AuthenticatingIndicator  from "../components/common/Activity Indicators/AuthenticatingIndicator";
 
-const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser, path, setRedirectUrl, resetRedirectUrl, validateUser, error }) => {
+const DashboardRoutes = ({ 
+  isAuth, 
+  token, 
+  userType, 
+  email, 
+  logoutUser, 
+  path, 
+  setRedirectUrl, 
+  resetRedirectUrl, 
+  validateUser, 
+  error,
+  isLoadingAdmin,
+  isLoadingAuth,
+  isValidating,
+  isLoadingUser
+}) => {
   if (!isAuth) {
     validateUser(token)
+
+    return <AuthenticatingIndicator />
   };
-  console.log(error)
   return isAuth ? (
     <>
       <Route
@@ -46,10 +65,14 @@ const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser, path, set
               token={token}
               userType={userType}
               logoutUser={logoutUser}
-            />
+              />
           </ErrorBoundary>
         )}
-      />
+        />
+        {(isLoadingAdmin || 
+          isLoadingAuth ||
+          isValidating || 
+          isLoadingUser )&& <AuthenticatingIndicator />}
       {/* <Route path="/dashboard" exact render={() => <UserDashboard />} /> */}
       {/* <Route
         path="/dashboard/user/all-contest/"
@@ -132,6 +155,17 @@ const DashboardRoutes = ({ isAuth, token, userType, email, logoutUser, path, set
             render={() => <AllContest />}
           />
           <Route
+            path="/dashboard/admin/all-challenge"
+            exact
+            render={() => <AllChallenges />}
+          />
+          <Route
+            path="/dashboard/admin/view/challenge/:challengeId"
+            exact
+            render={({match}) => <ViewChallenge 
+                                  challengeId={match.params.challengeId}/>}
+          />
+          <Route
             path="/dashboard/admin/:contestId/leaderboard/"
             exact
             render={({ match }) => (
@@ -211,7 +245,11 @@ const mapStateToProps = state => ({
   token: state.authReducer.token,
   userType: state.authReducer.userType,
   email: state.authReducer.email,
-  error: state.authReducer.error
+  error: state.authReducer.error,
+  isLoadingAuth:state.authReducer.isLoading,
+  isValidating:state.authReducer.isLoading,
+  isLoadingAdmin:state.admin.isLoading,
+  isLoadingUser:state.user.isLoading
 });
 
 const mapDispatchToProps = dispatch => ({

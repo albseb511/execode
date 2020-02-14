@@ -17,7 +17,7 @@ const ChallengeDetails = ({
 }) => {
   return (
     <div className="mt-3">
-      <h2>Add Challenge Details</h2>
+      <h2>Challenge Details</h2>
       <br />
       <form>
         <div className="row" />

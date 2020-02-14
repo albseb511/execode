@@ -17,6 +17,7 @@ import "ace-builds/src-min-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/snippets/python";
 import "ace-builds/src-noconflict/theme-monokai";
+import NoMatch from "../../../NoMatch";
 
 const THEME = ["monokai", "github"];
 
@@ -82,6 +83,7 @@ const SingleChallenge = ({
     setLanguage(data[`${email}__default`]);
   };
   useEffect(() => {
+    setIsLoading(true)
     async function getChallenges() {
       try {
         const response = await axios.get(`/challenge/${challengeId}`, {
@@ -124,7 +126,8 @@ const SingleChallenge = ({
         {
           headers: {
             Authorization: token
-          }
+          },
+          timeout: 4000
         }
       )
       .then(response => {
@@ -168,7 +171,7 @@ const SingleChallenge = ({
     data = JSON.parse(data);
     setCode(data[`${email}__${contestId}__${challengeId}__${language}__default`])
   }
-
+  console.log(isLoading)
   return (
     <div>
       <div className="container border py-3">

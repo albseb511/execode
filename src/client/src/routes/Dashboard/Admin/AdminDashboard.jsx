@@ -22,7 +22,12 @@ const AdminDashboard = () => {
             path: "create-challenge",
             body: "Create new problem statements or challenges for users",
             linkTitle: "Create Problems"
-          }
+          },
+          {
+            path: "all-challenge",
+            body: "View all your challenges",
+            linkTitle: "View all problems"
+          },
         ].map(card => (
           <div key={card.path} className="row border mb-3 mt-5">
             <div className="col-md-7">

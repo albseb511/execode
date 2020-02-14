@@ -6,7 +6,13 @@ import {
   FETCH_ALL_CONTESTS_REQUEST,
   FETCH_ALL_USERS_FAILURE,
   FETCH_ALL_USERS_SUCCESS,
-  FETCH_ALL_USERS_REQUEST
+  FETCH_ALL_USERS_REQUEST,
+  FETCH_ALL_CHALLENGES_REQUEST,
+  FETCH_ALL_CHALLENGES_SUCCESS,
+  FETCH_ALL_CHALLENGES_FAILURE,
+  FETCH_CHALLENGE_REQUEST,
+  FETCH_CHALLENGE_SUCCESS,
+  FETCH_CHALLENGE_FAILURE
 } from "./actionType";
 
 const initState = {
@@ -16,11 +22,13 @@ const initState = {
     viewLanguage: ""
   },
   contests: [],
+  allChallenges: [],
   isLoading: false,
   error: false,
   errorType: "",
   errorMessage: "",
-  users: []
+  users: [],
+  challenge: {}
 };
 
 export default (state = initState, action) => {
@@ -47,6 +55,50 @@ export default (state = initState, action) => {
         error: true,
         errorType: "contest",
         errorMessage: "Fetching contest has failed"
+      };
+    case FETCH_CHALLENGE_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        error: false,
+        errorType: "",
+        errorMessage: ""
+      };
+    case FETCH_CHALLENGE_SUCCESS:
+      return {
+        ...state,
+        challenge: {...payload.challenge},
+        isLoading: false
+      };
+    case FETCH_CHALLENGE_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        error: true,
+        errorType: "challenge",
+        errorMessage: "Fetching challenge has failed"
+      };
+    case FETCH_ALL_CHALLENGES_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        error: false,
+        errorType: "",
+        errorMessage: ""
+      };
+    case FETCH_ALL_CHALLENGES_SUCCESS:
+      return {
+        ...state,
+        allChallenges: [...payload.challenges],
+        isLoading: false
+      };
+    case FETCH_ALL_CHALLENGES_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        error: true,
+        errorType: "challenges",
+        errorMessage: "Fetching challenges has failed"
       };
     case FETCH_ALL_USERS_REQUEST:
       return {
