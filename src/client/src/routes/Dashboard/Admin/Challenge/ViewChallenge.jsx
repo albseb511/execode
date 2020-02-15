@@ -31,7 +31,8 @@ const initialState = {
   settings: [],
   test_cases: [],
   test_input: [],
-  test_output: []
+  test_output: [],
+  flag: false
 };
 
 class CreateChallenge extends Component {
@@ -222,7 +223,9 @@ class CreateChallenge extends Component {
       sample_input,
       sample_output,
     } = this.state;
-
+    if(this.props.challenge.challenge_name && this.props.challenge.challenge_name!=this.state.challenge_name && !this.state.flag){
+      this.setState({...this.props.challenge, flag:true})
+    }
     let viewTab;
     if (detailsTab) {
       viewTab = (

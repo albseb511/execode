@@ -127,14 +127,17 @@ const SingleChallenge = ({
           headers: {
             Authorization: token
           },
-          timeout: 4000
+          timeout: 1000
         }
       )
       .then(response => {
+        alert('pop')
         setRunCodeResponse(response.data)
         setIsLoading(false)
       })
-      .catch(err => console.log("error while running code", err.message));
+      .catch(err => {
+        console.log("error while running code", err.message)
+      });
   };
 
   const handleChangeCode = e => {
@@ -176,7 +179,7 @@ const SingleChallenge = ({
     <div>
       <div className="container border py-3">
         <div className="row">
-          <div className="col-md-10">
+          <div className="col-md-2">
             <h3 className="font-weight-bold">
               {singleChallenge.challenge_name}
             </h3>
@@ -185,6 +188,13 @@ const SingleChallenge = ({
             <span className="badge badge-success">
               {singleChallenge.difficulty}
             </span>
+          </div>
+          <div className="col-md-8 text-right">
+            <Link to={path.replace(/...$/,'')}>
+              <div className="btn btn-dark active">
+                GOTO CONTEST
+              </div>
+            </Link>
           </div>
         </div>
 
