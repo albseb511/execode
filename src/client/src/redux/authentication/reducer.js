@@ -131,7 +131,7 @@ const reducer = (state = initState, { type, payload }) => {
         registerSuccess: false,
         error: true,
         errorType: "register",
-        errorMessage: payload.message
+        errorMessage: payload.comment
       };
 
     case REGISTER_USER_FAILURE:
@@ -140,7 +140,7 @@ const reducer = (state = initState, { type, payload }) => {
         isRegistering: false,
         error: true,
         errorType: "register",
-        errorMessage: "registration failed",
+        errorMessage: payload || "registration failed",
         registerSuccess: false
       };
     case TOKEN_VALIDATE_REQUEST:

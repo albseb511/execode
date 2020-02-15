@@ -57,8 +57,9 @@ export const registerUserSuccess = payload => ({
   payload
 });
 
-export const registerUserFail = () => ({
-  type: REGISTER_USER_FAILURE
+export const registerUserFail = (payload) => ({
+  type: REGISTER_USER_FAILURE,
+  payload
 });
 
 export const registerUser = payload => {
@@ -106,7 +107,7 @@ export const logoutUser = payload => {
       .then(res => {
         dispatch(logoutUserSuccess(res));
       })
-      .catch(() => dispatch(logoutUserFail()));
+      .catch((err) => dispatch(logoutUserFail(err.message)));
   };
 };
 

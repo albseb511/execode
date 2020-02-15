@@ -10,7 +10,8 @@ const Register = ({
   isRegistering,
   registerSuccess,
   error,
-  errorType
+  errorType,
+  errorMessage
 }) => {
   const [signupState, setSignupState] = useState({
     email: "",
@@ -87,7 +88,7 @@ const Register = ({
       </form>
       {isRegistering && <div className="text-center">Registering</div>}
       {error && errorType == "register" ? (
-        <div className="text-danger">Something went wrong</div>
+        <div className="text-danger">{errorMessage}</div>
       ) : (
         registerSuccess && <div className="text-center">Success</div>
       )}
@@ -102,7 +103,8 @@ const mapStateToProps = state => ({
   isRegistering: state.authReducer.isRegistering,
   registerSuccess: state.authReducer.registerSuccess,
   error: state.authReducer.error,
-  errorType: state.authReducer.errorType
+  errorType: state.authReducer.errorType,
+  errorMessage: state.authReducer.errorMessage
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -49,8 +49,10 @@ const DashboardRoutes = ({
   isLoadingUser
 }) => {
   if (!isAuth) {
+    if(error){
+      return <Redirect to="/login" />
+    }
     validateUser(token)
-
     return <AuthenticatingIndicator />
   };
   return isAuth ? (
