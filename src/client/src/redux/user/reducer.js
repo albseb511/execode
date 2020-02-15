@@ -52,6 +52,7 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         isSubmit: false,
+        error: false,
         submitCode: "",
         language: "",
         isTestCasesDataReady: false,

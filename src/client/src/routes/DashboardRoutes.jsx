@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import { Route, Redirect, Switch } from "react-router-dom";
+import { Route, Redirect, Switch, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // import UserDashboard from "./Dashboard/User/UserDashboard";
@@ -31,6 +31,7 @@ import ViewSubmissions from "./Dashboard/User/Contest/ViewSubmissions";
 import AllChallenges from "./Dashboard/Admin/Challenge/AllChallenges";
 import ViewChallenge from "./Dashboard/Admin/Challenge/ViewChallenge"
 import AuthenticatingIndicator  from "../components/common/Activity Indicators/AuthenticatingIndicator";
+import NoMatch from "./NoMatch";
 
 const DashboardRoutes = ({ 
   isAuth, 
@@ -39,21 +40,22 @@ const DashboardRoutes = ({
   email, 
   logoutUser, 
   path, 
-  setRedirectUrl, 
-  resetRedirectUrl, 
   validateUser, 
   error,
   isLoadingAdmin,
   isLoadingAuth,
   isValidating,
-  isLoadingUser
+  isLoadingUser,
 }) => {
-  if (!isAuth) {
-    if(error){
-      return <Redirect to="/login" />
-    }
+  let isLoadingCondition = (isLoadingAdmin || 
+  isLoadingAuth ||
+  isValidating || 
+  isLoadingUser)
+  if (!isAuth && !isValidating) {
+    // if(error){
+      // return <Redirect to="/login" />
+    // }
     validateUser(token)
-    return <AuthenticatingIndicator />
   };
   return isAuth ? (
     <>
@@ -71,10 +73,7 @@ const DashboardRoutes = ({
           </ErrorBoundary>
         )}
         />
-        {(isLoadingAdmin || 
-          isLoadingAuth ||
-          isValidating || 
-          isLoadingUser )&& <AuthenticatingIndicator />}
+        { isLoadingCondition && <AuthenticatingIndicator />}
       {/* <Route path="/dashboard" exact render={() => <UserDashboard />} /> */}
       {/* <Route
         path="/dashboard/user/all-contest/"
@@ -149,7 +148,7 @@ const DashboardRoutes = ({
       {/* Admin Dashboard - need authorization */}
       {/* also need navbar for user */}
       <ErrorBoundary>
-        <AdminRoutes userType={userType}>
+        <AdminRoutes userType={userType} path={path} isLoading={isValidating}>
           <Route path="/dashboard/admin/" exact render={() => <AdminDashboard />} />
           <Route
             path="/dashboard/admin/all-contest"
@@ -213,7 +212,7 @@ const DashboardRoutes = ({
             exact
             render={() => <CreateContest />}
           />
-          <AdminRoutes userType={userType}>
+          <AdminRoutes userType={userType} isLoading={isValidating}>
             <Route
               path="/dashboard/admin/settings"
               exact
@@ -248,10 +247,10 @@ const mapStateToProps = state => ({
   userType: state.authReducer.userType,
   email: state.authReducer.email,
   error: state.authReducer.error,
-  isLoadingAuth:state.authReducer.isLoading,
-  isValidating:state.authReducer.isLoading,
-  isLoadingAdmin:state.admin.isLoading,
-  isLoadingUser:state.user.isLoading
+  isLoadingAuth: state.authReducer.isLoading,
+  isValidating: state.authReducer.isValidating,
+  isLoadingAdmin: state.admin.isLoading,
+  isLoadingUser: state.user.isLoading
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -81,6 +81,7 @@ const SingleChallenge = ({
     }
     setCode(data[`${email}__${contestId}__${challengeId}__${defLang}`]);
     setLanguage(data[`${email}__default`]);
+    setIsLoading(false)
   };
   useEffect(() => {
     setIsLoading(true)
@@ -173,7 +174,7 @@ const SingleChallenge = ({
     data = JSON.parse(data);
     setCode(data[`${email}__${contestId}__${challengeId}__${language}__default`])
   }
-  console.log(isLoading)
+
   return (
     <div>
       <div className="container border py-3">
@@ -183,12 +184,12 @@ const SingleChallenge = ({
               {singleChallenge.challenge_name}
             </h3>
           </div>
-          <div className="col-md-2 ">
+          <div className="col-md-6 text-right">
             <span className="badge badge-success">
               {singleChallenge.difficulty}
             </span>
           </div>
-          <div className="col-md-8 text-right">
+          <div className="col-md-4 text-right">
             <Link to={path.replace(/...$/,'')}>
               <div className="btn btn-dark active">
                 GOTO CONTEST
