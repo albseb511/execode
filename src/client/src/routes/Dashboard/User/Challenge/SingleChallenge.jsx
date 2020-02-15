@@ -131,7 +131,6 @@ const SingleChallenge = ({
         }
       )
       .then(response => {
-        alert('pop')
         setRunCodeResponse(response.data)
         setIsLoading(false)
       })
