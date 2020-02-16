@@ -123,7 +123,7 @@ export const submitTestCase = payload => {
   return dispatch => {
     axios
       .post(
-        "/testcaserusn",
+        "/testcaserun",
         {
           language: payload.language,
           test_id: payload.test_id,
