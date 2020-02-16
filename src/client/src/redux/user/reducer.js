@@ -121,21 +121,24 @@ export default (state = initialState, { type, payload }) => {
         testCaseResults: state.testCaseResults.map(a =>
           id === a.id
             ? result
-              ? { ...a, result: true }
-              : { ...a, result: false }
+              ? { ...a, result: true, error:payload.error_type, user_error:payload.user_error }
+              : { ...a, result: false, error:payload.error_type, user_error:payload.user_error }
             : { ...a }
         ),
         getTestCaseEnded: testCaseEnded
       };
     }
     case SUBMIT_TEST_CASE_FAILURE: {
-      const id = payload.test_case_id;
+      const id = payload.id;
       const testCaseEnded = state.testCasePending === 1;
       return {
         ...state,
         testCasePending: state.testCasePending - 1,
-        testCaseResults: state.testCaseResults.map(a =>
-          id === a.id || payload.timeout ? { ...a, result: false } : { ...a }
+        testCaseResults: state.testCaseResults.map(a =>{
+          console.log(id, a.id)
+          return id == a.id ? 
+            { ...a, result: false, error: "Server error" } : { ...a }
+        }
         ),
         getTestCaseEnded: testCaseEnded
       };

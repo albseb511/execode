@@ -123,7 +123,7 @@ export const submitTestCase = payload => {
   return dispatch => {
     axios
       .post(
-        "/testcaserun",
+        "/testcaserusn",
         {
           language: payload.language,
           test_id: payload.test_id,
@@ -137,11 +137,16 @@ export const submitTestCase = payload => {
           headers: {
             Authorization: payload.token
           },
-          timeout: 10000
+          timeout: 5000
         }
       )
-      .then(res => dispatch(submitTestCaseSuccess(res.data)))
-      .catch(err => dispatch(submitTestCaseFailure({ ...err, timeout: true })));
+      .then(res => {
+        if(res.isAxiosError){
+          throw new Error
+        }
+        dispatch(submitTestCaseSuccess(res.data))
+      })
+      .catch(err => dispatch(submitTestCaseFailure({ ...err, id:payload.test_id})));
   };
 };
 

@@ -108,7 +108,9 @@ const SubmitChallenge = ({
   },[getTestCaseEnded])
 
   if (!isLoading && isSubmit && testCaseResults) {
+    console.log(testCaseResults)
     testPass = testCaseResults.map((a, i) => {
+      console.log(a.error)
       if (a.result==="pending"){
         return(
           <div key={a.id} className="col-md-2 mt-4 mb-3 text-center">
@@ -139,7 +141,7 @@ const SubmitChallenge = ({
             <div>
               <i className="fas fa-times-circle fa-lg text-danger fa-2x mb-2" />
             </div>
-            {`Test Case ${i + 1}`}
+            {`Test Case ${i + 1} ${a.user_error==="Infinite Loop"?"Timeout Error":a.error}`}
           </div>
         </div>
       );
