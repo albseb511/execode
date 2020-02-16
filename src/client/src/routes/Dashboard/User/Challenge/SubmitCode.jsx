@@ -108,9 +108,7 @@ const SubmitChallenge = ({
   },[getTestCaseEnded])
 
   if (!isLoading && isSubmit && testCaseResults) {
-    console.log(testCaseResults)
     testPass = testCaseResults.map((a, i) => {
-      console.log(a.error)
       if (a.result==="pending"){
         return(
           <div key={a.id} className="col-md-2 mt-4 mb-3 text-center">
