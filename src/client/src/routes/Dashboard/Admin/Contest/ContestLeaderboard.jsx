@@ -43,7 +43,7 @@ class ContestLeaderBoard extends React.Component {
           >
             <thead>
               <tr className="p-3 mb-2 thead-dark">
-                {/* <th scope="col">S.no</th> */}
+                <th scope="col">S.no</th>
                 <th scope="col">Email</th>
                 <th scope="col">Name</th>
                 <th scope="col">Score</th>
@@ -56,7 +56,7 @@ class ContestLeaderBoard extends React.Component {
                 leaderboard.map((ele, index) => {
                   return (
                     <tr key={ele.email}>
-                      {/* <th scope="row">{ele.id}</th> */}
+                      <th scope="row">{ele.user_id}</th>
                       <td>{ele.email}</td>
                       <td>{ele.name}</td>
                       <td>{ele.total}</td>

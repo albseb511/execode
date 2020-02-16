@@ -174,7 +174,6 @@ const SingleChallenge = ({
     data = JSON.parse(data);
     setCode(data[`${email}__${contestId}__${challengeId}__${language}__default`])
   }
-
   return (
     <div>
       <div className="container border py-3">

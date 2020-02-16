@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { updateTime } from "../../redux/contest/action"
 import { Redirect } from 'react-router-dom';
 
-const TimeLeft = ({timeLeft, contestStatus, updateTime, hours,min,sec}) => {
+const TimeLeft = ({timeLeft, contestStatus, updateTime, hours, min, sec, userType}) => {
     const [live, setLive] = useState(false)
     if(contestStatus==="live" && !live)
         setLive(true)
@@ -31,7 +31,7 @@ const TimeLeft = ({timeLeft, contestStatus, updateTime, hours,min,sec}) => {
                 ENDED
             </div>
         )
-    if(contestStatus==="not_started"){
+    if(contestStatus==="not_started"&&userType!="admin"){
         alert("contest has not started")
         return(
         <>
@@ -57,6 +57,7 @@ const mapStateToProps = state => ({
     hours: state.contest.hours,
     min: state.contest.min,
     sec: state.contest.sec,
+    userType: state.authReducer.userType
 })
 
 const mapDispatchToProps = dispatch => ({

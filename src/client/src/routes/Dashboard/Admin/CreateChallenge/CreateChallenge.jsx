@@ -30,7 +30,8 @@ const initialState = {
   settings: [],
   test_cases: [],
   test_input: [],
-  test_output: []
+  test_output: [],
+  resMessage: ""
 };
 
 class CreateChallenge extends Component {
@@ -183,6 +184,15 @@ class CreateChallenge extends Component {
           Authorization: token
         }
       })
+      .then(res=>{
+        if(!res.data){
+          this.setState({resMessage: "add failed"})
+        }
+        else{
+          this.setState({resMessage: "add successful"})
+        }
+        setTimeout(()=>this.setState({resMessage:""}),2000)
+      })
       .catch(err=>console.log(err))
   };
 
@@ -205,7 +215,8 @@ class CreateChallenge extends Component {
       settings,
       sample_input,
       sample_output,
-      test_cases: testCases
+      test_cases: testCases,
+      resMessage
     } = this.state;
     let viewTab;
     if (detailsTab) {
@@ -278,6 +289,9 @@ class CreateChallenge extends Component {
         >
           Add Challenge
         </button>
+        <div>
+          {resMessage!="" && resMessage}
+        </div>
       </div>
     );
   }

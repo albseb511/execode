@@ -12,7 +12,10 @@ import {
   FETCH_ALL_CHALLENGES_FAILURE,
   FETCH_CHALLENGE_REQUEST,
   FETCH_CHALLENGE_SUCCESS,
-  FETCH_CHALLENGE_FAILURE
+  FETCH_CHALLENGE_FAILURE,
+  UPDATE_CHALLENGE_REQUEST,
+  UPDATE_CHALLENGE_SUCCESS,
+  UPDATE_CHALLENGE_FAILURE
 } from "./actionType";
 
 const initState = {
@@ -77,6 +80,27 @@ export default (state = initState, action) => {
         error: true,
         errorType: "challenge",
         errorMessage: "Fetching challenge has failed"
+      };
+    case UPDATE_CHALLENGE_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        error: false,
+        errorType: "",
+        errorMessage: ""
+      };
+    case UPDATE_CHALLENGE_SUCCESS:
+      return {
+        ...state,
+        isLoading: false
+      };
+    case UPDATE_CHALLENGE_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        error: true,
+        errorType: "challenge",
+        errorMessage: "Update challenge has failed"
       };
     case FETCH_ALL_CHALLENGES_REQUEST:
       return {

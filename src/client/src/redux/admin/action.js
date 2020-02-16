@@ -15,7 +15,10 @@ import {
   FETCH_ALL_CHALLENGES_FAILURE,
   FETCH_CHALLENGE_REQUEST,
   FETCH_CHALLENGE_SUCCESS,
-  FETCH_CHALLENGE_FAILURE
+  FETCH_CHALLENGE_FAILURE,
+  UPDATE_CHALLENGE_REQUEST,
+  UPDATE_CHALLENGE_SUCCESS,
+  UPDATE_CHALLENGE_FAILURE
 } from "./actionType";
 import axios from "../../utils/axiosInterceptor";
 
@@ -98,6 +101,46 @@ export const fetchChallenge = payload => {
         dispatch(fetchChallengeSuccess(res.data));
       })
       .catch(() => dispatch(fetchChallengeFailure()));
+  };
+};
+
+export const updateChallengeRequest = payload => ({
+  type: UPDATE_CHALLENGE_REQUEST,
+  payload
+});
+
+export const updateChallengeSuccess = payload => ({
+  type: UPDATE_CHALLENGE_SUCCESS,
+  payload
+});
+
+export const updateChallengeFailure = payload => ({
+  type: UPDATE_CHALLENGE_FAILURE,
+  payload
+});
+
+export const updateChallenge = payload => {
+  return dispatch => {
+    dispatch(updateChallengeRequest());
+    return axios
+      .post(
+        `/challenge/update/${payload.challengeId}`,
+        {
+
+        },
+        {
+          headers: {
+            Authorization: payload.token
+          }
+        }
+      )
+      .then(res => {
+        if(!res.data)
+          dispatch(updateChallengeFailure())
+        else
+          dispatch(updateChallengeSuccess(res.data));
+      })
+      .catch((err) => dispatch(updateChallengeFailure(err)));
   };
 };
 

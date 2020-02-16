@@ -13,7 +13,7 @@ import ChallengeDetails from "../../../../components/ChallengeDetails/ChallengeD
 import ChallengeSettings from "../../../../components/ChallengeSettings/ChallengeSettings";
 import AddTestCases from "../../../../components/AddTestCases/AddTestCases";
 import axios from "../../../../utils/axiosInterceptor";
-import {fetchChallenge} from "../../../../redux/admin/action"
+import {fetchChallenge, updateChallenge} from "../../../../redux/admin/action"
 
 const initialState = {
   detailsTab: true,
@@ -35,7 +35,7 @@ const initialState = {
   flag: false
 };
 
-class CreateChallenge extends Component {
+class ViewChallenge extends Component {
   constructor(props) {
     super(props);
     this.state = initialState;
@@ -114,6 +114,34 @@ class CreateChallenge extends Component {
     }
   };
 
+  updateChallenge = () => {
+    const {
+      challenge_name,
+      difficulty,
+      description,
+      problem_statement,
+      input_format,
+      constraints,
+      output_format,
+      sample_input,
+      sample_output
+    } = this.state
+
+    let payload = {
+      challenge_name,
+      difficulty,
+      description,
+      problem_statement,
+      input_format,
+      constraints,
+      output_format,
+      sample_input,
+      sample_output
+    }
+    const { updateChallenge } = this.props
+    updateChallenge(payload)
+  }
+
   createChallenge = () => {
     //   send data
     const form = new FormData();
@@ -188,8 +216,8 @@ class CreateChallenge extends Component {
       .catch(err=>console.log(err))
   };
 
-  handleReset = () => {
-    this.setState({...initialState})
+  handleDelete = () => {
+    alert('feature not yet made')
   }
 
   loadData = async () => {
@@ -199,7 +227,6 @@ class CreateChallenge extends Component {
         challengeId
     }
     await fetchChallenge(payload)
-    this.forceUpdate()
   }
 
   componentDidMount(){
@@ -223,7 +250,14 @@ class CreateChallenge extends Component {
       sample_input,
       sample_output,
     } = this.state;
-    if(this.props.challenge.challenge_name && this.props.challenge.challenge_name!=this.state.challenge_name && !this.state.flag){
+    const {
+      error,
+      errorType,
+      errorMessage
+    } = this.props
+    if(this.props.challenge.challenge_name && 
+        this.props.challenge.challenge_name!=this.state.challenge_name &&
+         !this.state.flag){
       this.setState({...this.props.challenge, flag:true})
     }
     let viewTab;
@@ -287,16 +321,19 @@ class CreateChallenge extends Component {
         </ul>
         {viewTab}
         <button className="btn btn-dark active text-right"
-                onClick={this.handleReset}>
-          RESET DATA
+                onClick={this.handleDelete}>
+          DELETE CHALLENGE
         </button>
         <button
           type="button"
-          onClick={this.createChallenge}
+          onClick={this.updateChallenge}
           className="btn btn-raised btn-dark btn-block"
         >
           Update Challenge
         </button>
+        <div>
+          { error && errorType==="challenge" && errorMessage }
+        </div>
       </div>
     );
   }
@@ -304,11 +341,15 @@ class CreateChallenge extends Component {
 
 const mapStateToProps = state => ({
   token: state.authReducer.token,
-  challenge: state.admin.challenge
+  challenge: state.admin.challenge,
+  error: state.admin.error,
+  errorType: state.admin.errorType,
+  errorMessage: state.admin.errorMessage
 });
 
 const mapDispatchToProps = dispatch => ({
-    fetchChallenge: payload => dispatch(fetchChallenge(payload))
+    fetchChallenge: payload => dispatch(fetchChallenge(payload)),
+    updateChallenge: payload => dispatch(updateChallenge(payload))
 })
 
-export default connect(mapStateToProps,mapDispatchToProps)(CreateChallenge);
+export default connect(mapStateToProps,mapDispatchToProps)(ViewChallenge);

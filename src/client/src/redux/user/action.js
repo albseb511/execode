@@ -57,7 +57,8 @@ export const getSubmitResults = payload => {
         {
           headers: {
             Authorization: payload.token
-          }
+          },
+          timeout: 4000
         }
       )
       .then(res => dispatch(submitCodeSuccess(res.data)))
