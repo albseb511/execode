@@ -10,7 +10,7 @@ from time import sleep
 import requests
 import subprocess
 
-def save_process_details(pid, starttime, path):
+def save_process_details(pid, starttime):
     file_path = cwd + "/static/processes/proc.txt"
     f = open(file_path, 'a')
     f.write('%s %s\n'%(pid, starttime))
