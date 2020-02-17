@@ -39,7 +39,7 @@ class RuncodeResource(Resource):
                     "is_error": True,
                     "is_custom_input": data['is_custom_input'],
                     "custom_input": data['custom_input'],
-                    "error_type": "Output Mismatch Error"
+                    "error_type": "Timeout Exception"
                 }, 200
 
                 if len(error) != 0:
