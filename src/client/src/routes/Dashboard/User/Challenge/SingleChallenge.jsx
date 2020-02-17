@@ -39,9 +39,9 @@ const SingleChallenge = ({
   const history = useHistory();
   const location = useLocation();
   const languagesList = ["javascript", "python", "cpp"];
-  const [isLoading, setIsLoading] = useState(false)
-  const [isCustomInput, setIsCustomInput] = useState(false)
-  const [customInput, setCustomInput] = useState('')
+  const [isLoading, setIsLoading] = useState(false);
+  const [isCustomInput, setIsCustomInput] = useState(false);
+  const [customInput, setCustomInput] = useState("");
   // set placeholder data
   const setPlaceHolderData = () => {
     let data = localStorage.getItem("bStore");
@@ -81,10 +81,10 @@ const SingleChallenge = ({
     }
     setCode(data[`${email}__${contestId}__${challengeId}__${defLang}`]);
     setLanguage(data[`${email}__default`]);
-    setIsLoading(false)
+    setIsLoading(false);
   };
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     async function getChallenges() {
       try {
         const response = await axios.get(`/challenge/${challengeId}`, {
@@ -111,7 +111,7 @@ const SingleChallenge = ({
   }, [language]);
 
   const runCode = () => {
-    setIsLoading(true)
+    setIsLoading(true);
     axios
       .post(
         "/runcode",
@@ -128,15 +128,15 @@ const SingleChallenge = ({
           headers: {
             Authorization: token
           },
-          timeout: 1000
+          timeout: 4000
         }
       )
       .then(response => {
-        setRunCodeResponse(response.data)
-        setIsLoading(false)
+        setRunCodeResponse(response.data);
+        setIsLoading(false);
       })
       .catch(err => {
-        console.log("error while running code", err.message)
+        console.log("error while running code", err.message);
       });
   };
 
@@ -172,8 +172,10 @@ const SingleChallenge = ({
   const handleResetCode = () => {
     let data = localStorage.getItem("bStore");
     data = JSON.parse(data);
-    setCode(data[`${email}__${contestId}__${challengeId}__${language}__default`])
-  }
+    setCode(
+      data[`${email}__${contestId}__${challengeId}__${language}__default`]
+    );
+  };
   return (
     <div>
       <div className="container border py-3">
@@ -189,10 +191,8 @@ const SingleChallenge = ({
             </span>
           </div>
           <div className="col-md-4 text-right">
-            <Link to={path.replace(/...$/,'')}>
-              <div className="btn btn-dark active">
-                GOTO CONTEST
-              </div>
+            <Link to={path.replace(/...$/, "")}>
+              <div className="btn btn-dark active">GOTO CONTEST</div>
             </Link>
           </div>
         </div>
@@ -225,7 +225,8 @@ const SingleChallenge = ({
           <div className="mt-3 mb-3">
             <b>Constraints</b>
           </div>
-          <p>{singleChallenge.constraints}</p>
+          {singleChallenge.constraints && 
+            singleChallenge.constraints.split('\n').map((a,i)=><p key={i}>{a}</p>)}
         </div>
         <div className="mt-3 mb-3">
           <div className="mt-3 mb-3">
@@ -305,28 +306,35 @@ const SingleChallenge = ({
           </div>
           <div className="row col-md-12 p-5">
             <div className="col-md-3 text-left">
-                <div className="btn btn-dark active"
-                      onClick={handleResetCode}>
-                  RESET CODE
-                </div>
+              <div className="btn btn-dark active" onClick={handleResetCode}>
+                RESET CODE
+              </div>
             </div>
             <div className="col-md-4 text-center">
               <div className="row">
-                <input type="checkbox" 
-                       checked={isCustomInput}
-                       onChange={e=>setIsCustomInput(!isCustomInput)}/>
-                <p className="ml-2 mt-3"
-                   onClick={e=>setIsCustomInput(!isCustomInput)}>Custom Input</p>
-                </div>
-                {isCustomInput && 
-                  <>
-                    <textarea className="col-md-8" 
-                         value={customInput} 
-                         onChange={e=>setCustomInput(e.target.value)}
-                         className="p-2"
-                         style={{height:100, overflow:"scroll"}} />
-                  </>
-                         }
+                <input
+                  type="checkbox"
+                  checked={isCustomInput}
+                  onChange={e => setIsCustomInput(!isCustomInput)}
+                />
+                <p
+                  className="ml-2 mt-3"
+                  onClick={e => setIsCustomInput(!isCustomInput)}
+                >
+                  Custom Input
+                </p>
+              </div>
+              {isCustomInput && (
+                <>
+                  <textarea
+                    className="col-md-8"
+                    value={customInput}
+                    onChange={e => setCustomInput(e.target.value)}
+                    className="p-2"
+                    style={{ height: 100, overflow: "scroll" }}
+                  />
+                </>
+              )}
             </div>
             <div className="col-md-3 text-right">
               <button
@@ -359,8 +367,8 @@ const SingleChallenge = ({
               </div>
             </div>
             {runCodeResponse &&
-              runCodeResponse.hasOwnProperty('is_custom_input') &&
-              runCodeResponse.is_custom_input &&
+              runCodeResponse.hasOwnProperty("is_custom_input") &&
+              runCodeResponse.is_custom_input && (
                 <div className="mb-3">
                   <h6 className="text-success">Custom Input</h6>
                   <div className="py-3">
@@ -369,15 +377,16 @@ const SingleChallenge = ({
                     </pre>
                   </div>
                 </div>
-              }
+              )}
             <div>
               <h6 className="text-primary">Output</h6>
               <hr />
-              {runCodeResponse && 
-                runCodeResponse.hasOwnProperty('is_error') &&
-                runCodeResponse.is_error && 
-                runCodeResponse.user_error.length!==0 &&
-                <h6 className="text-danger">Error</h6>}
+              {runCodeResponse &&
+                runCodeResponse.hasOwnProperty("is_error") &&
+                runCodeResponse.is_error &&
+                runCodeResponse.user_error.length !== 0 && (
+                  <h6 className="text-danger">Error</h6>
+                )}
               <div className="py-3">
                 <pre className="execode-code">
                   <code>
@@ -386,11 +395,11 @@ const SingleChallenge = ({
                       runCodeResponse &&
                       runCodeResponse.user_output &&
                       runCodeResponse.user_output.join("")}
-                    {!isLoading && 
-                      runCodeResponse && 
-                      runCodeResponse.hasOwnProperty('is_error') &&
+                    {!isLoading &&
+                      runCodeResponse &&
+                      runCodeResponse.hasOwnProperty("is_error") &&
                       runCodeResponse.is_error &&
-                        runCodeResponse.user_error}
+                      runCodeResponse.user_error}
                   </code>
                 </pre>
               </div>
