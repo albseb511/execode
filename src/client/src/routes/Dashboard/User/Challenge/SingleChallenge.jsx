@@ -205,6 +205,12 @@ const SingleChallenge = ({
         </div>
         <div className="mt-3 mb-3">
           <div className="mt-3 mb-3">
+            <b>Description</b>
+          </div>
+          <p>{singleChallenge.challenge_description}</p>
+        </div>
+        <div className="mt-3 mb-3">
+          <div className="mt-3 mb-3">
             <b>Input Format</b>
           </div>
           <p>{singleChallenge.input_format}</p>
