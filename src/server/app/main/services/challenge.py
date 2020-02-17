@@ -56,4 +56,32 @@ def add_challenge(description,problem_statement,input_format,output_format,const
     save_changes(new_asset)
     challengeid = new_asset.id
     return challengeid
-   
+
+def edit_challenge(challenge_name,description,problem_statement,input_format,output_format,constraints,difficulty,sample_input,sample_output,challenge_id, user_id):
+
+    challenge_details = ChallengesModel.query.filter_by(id = challenge_id)
+    if challenge_details:
+        if challenge_details.owner == user_id:
+            try:
+                db.session.query(ChallengesModel()).filter(ChallengesModel.id == challenge_id).update(
+                                                                    {ChallengesModel.challenge_name : challenge_name,
+                                                                    ChallengesModel.description: description,
+                                                                    ChallengesModel.problem_statement : problem_statement,
+                                                                    ChallengesModel.input_format: input_format,
+                                                                    ChallengesModel.output_format: output_format,
+                                                                    ChallengesModel.constraints : constraints,
+                                                                    ChallengesModel.difficulty : difficulty,
+                                                                    ChallengesModel.sample_input : sample_input,
+                                                                    ChallengesModel.sample_output : sample_output}
+                                                                    )
+                db.session.commit()
+            except Exception as e:
+                print(e)
+                db.session.rollback()
+                return {'status': 'fail', 'comment': 'database error'}
+            return {'status': 'ok', 'comment': 'challenge updated'}
+
+        else:
+            return {'status': 'fail', 'comment': 'user not the owner of the challenge'}
+    else:
+        return {'status': 'fail', 'comment': 'no challenge found'}

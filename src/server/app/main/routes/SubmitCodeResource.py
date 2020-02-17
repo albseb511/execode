@@ -156,37 +156,47 @@ class SubmitCodeResourceTestCaseRun(Resource):
             output, error, is_correct = get_result_test_case(
                     data['path'], data['code_file_path'],data['input_file'], data['output_file'], data['language'], data["strength"], data['test_id'])
 
+            if error == 'Infinite Loop':
+                    return {
+                    "comment": "runcode not successful",
+                    "user_error": "Timeout Exception",
+                    "sample_result": False,
+                    "is_error": True,
+                    "error_type": "Timeout Exception",
+                    "test_case_id": data['test_id']
+                }, 200
+
             if len(error) != 0:
                 return {
                 "comment": "runcode successful",
-                "user_output": "",
                 "user_error": error,
                 "sample_result": False,
-                "is_error": True,
                 "test_case_id": data['test_id'],
+                "is_error": True,
                 "error_type": "Runtime Error"
             }, 200
 
-            if output == False:
-                return {
-                "comment": "runcode not successful",
-                "user_output": "",
-                "user_error": "Timeout Exception",
-                "sample_result": False,
-                "is_error": True,
-                "test_case_id": data['test_id'],
-                "error_type": "Output Mismatch Error"
-            }, 200
 
-            return {
-                "comment": "runcode successful",
-                "user_output": output,
-                "user_error": error,
-                "sample_result": is_correct,
-                "is_error": False,
-                "test_case_id": data['test_id'],
-                "error_type": "No Error"
-            }, 200
+
+            if is_correct == True:
+                return {
+                    "comment": "runcode successful",
+                    "user_error": error,
+                    "sample_result": is_correct,
+                    "test_case_id": data['test_id'],
+                    "is_error": False,
+                    "error_type": "No Error"
+                }, 200
+
+            else:
+                return {
+                    "comment": "runcode successful",
+                    "user_error": error,
+                    "sample_result": is_correct,
+                    "test_case_id": data['test_id'],
+                    "is_error": False,
+                    "error_type": "Output Mismatch Error"
+                }, 200
 
         else:
             return {"comment": "User not Found or jwt expired"}, 401

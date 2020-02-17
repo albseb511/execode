@@ -9,59 +9,12 @@ import threading
 from time import sleep
 import requests
 import subprocess
-try:
-    import thread
-except ImportError:
-    import _thread as thread
 
-def refresh_server():
-    username = 'parthmasai'
-    token = 'e0de7e1895acdf09f570f2b8af4a1c7d9c86ecff'
-
-    response = requests.post(
-    'https://www.pythonanywhere.com/api/v0/user/{username}/webapps/parthmasai.pythonanywhere.com/reload/'.format(
-        username=username
-    ),
-    headers={'Authorization': 'Token {token}'.format(token=token)}
-    )
-
-
-    if response.status_code == 200:
-        print(response.content)
-    else:
-        print('Got unexpected status code {}: {!r}'.format(response.status_code, response.content))
-
-
-def quit_function(fn_name):
-    try:
-        print('{0} took too long'.format(fn_name), file=sys.stderr)
-        sys.stderr.flush()
-        #thread.interrupt_main()
-        raise ValueError
-    except ValueError:
-        print("stopped")
-        print('refreshing the server')
-        refresh_server()
-    finally:
-        return False, "error"
-
-def exit_after(s):
-    '''
-    use as decorator to exit process if
-    function takes longer than s seconds
-    '''
-    def outer(fn):
-        def inner(*args, **kwargs):
-            timer = threading.Timer(s, quit_function, args=[fn.__name__])
-            timer.start()
-            try:
-                result = fn(*args, **kwargs)
-            finally:
-                timer.cancel()
-            return result
-        return inner
-    return outer
-
+def save_process_details(pid, starttime):
+    file_path = cwd + "/static/processes/proc.txt"
+    f = open(file_path, 'a')
+    f.write('%s %s\n'%(pid, starttime))
+    f.close()
 
 def makeRunCodeFolder(user_id):
     """
@@ -117,31 +70,28 @@ def make_cpp_file(code, path):
     wf.close()
     return path+"/code.cpp"
 
-@exit_after(2)
 def run_python_code(code_path, input_path, output_path, error_path):
     print("started run code")
     cmd = "python3 %s 0<%s 1>%s 2>%s"%(
             code_path, input_path, output_path, error_path)
     starttime = time.time()
     proc = subprocess.Popen([cmd], shell=True, preexec_fn=os.setsid)
+    save_process_details(proc.pid, starttime)
     try:
         print(proc.communicate(timeout=0.5))
         t = proc.returncode
     except subprocess.TimeoutExpired:
-        os.system("pkill Python")
-        os.system("pkill python3.7")
+        os.system("kill -9 %s"%(proc.pid))
         os.system("rm %s"%(output_path))
         print('killed')
         return False
     return True
 
-@exit_after(2)
 def run_python2_code(code_path, input_path, output_path, error_path):
     print("started run code")
     os.system("python3 %s 0<%s 1>%s 2>%s"%(
             code_path, input_path, output_path, error_path))
 
-@exit_after(2)
 def run_cpp_code(code_path, input_path, output_path, error_path):
     print("started cpp run code")
 
@@ -149,19 +99,18 @@ def run_cpp_code(code_path, input_path, output_path, error_path):
     os.system("%s.o <%s >%s "%(
             code_path.strip('.cpp'), input_path, output_path))
 
-@exit_after(2)
 def run_js_code(code_path, input_path, output_path, error_path):
     cmd = "node %s 0<%s 1>%s 2>%s"%(
             code_path, input_path, output_path, error_path)
 
     starttime = time.time()
     proc = subprocess.Popen([cmd], shell=True, preexec_fn=os.setsid)
+    save_process_details(proc.pid, starttime)
     try:
         print(proc.communicate(timeout=0.5))
         t = proc.returncode
     except subprocess.TimeoutExpired:
-        os.system("killall node")
-        os.system("killall nodejs")
+        os.system("kill -9 %s"%(proc.pid))
         os.system("rm %s"%(output_path))
         print('killed')
         return False
