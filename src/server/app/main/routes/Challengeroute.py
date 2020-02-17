@@ -1,6 +1,6 @@
 from flask_restful import Resource
 from flask import request
-from app.main.services.challenge import add_challenge,get_challenge
+from app.main.services.challenge import add_challenge,get_challenge, edit_challenge
 from app.main import db
 import json
 import os
@@ -76,3 +76,14 @@ class Challenge(Resource):
         return {"comment":"JWT expired or Invalid"}, 401
 
 
+class ChallengeEdit(Resource):
+
+    def post(self,challenge_id):
+        # auth token 
+        auth_token = request.headers.get("Authorization")
+        user_id = decode_auth_token(auth_token)
+        if user_id:            
+            Info = json.loads(request.form.get('challenge_details'))
+
+            response = edit_challenge(**Info, challenge_id=challenge_id, user_id=user_id)
+            
