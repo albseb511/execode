@@ -14,12 +14,36 @@ import {
   eventCodeSubmit
 } from "../../../../redux/user/action";
 import "ace-builds/src-min-noconflict/ext-language_tools";
+import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/ext-emmet";
 import "ace-builds/src-noconflict/snippets/python";
+import "ace-builds/src-noconflict/ext-error_marker";
+import "ace-builds/src-noconflict/snippets/javascript";
 import "ace-builds/src-noconflict/theme-monokai";
+import "ace-builds/src-noconflict/theme-mono_industrial";
+import "ace-builds/src-noconflict/theme-github";
+import "ace-builds/src-noconflict/theme-kuroir";
+import "ace-builds/src-noconflict/theme-tomorrow";
+import "ace-builds/src-noconflict/theme-twilight";
+import "ace-builds/src-noconflict/theme-xcode";
+import "ace-builds/src-noconflict/theme-solarized_dark";
+import "ace-builds/src-noconflict/theme-solarized_light";
+import "ace-builds/src-noconflict/theme-terminal";
 import NoMatch from "../../../NoMatch";
 
-const THEME = ["monokai", "github"];
+const THEME = [
+  "monokai",
+  "mono_industrial",
+  "github",
+  "tomorrow",
+  "kuroir",
+  "twilight",
+  "xcode",
+  "solarized_dark",
+  "solarized_light",
+  "terminal"
+];
 
 // eslint-disable-next-line react/prop-types
 const SingleChallenge = ({
@@ -225,8 +249,10 @@ const SingleChallenge = ({
           <div className="mt-3 mb-3">
             <b>Constraints</b>
           </div>
-          {singleChallenge.constraints && 
-            singleChallenge.constraints.split('\n').map((a,i)=><p key={i}>{a}</p>)}
+          {singleChallenge.constraints &&
+            singleChallenge.constraints
+              .split("\n")
+              .map((a, i) => <p key={i}>{a}</p>)}
         </div>
         <div className="mt-3 mb-3">
           <div className="mt-3 mb-3">
@@ -298,9 +324,12 @@ const SingleChallenge = ({
               setOptions={{
                 enableBasicAutocompletion: true,
                 enableLiveAutocompletion: true,
-                enableSnippets: false,
+                enableSnippets: true,
                 showLineNumbers: true,
-                tabSize: 2
+                tabSize: 2,
+                useWorker: false,
+                enableEmmet: true,
+                highlightActiveLine: true
               }}
             />
           </div>
