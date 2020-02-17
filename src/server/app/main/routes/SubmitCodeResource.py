@@ -159,43 +159,42 @@ class SubmitCodeResourceTestCaseRun(Resource):
             if error == 'Infinite Loop':
                     return {
                     "comment": "runcode not successful",
-                    "user_output": "",
                     "user_error": "Timeout Exception",
                     "sample_result": False,
                     "is_error": True,
+                    "test_case_id": data['test_id'],
                     "error_type": "Timeout Exception"
                 }, 200
 
             if len(error) != 0:
                 return {
                 "comment": "runcode successful",
-                "user_output": "",
                 "user_error": error,
                 "sample_result": False,
                 "is_error": True,
+                "test_case_id": data['test_id'],
                 "error_type": "Runtime Error"
             }, 200
-            
-            
-            output_resp.append(output.strip())
-            
+
+
+
             if is_correct == True:
                 return {
                     "comment": "runcode successful",
-                    "user_output": output_resp,
                     "user_error": error,
                     "sample_result": is_correct,
                     "is_error": False,
+                    "test_case_id": data['test_id'],
                     "error_type": "No Error"
                 }, 200
-            
+
             else:
                 return {
                     "comment": "runcode successful",
-                    "user_output": output_resp,
                     "user_error": error,
                     "sample_result": is_correct,
                     "is_error": False,
+                    "test_case_id": data['test_id'],
                     "error_type": "Output Mismatch Error"
                 }, 200
 
