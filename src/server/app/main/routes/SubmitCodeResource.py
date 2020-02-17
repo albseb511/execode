@@ -162,8 +162,8 @@ class SubmitCodeResourceTestCaseRun(Resource):
                     "user_error": "Timeout Exception",
                     "sample_result": False,
                     "is_error": True,
-                    "test_case_id": data['test_id'],
-                    "error_type": "Timeout Exception"
+                    "error_type": "Timeout Exception",
+                    "test_case_id": data['test_id']
                 }, 200
 
             if len(error) != 0:
@@ -171,8 +171,8 @@ class SubmitCodeResourceTestCaseRun(Resource):
                 "comment": "runcode successful",
                 "user_error": error,
                 "sample_result": False,
-                "is_error": True,
                 "test_case_id": data['test_id'],
+                "is_error": True,
                 "error_type": "Runtime Error"
             }, 200
 
@@ -183,8 +183,8 @@ class SubmitCodeResourceTestCaseRun(Resource):
                     "comment": "runcode successful",
                     "user_error": error,
                     "sample_result": is_correct,
-                    "is_error": False,
                     "test_case_id": data['test_id'],
+                    "is_error": False,
                     "error_type": "No Error"
                 }, 200
 
@@ -193,8 +193,8 @@ class SubmitCodeResourceTestCaseRun(Resource):
                     "comment": "runcode successful",
                     "user_error": error,
                     "sample_result": is_correct,
-                    "is_error": False,
                     "test_case_id": data['test_id'],
+                    "is_error": False,
                     "error_type": "Output Mismatch Error"
                 }, 200
 
