@@ -1,6 +1,4 @@
 import os
-import subprocess
-import fileinput
 from app.main.utils.run_code_util import is_error, make_python_codefile, generate_output_error, compare_output, read_error
 import json
 from app.main.models.SubmissionsModel import SubmissionsModel

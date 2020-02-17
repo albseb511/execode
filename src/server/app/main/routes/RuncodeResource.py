@@ -29,6 +29,19 @@ class RuncodeResource(Resource):
                 else:
                     output, error, is_correct = getResults(
                         data['custom_input'], '', data['language'], user_id, data["code"], data['is_custom_input'])
+
+                if error == 'Infinite Loop':
+                    return {
+                    "comment": "runcode not successful",
+                    "user_output": "",
+                    "user_error": "Timeout Exception",
+                    "sample_result": False,
+                    "is_error": True,
+                    "is_custom_input": data['is_custom_input'],
+                    "custom_input": data['custom_input'],
+                    "error_type": "Output Mismatch Error"
+                }, 200
+
                 if len(error) != 0:
                     return {
                     "comment": "runcode successful",
@@ -41,17 +54,7 @@ class RuncodeResource(Resource):
                     "error_type": "Runtime Error"
                 }, 200
                 
-                if output == False:
-                    return {
-                    "comment": "runcode not successful",
-                    "user_output": "",
-                    "user_error": "Timeout Exception",
-                    "sample_result": False,
-                    "is_error": True,
-                    "is_custom_input": data['is_custom_input'],
-                    "custom_input": data['custom_input'],
-                    "error_type": "Output Mismatch Error"
-                }, 200
+                
                 output_resp.append(output.strip())
                 
                 return {

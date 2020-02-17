@@ -35,6 +35,7 @@ def get_contests_challenges(contest_id, user_id):
     challenges_arr = []
     data = {}
     for i in names:
+
         challenge_data = {}
         data['contest_name'] = i['contest_name']
         data['contest_id'] = i['contest_id']
@@ -60,7 +61,7 @@ def get_contests_challenges(contest_id, user_id):
         challenges_arr.append(challenge_data)
 
     submit_data = {}
-    
+
     for challenge in challenges_arr:
         prev_attempt = AttemptsModel.query.filter_by(
             contest_id=contest_id, user_id = user_id, challenge_id = challenge['challenge_id']).first()
@@ -71,7 +72,7 @@ def get_contests_challenges(contest_id, user_id):
                 challenge['submit_status'] = False
         else:
             challenge['submit_status'] = None
-            
+
 
     resp = {"data": challenges_arr, "contest_data": data, "submit_data": submit_data}
     return resp
@@ -109,10 +110,10 @@ def add_contest(data, contest_name, user_id):
             total_marks = total_marks + int(test_case['strength'])
 
 
-    new_asset = ContestsModel(contest_name=contest_name, 
+    new_asset = ContestsModel(contest_name=contest_name,
                                 start=start,
-                                end=end, 
-                                details=data["details"], 
+                                end=end,
+                                details=data["details"],
                                 show_leaderboard=data["show_leaderboard"],
                                 owner = user_id,
                                 max_score = total_marks)
@@ -141,7 +142,7 @@ def update_contest(data, contest_name, user_id):
         db.session.commit()
 
         challenges_db = []
-        
+
         data_raw = db.engine.execute("select challenge_id from contests_challenges where contest_id = %s"%(contest.id))
 
         for row in data_raw:
@@ -152,7 +153,7 @@ def update_contest(data, contest_name, user_id):
                 continue
             else:
                 db.engine.execute("insert into contests_challenges (challenge_id,contest_id) values (%s,%s)"%(contest.id, challenge_id))
-        
+
         deleted_challenges = []
 
         for cid in challenges_db:

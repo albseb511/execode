@@ -12,8 +12,12 @@ def get_prev_best_attempt(contest_id, user_id, challenge_id):
 
 
 def save_to_db(model):
-    db.session.add(model)
-    db.session.commit()
+    try:
+        db.session.add(model)
+        db.session.commit()
+    except Exception as e:
+        print(e)
+        db.session.rollback()
 
 
 def add_new_best_attempt(contest_id, new_score, submission_id, user_id, challenge_id):
