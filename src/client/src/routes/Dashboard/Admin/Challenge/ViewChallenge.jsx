@@ -126,7 +126,7 @@ class ViewChallenge extends Component {
       sample_input,
       sample_output
     } = this.state
-
+    const { updateChallenge, token, challengeId } = this.props
     let payload = {
       challenge_name,
       difficulty,
@@ -136,9 +136,10 @@ class ViewChallenge extends Component {
       constraints,
       output_format,
       sample_input,
-      sample_output
+      sample_output,
+      token,
+      challengeId
     }
-    const { updateChallenge } = this.props
     updateChallenge(payload)
   }
 
@@ -234,6 +235,7 @@ class ViewChallenge extends Component {
   }
 
   render() {
+    console.log(this.state)
     const {
       detailsTab,
       settingsTab,
@@ -241,7 +243,7 @@ class ViewChallenge extends Component {
       test_cases: testCases,
       challenge_name: challengeName,
       difficulty,
-      challenge_description:description,
+      description,
       problem_statement: problemStatement,
       input_format: inputFormat,
       constraints,
@@ -258,7 +260,12 @@ class ViewChallenge extends Component {
     if(this.props.challenge.challenge_name && 
         this.props.challenge.challenge_name!=this.state.challenge_name &&
          !this.state.flag){
-      this.setState({...this.props.challenge, flag:true})
+      console.log(this.props,"THE PROPS")
+      const {challenge_description} = this.props.challenge
+      console.log(challenge_description)
+      this.setState({...this.props.challenge,
+                     description: challenge_description,
+                     flag:true})
     }
     let viewTab;
     if (detailsTab) {
