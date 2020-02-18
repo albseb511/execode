@@ -57,22 +57,22 @@ def add_challenge(description,problem_statement,input_format,output_format,const
     challengeid = new_asset.id
     return challengeid
 
-def edit_challenge(challenge_name,description,problem_statement,input_format,output_format,constraints,difficulty,sample_input,sample_output,challenge_id, user_id):
+def edit_challenge(data, challenge_id, user_id):
 
     challenge_details = ChallengesModel.query.filter_by(id = challenge_id)
     if challenge_details:
         if challenge_details.owner == user_id:
             try:
                 db.session.query(ChallengesModel()).filter(ChallengesModel.id == challenge_id).update(
-                                                                    {ChallengesModel.challenge_name : challenge_name,
-                                                                    ChallengesModel.description: description,
-                                                                    ChallengesModel.problem_statement : problem_statement,
-                                                                    ChallengesModel.input_format: input_format,
-                                                                    ChallengesModel.output_format: output_format,
-                                                                    ChallengesModel.constraints : constraints,
-                                                                    ChallengesModel.difficulty : difficulty,
-                                                                    ChallengesModel.sample_input : sample_input,
-                                                                    ChallengesModel.sample_output : sample_output}
+                                                                    {ChallengesModel.challenge_name : data['challenge_name'],
+                                                                    ChallengesModel.description: data['description'],
+                                                                    ChallengesModel.problem_statement : data['problem_statement'],
+                                                                    ChallengesModel.input_format: data['input_format'],
+                                                                    ChallengesModel.output_format: data['output_format'],
+                                                                    ChallengesModel.constraints : data['constraints'],
+                                                                    ChallengesModel.difficulty : data['difficulty'],
+                                                                    ChallengesModel.sample_input : data['sample_input'],
+                                                                    ChallengesModel.sample_output : data['sample_output']}
                                                                     )
                 db.session.commit()
             except Exception as e:
