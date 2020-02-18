@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import AddContestDetails from "../../../../components/AddContestDetails/AddContestDetails";
 import AddChallenges from "../../../../components/AddChallenges/AddChallenges";
 import axios from "../../../../utils/axiosInterceptor";
@@ -15,62 +15,93 @@ const initialState = {
   end_time: "",
   details: "",
   show_leaderboard: false,
-  challenge_ids: []
+  challenges: []
 };
 
-class EditContestDetails extends Component {
-  constructor(props) {
-    super(props);
-    this.state = initialState;
-  }
-
-  addChallengeId = id => {
-    this.setState({
-      challenge_ids: [...this.state.challenge_ids, id]
+function EditContestDetails({
+  token,
+  contestId
+}) {
+  const [state, setState] = useState(initialState)
+  const addChallengeId = id => {
+    setState({
+      ...state,
+      challenges: [...state.challenges, id]
     });
   };
 
-  handleTabChange = tab => {
+  const handleTabChange = tab => {
     if (tab === "details") {
-      this.setState({
+      setState({
+        ...state,
         detailsTab: true,
         challengesTab: false
       });
     } else if (tab === "challenges") {
-      this.setState({
+      setState({
+        ...state,
         detailsTab: false,
         challengesTab: true
       });
     }
   };
 
-  handleDetailsChange = event => {
+  const handleDetailsChange = event => {
     const { target } = event;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const { name } = target;
 
-    this.setState({
+    setState({
+      ...state,
       [name]: value
     });
   };
 
-  createConest = () => {
+useEffect(() => {
     //   send the data here
-    const { contest_name } = this.state;
-    const data = this.state;
+    const { contest_name } = state;
+    const data = state;
     // remove some of the unwanted data. sending unwanted data
     axios
-      .post(`contest/${contest_name}`, data, {
+      .get(`contest/${contestId}`,
+      {
         headers: {
-          Authorization: this.props.token
+          Authorization: token
         }
       })
-      .then(response => {
-        this.setState({ ...initialState });
+      .then(res => {
+          const {data} = res
+          const {
+            contest_data: contest,
+            data: challenges
+          } = data
+          const {
+            contest_name,
+            contest_id,
+            start_date,
+            start_time,
+            created_at,
+            details,
+            end_date,
+            end_time,
+            max_score,
+            show_leaderboard
+          } = contest
+        setState({ 
+          ...state,
+          contest_name,
+          contest_id,
+          start_date:start_date.split("/").reverse().join("-"),
+          start_time,
+          end_date: end_date.split("/").reverse().join("-"),
+          end_time,
+          details,
+          show_leaderboard,
+          challenges
+         });
       });
-  };
-
-  render() {
+  },[])
+  
     const {
       detailsTab,
       challengesTab,
@@ -81,7 +112,7 @@ class EditContestDetails extends Component {
       end_time,
       details,
       show_leaderboard
-    } = this.state;
+    } = state;
     const contest_details = {
       contest_name,
       start_date,
@@ -96,7 +127,7 @@ class EditContestDetails extends Component {
         <ul className="nav nav-tabs">
           <li className="nav-item">
             <button
-              onClick={() => this.handleTabChange("details")}
+              onClick={() => handleTabChange("details")}
               className={`nav-link ${detailsTab && "active"}`}
             >
               Details
@@ -104,7 +135,7 @@ class EditContestDetails extends Component {
           </li>
           <li className="nav-item">
             <button
-              onClick={() => this.handleTabChange("challenges")}
+              onClick={() => handleTabChange("challenges")}
               className={`nav-link ${challengesTab && "active"}`}
             >
               Challenges
@@ -115,26 +146,26 @@ class EditContestDetails extends Component {
 
         {detailsTab ? (
           <AddContestDetails
-            handleDetailsChange={this.handleDetailsChange}
+            handleDetailsChange={handleDetailsChange}
             {...contest_details}
           />
         ) : (
           <AddChallenges
-            addChallengeId={this.addChallengeId}
-            challengeIds={this.state.challenge_ids}
+            addChallengeId={addChallengeId}
+            challengeIds={state.challenges}
           />
         )}
         <br />
         <br />
         <button
-          onClick={this.createConest}
+          onClick={()=>{}}
           className="btn btn-raised btn-dark btn-block"
         >
-          Add Contest
+          Update Contest
         </button>
       </div>
     );
-  }
+
 }
 
 const mapStateToProps = state => ({

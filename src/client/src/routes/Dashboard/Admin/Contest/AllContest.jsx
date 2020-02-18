@@ -55,7 +55,7 @@ const AllContest = ({
               <div className="col-sm-12 col-md-12 col-xl-6 mb-2">
                 <Link
                   className="btn-block btn btn-outline-dark active"
-                  to={`/dashboard/admin/${contest.id}/details`}
+                  to={`/dashboard/admin/${contest.id}/edit/`}
                   >
                   More Details
                 </Link>
