@@ -1,7 +1,7 @@
-from flask_restful import Resource
 from flask import request
 from app.main.services.challenge import add_challenge,get_challenge, edit_challenge
 from app.main import db
+from flask_restful import Resource, reqparse
 import json
 import os
 from app.main.services.decode_auth_token import decode_auth_token
@@ -78,12 +78,31 @@ class Challenge(Resource):
 
 class ChallengeEdit(Resource):
 
+    parser = reqparse.RequestParser()
+    parser.add_argument('challenge_name', type=str,
+                        required=True, help="challenge_name is needed")
+    parser.add_argument('description', type=str, required=True,
+                        help="description is needed")
+    parser.add_argument('problem_statement', type=str,
+                        required=True, help="problem_statement is needed")
+    parser.add_argument('input_format', type=str, required=True,
+                        help="input_format is needed")
+    parser.add_argument('output_format', type=str, required=True,
+                        help="output_format is needed")
+    parser.add_argument('constraints', type=bool,
+                        required=True, help="constraints is needed")
+    parser.add_argument('difficulty', type=str, required=False,
+                        help="difficulty is needed")
+    parser.add_argument('sample_input', type=str, required=False,
+                        help="sample_input is needed")
+    parser.add_argument('sample_output', type=str, required=False,
+                        help="sample_output is needed")
+
     def post(self,challenge_id):
         # auth token 
         auth_token = request.headers.get("Authorization")
         user_id = decode_auth_token(auth_token)
         if user_id:            
-            Info = json.loads(request.form.get('challenge_details'))
-
-            response = edit_challenge(**Info, challenge_id=challenge_id, user_id=user_id)
+            data = ChallengeEdit.parser.parse_args()
+            return edit_challenge(data, challenge_id=challenge_id, user_id=user_id)
             
