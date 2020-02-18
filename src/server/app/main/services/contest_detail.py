@@ -30,7 +30,7 @@ def find_by_name(cls, contest_name):
 
 def get_contests_challenges(contest_id, user_id):
     data_raw = db.engine.execute(
-        "select a.contest_name as contest_name, a.id as contest_id, a.start as start, a.end as end, a.details as details, a.max_score as contest_max_score, a.show_leaderboard as show_leaderboard, a.created_at as created_at, c.description as description, c.id as challenge_id, c.problem_statement as problem_statement, c.input_format as input_format, c.output_format as output_format, c.difficulty as difficulty, c.sample_input as sample_input, c.sample_output as sample_output, c.created_at as challenge_created_at, c.max_score as challenge_max_score from contests as a join contests_challenges as b on a.id=b.contest_id join challenges as c on b.challenge_id=c.id where a.id={}".format(contest_id))
+        "select a.contest_name as contest_name, a.id as contest_id, a.start as start, a.end as end, a.details as details, a.max_score as contest_max_score, a.show_leaderboard as show_leaderboard, a.created_at as created_at, c.description as description, c.id as challenge_id, c.problem_statement as problem_statement, c.input_format as input_format, c.output_format as output_format, c.difficulty as difficulty, c.sample_input as sample_input, c.sample_output as sample_output, c.created_at as challenge_created_at, c.max_score as challenge_max_score, c.challenge_name as challenge_name from contests as a join contests_challenges as b on a.id=b.contest_id join challenges as c on b.challenge_id=c.id where a.id={}".format(contest_id))
     names = [dict(row) for row in data_raw]
     challenges_arr = []
     data = {}
@@ -48,6 +48,7 @@ def get_contests_challenges(contest_id, user_id):
         data['show_leaderboard'] = i['show_leaderboard']
         data['created_at'] = str(i['created_at'])
         challenge_data['description'] = i['description']
+        challenge_data['challenge_name'] = i['challenge_name']
         challenge_data['challenge_id'] = i['challenge_id']
         challenge_data['problem_statement'] = i['problem_statement']
         challenge_data['input_format'] = i['input_format']
