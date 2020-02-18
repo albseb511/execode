@@ -46,11 +46,22 @@ const AllContest = ({
               </div>
             </div>
             <div className="d-flex mt-4">
-              <b>URL:</b>
-              <p className="mx-auto">localhost:3000/dashboard/user/{contest.id}</p>  
+              <div>
+                <b>URL:</b>
+                <p className="mx-auto">https://masai-execode.now.sh/dashboard/user/{contest.id}</p>  
+              </div>
             </div>
             <div className="row  py-3">
-              <div className="col-md-11 ml-1">
+              <div className="col-md-5 ml-1">
+                <Link
+                  className="btn-block btn btn-outline-dark active"
+                  to={`/dashboard/admin/${contest.id}/details`}
+                  >
+                  More Details
+                </Link>
+              </div>
+
+              <div className="col-md-5 ml-1">
                 <Link
                   className="btn-block btn btn-outline-dark active"
                   to={`/dashboard/admin/${contest.id}/leaderboard`}
