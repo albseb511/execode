@@ -10,6 +10,9 @@ import {
   FETCH_ALL_CHALLENGES_REQUEST,
   FETCH_ALL_CHALLENGES_SUCCESS,
   FETCH_ALL_CHALLENGES_FAILURE,
+  FETCH_CONTEST_REQUEST,
+  FETCH_CONTEST_SUCCESS,
+  FETCH_CONTEST_FAILURE,
   FETCH_CHALLENGE_REQUEST,
   FETCH_CHALLENGE_SUCCESS,
   FETCH_CHALLENGE_FAILURE,
@@ -70,7 +73,7 @@ export default (state = initState, action) => {
     case FETCH_CHALLENGE_SUCCESS:
       return {
         ...state,
-        challenge: {...payload.challenge},
+        challenge: { ...payload.challenge },
         isLoading: false
       };
     case FETCH_CHALLENGE_FAILURE:

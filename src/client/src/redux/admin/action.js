@@ -16,6 +16,9 @@ import {
   FETCH_CHALLENGE_REQUEST,
   FETCH_CHALLENGE_SUCCESS,
   FETCH_CHALLENGE_FAILURE,
+  FETCH_CONTEST_REQUEST,
+  FETCH_CONTEST_SUCCESS,
+  FETCH_CONTEST_FAILURE,
   UPDATE_CHALLENGE_REQUEST,
   UPDATE_CHALLENGE_SUCCESS,
   UPDATE_CHALLENGE_FAILURE
@@ -70,6 +73,36 @@ export const fetchAllContests = payload => {
   };
 };
 
+export const fetchContestRequest = payload => ({
+  type: FETCH_CONTEST_REQUEST,
+  payload
+});
+
+export const fetchContestSuccess = payload => ({
+  type: FETCH_CONTEST_SUCCESS,
+  payload
+});
+
+export const fetchContestFailure = payload => ({
+  type: FETCH_CONTEST_FAILURE,
+  payload
+});
+
+export const fetchContest = payload => {
+  return dispatch => {
+    dispatch(fetchChallengeRequest());
+    return axios
+      .get(`/contest/${payload.contestId}`, {
+        headers: {
+          Authorization: payload.token
+        }
+      })
+      .then(res => {
+        dispatch(fetchContestSuccess(res.data));
+      })
+      .catch(() => dispatch(fetchContestFailure()));
+  };
+};
 export const fetchChallengeRequest = payload => ({
   type: FETCH_CHALLENGE_REQUEST,
   payload
@@ -89,14 +122,11 @@ export const fetchChallenge = payload => {
   return dispatch => {
     dispatch(fetchChallengeRequest());
     return axios
-      .get(
-        `/challenge/${payload.challengeId}`,
-        {
-          headers: {
-            Authorization: payload.token
-          }
+      .get(`/challenge/${payload.challengeId}`, {
+        headers: {
+          Authorization: payload.token
         }
-      )
+      })
       .then(res => {
         dispatch(fetchChallengeSuccess(res.data));
       })
@@ -120,13 +150,32 @@ export const updateChallengeFailure = payload => ({
 });
 
 export const updateChallenge = payload => {
+  let {
+    challenge_name,
+      difficulty,
+      description,
+      problem_statement,
+      input_format,
+      constraints,
+      output_format,
+      sample_input,
+      sample_output
+  } = payload
   return dispatch => {
     dispatch(updateChallengeRequest());
     return axios
       .post(
-        `/challenge/update/${payload.challengeId}`,
+        `/challenge/${payload.challengeId}/editchallenge`,
         {
-
+          challenge_name,
+          difficulty,
+          description,
+          problem_statement,
+          input_format,
+          constraints,
+          output_format,
+          sample_input,
+          sample_output
         },
         {
           headers: {
@@ -135,12 +184,10 @@ export const updateChallenge = payload => {
         }
       )
       .then(res => {
-        if(!res.data)
-          dispatch(updateChallengeFailure())
-        else
-          dispatch(updateChallengeSuccess(res.data));
+        if (!res.data) dispatch(updateChallengeFailure());
+        else dispatch(updateChallengeSuccess(res.data));
       })
-      .catch((err) => dispatch(updateChallengeFailure(err)));
+      .catch(err => dispatch(updateChallengeFailure(err)));
   };
 };
 
