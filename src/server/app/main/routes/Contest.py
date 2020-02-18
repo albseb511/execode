@@ -53,19 +53,12 @@ class Contest(Resource):
         user_id = decode_auth_token(auth_token)
         if user_id:
             data = Contest.parser.parse_args()
-            if data['action'] == 'update':
-                updated = update_contest(data, contest_name, user_id)
-                if updated:
-                    return {"comment": "contest updated successfully"}, 200
-                else:
-                    return {"comment": "error in contest updation"}, 501
+            # Add contest to database
+            created = add_contest(data, contest_name, user_id)
+            if created:
+                return {"comment": "contest created successfully"}, 200
             else:
-                # Add contest to database
-                created = add_contest(data, contest_name, user_id)
-                if created:
-                    return {"comment": "contest created successfully"}, 200
-                else:
-                    return {"comment": "error in contest creation"}, 501
+                return {"comment": "error in contest creation"}, 501
         else:
             return {"comment": "JWT Expired or Invalid"}, 401
 
@@ -74,3 +67,40 @@ class Contests(Resource):
     @classmethod
     def get(self):
         return get_contests()
+
+
+
+
+class ContestEdit(Resource):
+    """"
+    Get contest details 
+    Create contest
+    """
+    parser = reqparse.RequestParser()
+    parser.add_argument('start_date', type=str,
+                        required=True, help="Start Date is needed")
+    parser.add_argument('end_date', type=str, required=True,
+                        help="End Date is needed")
+    parser.add_argument('start_time', type=str,
+                        required=True, help="End Time is needed")
+    parser.add_argument('end_time', type=str, required=True,
+                        help="End Time is needed")
+    parser.add_argument('details', type=str, required=True,
+                        help="Details is needed")
+    parser.add_argument('show_leaderboard', type=bool,
+                        required=True, help="Show leaderboard is needed")
+    parser.add_argument('contest_name', type=str, required=False,
+                        help="contest Name is needed")
+
+
+    @classmethod
+    def post(self, contest_id):
+        auth_token = request.headers.get("Authorization")
+        user_id = decode_auth_token(auth_token)
+        if user_id:
+            data = ContestEdit.parser.parse_args()
+            updated = update_contest(data, contest_name, user_id)
+            if updated:
+                return {'status': 'ok',"comment": "contest updated successfully"}, 200
+            else:
+                return {'status': 'fail',"comment": "error in contest updation"}, 200
