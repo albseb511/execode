@@ -130,18 +130,22 @@ def add_contest(data, contest_name, user_id):
             "insert into contests_challenges (challenge_id,contest_id) values ({},{})".format(challenge_id, contest_id))
     return True
 
-def update_contest(data, contest_name, user_id):
-    contest = ContestsModel.query.filter_by(contest_name = contest_name).first()
+def update_contest(data, contest_id, user_id):
+    contest = ContestsModel.query.filter_by(id = contest_id).first()
 
     if contest.owner == user_id:
         #update
         end = data['end_date']+" "+data['end_time']
         start = data['start_date']+" "+data['start_time']
 
-        db.session.query(ContestsModel).filter(ContestsModel.id == contest.id).update({ContestsModel.start : start, ContestsModel.end : end, ContestsModel.details : data['details'], ContestsModel.show_leaderboard : data['show_leaderboard']})
+        db.session.query(ContestsModel).filter(ContestsModel.id == contest.id).update({ContestsModel.start : start, ContestsModel.end : end, ContestsModel.details : data['details'], ContestsModel.show_leaderboard : data['show_leaderboard'], ContestsModel.contest_name: data['contest_name']})
         db.session.commit()
 
         challenges_db = []
+
+        return True
+
+        ## Code not in execution for now
 
         data_raw = db.engine.execute("select challenge_id from contests_challenges where contest_id = %s"%(contest.id))
 
