@@ -38,20 +38,20 @@ def get_challenge(challenge_id):
          "sample_output":challenge.sample_output,
          "constraints":challenge.constraints
          }
-    return {"challenge":details}   
+    return {"challenge":details}
 
 def add_challenge(description,problem_statement,input_format,output_format,constraints,difficulty,sample_input,sample_output,challenge_name, user_id, max_score):   #This service is us   ed to add both the challenge and required test cases for it.
-    
+
     new_asset = ChallengesModel(challenge_name = challenge_name,
                                 description = description,
                                 problem_statement = problem_statement,
-                                input_format = input_format, 
+                                input_format = input_format,
                                 output_format = output_format,
                                 difficulty = difficulty,
                                 sample_input = sample_input,
                                 sample_output = sample_output,
                                 constraints = constraints,
-                                owner = user_id, 
+                                owner = user_id,
                                 max_score = max_score)
     save_changes(new_asset)
     challengeid = new_asset.id
@@ -61,9 +61,9 @@ def edit_challenge(data, challenge_id, user_id):
 
     challenge_details = ChallengesModel.query.filter_by(id = challenge_id).first()
     if challenge_details:
-        if challenge_details.owner == user_id:
-            try:
-                db.session.query(ChallengesModel()).filter(ChallengesModel.id == challenge_id).update(
+        if str(challenge_details.owner) == str(user_id):
+            #try:
+                db.session.query(ChallengesModel).filter(ChallengesModel.id == challenge_id).update(
                                                                     {ChallengesModel.challenge_name : data['challenge_name'],
                                                                     ChallengesModel.description: data['description'],
                                                                     ChallengesModel.problem_statement : data['problem_statement'],
@@ -75,11 +75,11 @@ def edit_challenge(data, challenge_id, user_id):
                                                                     ChallengesModel.sample_output : data['sample_output']}
                                                                     )
                 db.session.commit()
-            except Exception as e:
-                print(e)
-                db.session.rollback()
-                return {'status': 'fail', 'comment': 'database error'}
-            return {'status': 'ok', 'comment': 'challenge updated'}
+            #except Exception as e:
+                #print(e)
+                #db.session.rollback()
+                #return {'status': 'fail', 'comment': 'database error'}
+                return {'status': 'ok', 'comment': 'challenge updated'}
 
         else:
             return {'status': 'fail', 'comment': 'user not the owner of the challenge'}
