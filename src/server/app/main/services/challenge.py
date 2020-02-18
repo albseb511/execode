@@ -59,7 +59,7 @@ def add_challenge(description,problem_statement,input_format,output_format,const
 
 def edit_challenge(data, challenge_id, user_id):
 
-    challenge_details = ChallengesModel.query.filter_by(id = challenge_id)
+    challenge_details = ChallengesModel.query.filter_by(id = challenge_id).first()
     if challenge_details:
         if challenge_details.owner == user_id:
             try:
