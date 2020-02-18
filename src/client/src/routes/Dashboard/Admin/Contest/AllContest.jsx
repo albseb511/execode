@@ -20,7 +20,7 @@ const AllContest = ({
   const res = contestFinalData.map(contest => {
     return (
       <div className="col-md-6 mb-3 py-1" key={contest.id}>
-        <div className="border py-3">
+        <div className="border p-3">
           <div className="ml-3">
             <Link
               className="text-dark"
@@ -51,8 +51,8 @@ const AllContest = ({
                 <p className="mx-auto">https://masai-execode.now.sh/dashboard/user/{contest.id}</p>  
               </div>
             </div>
-            <div className="row  py-3">
-              <div className="col-md-5 ml-1">
+            <div className="row  py-3 m-auto">
+              <div className="col-sm-12 col-md-12 col-xl-6 mb-2">
                 <Link
                   className="btn-block btn btn-outline-dark active"
                   to={`/dashboard/admin/${contest.id}/details`}
@@ -61,7 +61,7 @@ const AllContest = ({
                 </Link>
               </div>
 
-              <div className="col-md-5 ml-1">
+              <div className="col-sm-12 col-md-12 col-xl-6">
                 <Link
                   className="btn-block btn btn-outline-dark active"
                   to={`/dashboard/admin/${contest.id}/leaderboard`}
