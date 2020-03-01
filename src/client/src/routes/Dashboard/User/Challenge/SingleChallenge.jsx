@@ -123,7 +123,6 @@ const SingleChallenge = ({
       }
     }
     getChallenges();
-    setPlaceHolderData();
   }, []);
 
   useEffect(() => {
@@ -200,6 +199,7 @@ const SingleChallenge = ({
       data[`${email}__${contestId}__${challengeId}__${language}__default`]
     );
   };
+  const styleSpace = {whiteSpace:"pre-line"}
   return (
     <div>
       <div className="container border py-3">
@@ -215,7 +215,7 @@ const SingleChallenge = ({
             </span>
           </div>
           <div className="col-md-4 text-right">
-            <Link to={path.replace(/...$/, "")}>
+            <Link to={path.replace(/\/+[0-9]$/, "")}>
               <div className="btn btn-dark active">GOTO CONTEST</div>
             </Link>
           </div>
@@ -225,25 +225,25 @@ const SingleChallenge = ({
           <div className="mt-3 mb-3">
             <b>Problem</b>
           </div>
-          <p>{singleChallenge.problem_statement}</p>
+          <p style={styleSpace}>{singleChallenge.problem_statement}</p>
         </div>
         <div className="mt-3 mb-3">
           <div className="mt-3 mb-3">
             <b>Description</b>
           </div>
-          <p>{singleChallenge.challenge_description}</p>
+          <p style={styleSpace}>{singleChallenge.challenge_description}</p>
         </div>
         <div className="mt-3 mb-3">
           <div className="mt-3 mb-3">
             <b>Input Format</b>
           </div>
-          <p>{singleChallenge.input_format}</p>
+          <p style={styleSpace}>{singleChallenge.input_format}</p>
         </div>
         <div className="mt-3 mb-3">
           <div className="mt-3 mb-3">
             <b>Output Format</b>
           </div>
-          <p>{singleChallenge.output_format}</p>
+          <p style={styleSpace}>{singleChallenge.output_format}</p>
         </div>
         <div className="mt-3 mb-3">
           <div className="mt-3 mb-3">
@@ -311,6 +311,7 @@ const SingleChallenge = ({
               style={{ width: "100%" }}
               placeholder="Ask for help if you need it"
               mode={language}
+              onLoad={()=>setPlaceHolderData()}
               onChange={e => handleChangeCode(e)}
               onCopy={event => handleEvents(event, "copy")}
               onPaste={event => handleEvents(event, "paste")}
