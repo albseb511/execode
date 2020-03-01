@@ -11,6 +11,7 @@ import requests
 import subprocess
 
 def save_process_details(pid, starttime):
+    cwd = os.getcwd()
     file_path = cwd + "/static/processes/proc.txt"
     f = open(file_path, 'a')
     f.write('%s %s\n'%(pid, starttime))
@@ -78,10 +79,10 @@ def run_python_code(code_path, input_path, output_path, error_path):
     proc = subprocess.Popen([cmd], shell=True, preexec_fn=os.setsid)
     save_process_details(proc.pid, starttime)
     try:
-        print(proc.communicate(timeout=0.5))
+        print(proc.communicate(timeout=4))
         t = proc.returncode
     except subprocess.TimeoutExpired:
-        os.system("kill -9 %s"%(proc.pid))
+        #os.system("kill -9 %s"%(proc.pid))
         os.system("rm %s"%(output_path))
         print('killed')
         return False
@@ -107,7 +108,7 @@ def run_js_code(code_path, input_path, output_path, error_path):
     proc = subprocess.Popen([cmd], shell=True, preexec_fn=os.setsid)
     save_process_details(proc.pid, starttime)
     try:
-        print(proc.communicate(timeout=0.5))
+        print(proc.communicate(timeout=4))
         t = proc.returncode
     except subprocess.TimeoutExpired:
         os.system("kill -9 %s"%(proc.pid))
