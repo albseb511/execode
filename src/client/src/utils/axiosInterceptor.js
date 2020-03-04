@@ -8,8 +8,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const axiosInstance = axios.create({
-  // baseURL: "http://a99b9e15.ngrok.io"
-  baseURL: "https://parthmasai.pythonanywhere.com"
+  baseURL: process.env.REACT_APP_SERVER_URL
 });
 
 axiosInstance.interceptors.request.use(request => {
