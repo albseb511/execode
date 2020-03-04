@@ -1,8 +1,9 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { Route, Redirect, Switch, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // import UserDashboard from "./Dashboard/User/UserDashboard";
+import posthog from "posthog-js";
 import Settings from "./Dashboard/Settings";
 import Profile from "./Dashboard/Profile";
 import Reports from "./Dashboard/Reports";
@@ -25,38 +26,44 @@ import AdminSettings from "./Dashboard/Admin/CPanel/AdminSettings";
 import EditContestDetails from "./Dashboard/Admin/CreateContest/EditContestDetails";
 import CreateUsers from "./Dashboard/Admin/CPanel/CreateUsers";
 import ViewUsers from "./Dashboard/Admin/CPanel/ViewUsers";
-import { logoutUser, setRedirectUrl, resetRedirectUrl, tokenValidateUser } from "../redux/authentication/actions";
+import {
+  logoutUser,
+  setRedirectUrl,
+  resetRedirectUrl,
+  tokenValidateUser
+} from "../redux/authentication/actions";
 import ErrorBoundary from "../components/common/ErrorBoundary";
 import ViewSubmissions from "./Dashboard/User/Contest/ViewSubmissions";
 import AllChallenges from "./Dashboard/Admin/Challenge/AllChallenges";
-import ViewChallenge from "./Dashboard/Admin/Challenge/ViewChallenge"
-import AuthenticatingIndicator  from "../components/common/Activity Indicators/AuthenticatingIndicator";
+import ViewChallenge from "./Dashboard/Admin/Challenge/ViewChallenge";
+import AuthenticatingIndicator from "../components/common/Activity Indicators/AuthenticatingIndicator";
 import NoMatch from "./NoMatch";
 
-const DashboardRoutes = ({ 
-  isAuth, 
-  token, 
-  userType, 
-  email, 
-  logoutUser, 
-  path, 
-  validateUser, 
+const DashboardRoutes = ({
+  isAuth,
+  token,
+  userType,
+  email,
+  logoutUser,
+  path,
+  validateUser,
   error,
   isLoadingAdmin,
   isLoadingAuth,
   isValidating,
-  isLoadingUser,
+  isLoadingUser
 }) => {
-  let isLoadingCondition = (isLoadingAdmin || 
-  isLoadingAuth ||
-  isValidating || 
-  isLoadingUser)
+  const isLoadingCondition =
+    isLoadingAdmin || isLoadingAuth || isValidating || isLoadingUser;
   if (!isAuth && !isValidating) {
     // if(error){
-      // return <Redirect to="/login" />
+    // return <Redirect to="/login" />
     // }
-    validateUser(token)
-  };
+    validateUser(token);
+  }
+  if (isAuth) {
+    posthog.identify(email);
+  }
   return isAuth ? (
     <>
       <Route
@@ -69,11 +76,11 @@ const DashboardRoutes = ({
               token={token}
               userType={userType}
               logoutUser={logoutUser}
-              />
+            />
           </ErrorBoundary>
         )}
-        />
-        { isLoadingCondition && <AuthenticatingIndicator />}
+      />
+      {isLoadingCondition && <AuthenticatingIndicator />}
       {/* <Route path="/dashboard" exact render={() => <UserDashboard />} /> */}
       {/* <Route
         path="/dashboard/user/all-contest/"
@@ -91,7 +98,10 @@ const DashboardRoutes = ({
         exact
         render={({ match, location }) => (
           <ErrorBoundary>
-            <ContestDetails contestId={match.params.contestId} path={location.pathname} />
+            <ContestDetails
+              contestId={match.params.contestId}
+              path={location.pathname}
+            />
           </ErrorBoundary>
         )}
       />
@@ -105,16 +115,16 @@ const DashboardRoutes = ({
         )}
       />
       <Route
-            path="/dashboard/view-submissions/:contestId"
-            exact
-            render={({ match, location }) => (
-              <ViewSubmissions
-                contestId={match.params.contestId}
-                // userId={match.params.userId}
-                path={location.pathname}
-              />
-            )}
+        path="/dashboard/view-submissions/:contestId"
+        exact
+        render={({ match, location }) => (
+          <ViewSubmissions
+            contestId={match.params.contestId}
+            // userId={match.params.userId}
+            path={location.pathname}
           />
+        )}
+      />
       <Route
         path="/dashboard/user/:contestId/:challengeId"
         exact
@@ -149,7 +159,11 @@ const DashboardRoutes = ({
       {/* also need navbar for user */}
       <ErrorBoundary>
         <AdminRoutes userType={userType} path={path} isLoading={isValidating}>
-          <Route path="/dashboard/admin/" exact render={() => <AdminDashboard />} />
+          <Route
+            path="/dashboard/admin/"
+            exact
+            render={() => <AdminDashboard />}
+          />
           <Route
             path="/dashboard/admin/all-contest"
             exact
@@ -163,8 +177,9 @@ const DashboardRoutes = ({
           <Route
             path="/dashboard/admin/view/challenge/:challengeId"
             exact
-            render={({match}) => <ViewChallenge 
-                                  challengeId={match.params.challengeId}/>}
+            render={({ match }) => (
+              <ViewChallenge challengeId={match.params.challengeId} />
+            )}
           />
           <Route
             path="/dashboard/admin/:contestId/leaderboard/"
@@ -173,7 +188,7 @@ const DashboardRoutes = ({
               <ContestLeaderboard contestId={match.params.contestId} />
             )}
           />
-            <Route
+          <Route
             path="/dashboard/admin/:contestId/edit/"
             exact
             render={({ match }) => (

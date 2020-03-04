@@ -8,8 +8,6 @@ import axios from "../../../../utils/axiosInterceptor";
 
 const TodayContest = () => {
   const [contests, setContests] = useState([]);
-
-  console.log(contests);
   useEffect(() => {
     async function getContests() {
       try {
