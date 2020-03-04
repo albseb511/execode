@@ -19,7 +19,7 @@ class UserSignUp(Resource):
         """Creates a new User """
         #data = request.json
         #return save_new_user(data=data)
-        return {"comment": "Contact Admin parth@masaischool.com", "status": "fail"}
+        return {"comment": "Contact Admin at parth@masaischool.com", "status": "fail"}
 
 class UserAll(Resource):
 
