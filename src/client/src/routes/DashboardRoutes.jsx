@@ -63,6 +63,9 @@ const DashboardRoutes = ({
   }
   if (isAuth) {
     posthog.identify(email);
+    posthog.people.set({
+      email
+    });
   }
   return isAuth ? (
     <>
