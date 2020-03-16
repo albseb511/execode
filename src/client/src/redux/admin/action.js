@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable no-use-before-define */
 import {
   FETCH_USER_SUBMISSIONS,
   VIEW_USER_CODE,
@@ -150,17 +152,17 @@ export const updateChallengeFailure = payload => ({
 });
 
 export const updateChallenge = payload => {
-  let {
+  const {
     challenge_name,
-      difficulty,
-      description,
-      problem_statement,
-      input_format,
-      constraints,
-      output_format,
-      sample_input,
-      sample_output
-  } = payload
+    difficulty,
+    description,
+    problem_statement,
+    input_format,
+    constraints,
+    output_format,
+    sample_input,
+    sample_output
+  } = payload;
   return dispatch => {
     dispatch(updateChallengeRequest());
     return axios

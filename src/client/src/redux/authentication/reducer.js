@@ -81,7 +81,7 @@ const reducer = (state = initState, { type, payload }) => {
         isLoading: false,
         error: true,
         errorType: "login",
-        errorMessage: "something went wrong"
+        errorMessage: "😞 User Not Found"
       };
     case LOGOUT_USER_REQUEST:
       return {

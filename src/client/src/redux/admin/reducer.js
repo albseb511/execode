@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   FETCH_USER_SUBMISSIONS,
   VIEW_USER_CODE,

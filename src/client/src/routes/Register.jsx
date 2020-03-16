@@ -41,57 +41,82 @@ const Register = ({
     <Redirect to="/dashboard" />
   ) : (
     <div className="container">
-      <div className="mt-4 mb-4 text-center">
-        <h4>Create Account</h4>
+      <div className="row">
+        <div className="col-md-8 offset-md-2 py-5">
+          <div className="mt-4 mb-4 text-center">
+            <h4>Create Account</h4>
+          </div>
+          <form onSubmit={onRegisterSubmit}>
+            <div className="form-group">
+              <label htmlFor="name">Full Name</label>
+              <input
+                id="name"
+                type="text"
+                name="name"
+                placeholder="Enter Full Name"
+                className="form-control"
+                value={signupState.name}
+                onChange={onChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="email">Email address</label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                placeholder="Enter Email"
+                className="form-control"
+                aria-describedby="emailHelp"
+                value={signupState.email}
+                onChange={onChange}
+              />
+              <small id="emailHelp" className="form-text text-muted">
+                We'll never share your email with anyone else.
+              </small>
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                name="password"
+                placeholder="Enter Password"
+                className="form-control"
+                value={signupState.password}
+                onChange={onChange}
+              />
+            </div>
+            <button
+              type="submit"
+              className="btn btn-dark btn-raised btn-block text-uppercase"
+            >
+              <i className="fas fa-plus-square" /> Register
+            </button>
+          </form>
+          {isRegistering && (
+            <div className="text-center mt-4">
+              <div className="spinner-border text-success" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+            </div>
+          )}
+          {error && errorType == "register" ? (
+            <div className="text-danger">{errorMessage}</div>
+          ) : (
+            registerSuccess && (
+              <div className="text-center mt-3">
+                <span>
+                  Successfully Registered Please Login Your Email and Password
+                  <Link className="nav-link  text-success" to="/login">
+                    Login
+                  </Link>
+                </span>
+              </div>
+            )
+          )}
+        </div>
       </div>
-      <form onSubmit={onRegisterSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">Full Name</label>
-          <input
-            id="name"
-            type="text"
-            name="name"
-            className="form-control"
-            value={signupState.name}
-            onChange={onChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email address</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            className="form-control"
-            aria-describedby="emailHelp"
-            value={signupState.email}
-            onChange={onChange}
-          />
-          <small id="emailHelp" className="form-text text-muted">
-            We'll never share your email with anyone else.
-          </small>
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            className="form-control"
-            value={signupState.password}
-            onChange={onChange}
-          />
-        </div>
-        <button type="submit" className="btn btn-dark btn-raised  btn-block">
-          Register
-        </button>
-      </form>
-      {isRegistering && <div className="text-center">Registering</div>}
-      {error && errorType == "register" ? (
-        <div className="text-danger">{errorMessage}</div>
-      ) : (
-        registerSuccess && <div className="text-center">Success</div>
-      )}
     </div>
   );
 };
