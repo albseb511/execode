@@ -11,6 +11,7 @@ from app.main.routes.Contests import Contests
 from app.main.routes.SubmittedCode import SubmittedCode
 from app.main.routes.JwtValidation import JwtValidation
 from app.main.routes.EventsHandle import EventsHandle, EventsHandleAdd
+from app.main.routes.SignUpContest import SignUpContest
 
 
 def add_resources(app):
@@ -34,7 +35,8 @@ def add_resources(app):
     api.add_resource(LogoutAPI, '/logout') 
     api.add_resource(UserSignUp, '/signup') 
     api.add_resource(FacebookAuthorize, '/facebook') 
-    api.add_resource(GithubAuthorize, '/github') 
+    api.add_resource(GithubAuthorize, '/github')
+    api.add_resource(SignUpContest, '/signupcontest') 
     api.add_resource(Contest, '/contest/<contest_name>') 
     api.add_resource(Contests, '/contests') 
     api.add_resource(UserLeaderboard, '/contest/<contest_id>/leaderboard') 
