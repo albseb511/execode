@@ -78,10 +78,10 @@ def get_contests_challenges(contest_id, user_id):
     resp = {"data": challenges_arr, "contest_data": data, "submit_data": submit_data}
     return resp
 
-def get_contests():
+def get_contests(user_id):
     print('in the contest')
     resp_data = []
-    result_data = db.engine.execute("select *from contests")
+    result_data = db.engine.execute("select * from contests join signup_contest on contests.id = signup_contest.contest_id where signup_contest.user_id = '%s';"%(user_id))
     final_val = [dict(row) for row in result_data]
     print(final_val)
     for j in final_val:
