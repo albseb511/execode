@@ -81,7 +81,7 @@ def get_contests_challenges(contest_id, user_id):
 def get_contests(user_id):
     print('in the contest')
     resp_data = []
-    result_data = db.engine.execute("select * from contests join signup_contest on contests.id = signup_contest.contest_id where signup_contest.user_id = '%s';"%(user_id))
+    result_data = db.engine.execute("select a.id as id, a.contest_name as contest_name, a.start as start, a.end as end, a.details as details, a.show_leaderboard as show_leaderboard, a.created_at as created_at from contests as a join signup_contest as b on a.id = b.contest_id where b.user_id = '%s';"%(user_id))
     final_val = [dict(row) for row in result_data]
     print(final_val)
     for j in final_val:
