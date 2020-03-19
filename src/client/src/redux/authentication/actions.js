@@ -44,7 +44,10 @@ export const loginUser = payload => {
   };
 };
 
-loginUser({ email: "test", password: "test" });
+loginUser({
+  email: "test",
+  password: "test"
+});
 
 // REGISTER
 
@@ -130,7 +133,7 @@ export const tokenValidateUser = payload => {
     return axios
       .get("/validate", {
         headers: {
-          Authorization: payload
+          Authorization: payload.token
         }
       })
       .then(res =>

@@ -1,96 +1,112 @@
 /*eslint-disable*/
-import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
-// import { registerUser } from "../redux/authentication/actions";
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams
+} from "react-router-dom";
+import axios from "../../../../utils/axiosInterceptor";
 import { connect } from "react-redux";
 
-const ContestRegister = ({
-  registerUser,
-  isAuth,
-  isRegistering,
-  registerSuccess,
-  error,
-  errorType
-}) => {
-  const [signupState, setSignupState] = useState({
-    email: "",
-    name: "",
-    password: ""
-  });
-
-  const onChange = e => {
-    if (e.target.name === "keepLoggedIn") {
-      setSignupState({ ...signupState, [e.target.name]: e.target.checked });
-    } else {
-      setSignupState({ ...signupState, [e.target.name]: e.target.value });
-    }
-  };
-
-  const onRegisterSubmit = e => {
-    e.preventDefault();
-    let payload = {
-      email: signupState.email,
-      name: signupState.name,
-      password: signupState.password
-    };
-    registerUser(payload);
-  };
+const ContestRegister = ({ isAuth, token, email, error, errorMessage }) => {
+  let { id } = useParams();
+  useEffect(() => {
+    axios
+      .post(
+        `/signupcontest`,
+        {
+          contest_id: id
+        },
+        {
+          headers: {
+            Authorization: token
+          }
+        }
+      )
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
 
   return isAuth ? (
-    <Redirect to="/dashboard" />
-  ) : (
-    <div className="container">
-      <div className="mt-4 mb-4 text-center">
-        <h4>Contest Register</h4>
+    <div>
+      <div className="jumbotron jumbotron-fluid">
+        <div className="container text-center">
+          <h1>
+            Hello <span className="text-danger">{email.split("@")[0]} </span>
+            You're Invited contest id <span className="text-danger">{id}</span>
+          </h1>
+          <p className="lead">
+            Coding contest to test your understanding of data structures and
+            algorithms
+          </p>
+          <div className="py-3">
+            <Link to={`/dashboard/contest/${id}`} className="btn btn-dark">
+              <i className="fas fa-sign-in-alt" />
+              <span> enter your contest </span>
+            </Link>
+          </div>
+        </div>
       </div>
-      <form onSubmit={onRegisterSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">Full Name</label>
-          <input
-            id="name"
-            type="text"
-            name="name"
-            className="form-control"
-            value={signupState.name}
-            onChange={onChange}
-          />
+      <div className="container">
+        <div className="row">
+          <div className="col-md-12">
+            <h4 className="text-center">Rules</h4>
+            <b>DISQUALIFICATION</b>
+            <ul className="mt-3">
+              <li>Copying code from stackoverflow or by Googling</li>
+              <li>Seen browsing or referring any code</li>
+            </ul>
+          </div>
+          <div className="col-md-12">
+            <h4 className="text-center">Scoring</h4>
+            <ul className="mt-3">
+              <li>Each challenge has a pre-determined score.</li>
+              <li>
+                A participant’s score depends on the number of test cases a
+                participant’s code submission successfully passes.
+              </li>
+              <li>
+                If a participant submits more than one solution per challenge,
+                then the participant’s score will reflect the highest score
+                achieved. In a game challenge, the participant's score will
+                reflect the last code submission.
+              </li>
+              <li>
+                Participants are ranked by score. If two or more participants
+                achieve the same score, then the tie is broken by the total time
+                taken to submit the last solution resulting in a higher score
+              </li>
+            </ul>
+          </div>
         </div>
-        <div className="form-group">
-          <label htmlFor="email">Email address</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            className="form-control"
-            aria-describedby="emailHelp"
-            value={signupState.email}
-            onChange={onChange}
-          />
-          <small id="emailHelp" className="form-text text-muted">
-            We'll never share your email with anyone else.
-          </small>
+      </div>
+
+      {/* <Redirect to={`/dashboard/contest/${id}`} /> */}
+    </div>
+  ) : (
+    <div>
+      <div className="container py-5 text-center">
+        <img src="https://img.icons8.com/doodle/120/000000/stop-sign--v1.png" />
+        <h1>You Need Login to Access this Page!</h1>
+        <div className="py-3">
+          <Link to={`/login`} className="btn btn-dark">
+            <span> Login with Your Account </span>
+          </Link>
+          <p className="mt-3 lead">
+            if You have account
+            <Link to={`/register`} className="font-weight-bold">
+              <span> Click Register to create account </span>
+            </Link>
+            then come back here..
+          </p>
         </div>
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            className="form-control"
-            value={signupState.password}
-            onChange={onChange}
-          />
-        </div>
-        <button type="submit" className="btn btn-dark btn-raised  btn-block">
-          Register
-        </button>
-      </form>
-      {isRegistering && <div className="text-center">Registering</div>}
-      {error && errorType == "register" ? (
-        <div className="text-danger">Something went wrong</div>
-      ) : (
-        registerSuccess && <div className="text-center">Success</div>
-      )}
+      </div>
     </div>
   );
 };
@@ -99,14 +115,13 @@ const mapStateToProps = state => ({
   isAuth: state.authReducer.isAuth,
   isLoading: state.authReducer.isLoading,
   token: state.authReducer.token,
-  isRegistering: state.authReducer.isRegistering,
-  registerSuccess: state.authReducer.registerSuccess,
   error: state.authReducer.error,
-  errorType: state.authReducer.errorType
+  errorMessage: state.authReducer.errorMessage,
+  email: state.authReducer.email
 });
 
 const mapDispatchToProps = dispatch => ({
-  registerUser: payload => dispatch(registerUser(payload))
+  vaildSignupContests: payload => dispatch(vaildSignupContests(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContestRegister);

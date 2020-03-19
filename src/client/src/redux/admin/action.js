@@ -40,6 +40,38 @@ export const fetchUserCode = id => {
   };
 };
 
+// admin page all contests
+export const fetchAllAdminContestsRequest = payload => ({
+  type: FETCH_ALL_CONTESTS_REQUEST,
+  payload
+});
+
+export const fetchAllAdminContestsSuccess = payload => ({
+  type: FETCH_ALL_CONTESTS_SUCCESS,
+  payload
+});
+
+export const fetchAllAdminContestsFailure = payload => ({
+  type: FETCH_ALL_CONTESTS_FAILURE,
+  payload
+});
+
+export const fetchAllAdminContests = payload => {
+  return dispatch => {
+    dispatch(fetchAllAdminContestsRequest());
+    return axios
+      .get("/admincontest", {
+        headers: {
+          Authorization: payload.token
+        }
+      })
+      .then(res => {
+        dispatch(fetchAllAdminContestsSuccess(res.data));
+      })
+      .catch(() => dispatch(fetchAllAdminContestsFailure()));
+  };
+};
+
 export const fetchAllContestsRequest = payload => ({
   type: FETCH_ALL_CONTESTS_REQUEST,
   payload
@@ -59,15 +91,11 @@ export const fetchAllContests = payload => {
   return dispatch => {
     dispatch(fetchAllContestsRequest());
     return axios
-      .get(
-        "/contests",
-        {},
-        {
-          headers: {
-            Authorization: `JWT ${payload.token}`
-          }
+      .get("/contests", {
+        headers: {
+          Authorization: payload.token
         }
-      )
+      })
       .then(res => {
         dispatch(fetchAllContestsSuccess(res.data));
       })
@@ -212,15 +240,11 @@ export const fetchAllChallenges = payload => {
   return dispatch => {
     dispatch(fetchAllChallengesRequest());
     return axios
-      .get(
-        "/challenges",
-        {},
-        {
-          headers: {
-            Authorization: `JWT ${payload.token}`
-          }
+      .get("/challenges", {
+        headers: {
+          Authorization: payload.token
         }
-      )
+      })
       .then(res => {
         dispatch(fetchAllChallengesSuccess(res.data));
       })

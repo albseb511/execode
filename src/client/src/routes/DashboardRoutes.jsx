@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
+/* eslint-disable react/prop-types */
 import React, { useEffect } from "react";
 import { Route, Redirect, Switch, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
@@ -26,6 +29,7 @@ import AdminSettings from "./Dashboard/Admin/CPanel/AdminSettings";
 import EditContestDetails from "./Dashboard/Admin/CreateContest/EditContestDetails";
 import CreateUsers from "./Dashboard/Admin/CPanel/CreateUsers";
 import ViewUsers from "./Dashboard/Admin/CPanel/ViewUsers";
+
 import {
   logoutUser,
   setRedirectUrl,
@@ -91,13 +95,14 @@ const DashboardRoutes = ({
         render={() => <UserDashboard />}
       /> */}
       <Route path="/dashboard" exact render={() => <TodayContest />} />
+
       {/* <Route
         path="/dashboard/user/contest/today"
         exact
         render={() => <TodayContest />}
       /> */}
       <Route
-        path="/dashboard/user/:contestId"
+        path="/dashboard/contest/:contestId"
         exact
         render={({ match, location }) => (
           <ErrorBoundary>
@@ -129,7 +134,7 @@ const DashboardRoutes = ({
         )}
       />
       <Route
-        path="/dashboard/user/:contestId/:challengeId"
+        path="/dashboard/contest/:contestId/:challengeId"
         exact
         render={({ match, location }) => (
           <ErrorBoundary>
@@ -142,7 +147,7 @@ const DashboardRoutes = ({
         )}
       />
       <Route
-        path="/dashboard/user/:contestId/:challengeId/submit"
+        path="/dashboard/contest/:contestId/:challengeId/submit"
         exact
         render={({ match }) => (
           <ErrorBoundary>
@@ -157,7 +162,6 @@ const DashboardRoutes = ({
       <Route path="/dashboard/settings" render={() => <Settings />} />
       <Route path="/dashboard/profile" render={() => <Profile />} />
       <Route path="/dashboard/reports" render={() => <Reports />} />
-
       {/* Admin Dashboard - need authorization */}
       {/* also need navbar for user */}
       <ErrorBoundary>

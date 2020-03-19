@@ -5,6 +5,7 @@ import { registerUser } from "../redux/authentication/actions";
 import { connect } from "react-redux";
 
 const Register = ({
+  token,
   registerUser,
   isAuth,
   isRegistering,
@@ -32,7 +33,8 @@ const Register = ({
     let payload = {
       email: signupState.email,
       name: signupState.name,
-      password: signupState.password
+      password: signupState.password,
+      token
     };
     registerUser(payload);
   };

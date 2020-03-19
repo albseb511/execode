@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { tokenValidateUser } from "../../redux/authentication/actions";
 
 const LoginPublic = ({
+  contestId,
   loginUser,
   isAuth,
   token,
@@ -37,12 +38,12 @@ const LoginPublic = ({
       setLoginState({ ...loginState, [e.target.name]: e.target.value });
     }
   };
-
-  const onLoginSubmit = e => {
+  const registerUserRequest = e => {
     e.preventDefault();
     let payload = {
       email: loginState.email,
-      password: loginState.password
+      password: loginState.password,
+      token
     };
     loginUser(payload);
   };
@@ -60,7 +61,7 @@ const LoginPublic = ({
         <div className="mb-4 mt-4">
           <div>
             <h4 className="text-center">Login</h4>
-            <form onSubmit={onLoginSubmit}>
+            <form onSubmit={registerUserRequest}>
               <div className="form-group mb-3">
                 <label htmlFor="Email">Email</label>
                 <input

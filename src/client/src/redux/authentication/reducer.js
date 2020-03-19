@@ -30,7 +30,7 @@ function getUserInfo() {
 const [token, email, userType] = getUserInfo();
 
 const initState = {
-  isAuth: false,
+  isAuth: !!localStorage.token,
   isLoading: false,
   isValidating: false,
   token,
@@ -167,7 +167,7 @@ const reducer = (state = initState, { type, payload }) => {
         isValidating: false,
         error: true,
         errorType: "token_invalid",
-        errorMessage: "session has expired or invalid. Please login in again"
+        errorMessage: " "
       };
     case REDIRECT_URL:
       return {
