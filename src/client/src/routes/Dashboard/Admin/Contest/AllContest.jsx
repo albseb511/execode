@@ -49,7 +49,7 @@ const AllContest = ({
               <div>
                 <b>URL:</b>
                 <p className="mx-auto">
-                  https://masai-execode.now.sh/execode/contest/{contest.id}
+                  https://masai-execode.now.sh/contest/{contest.id}
                 </p>
               </div>
             </div>

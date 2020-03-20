@@ -1,3 +1,10 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/jsx-no-duplicate-props */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react/prop-types */
 /* eslint-disable no-console */
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -199,7 +206,7 @@ const SingleChallenge = ({
       data[`${email}__${contestId}__${challengeId}__${language}__default`]
     );
   };
-  const styleSpace = {whiteSpace:"pre-line"}
+  const styleSpace = { whiteSpace: "pre-line" };
   return (
     <div>
       <div className="container border py-3">
@@ -311,7 +318,7 @@ const SingleChallenge = ({
               style={{ width: "100%" }}
               placeholder="Ask for help if you need it"
               mode={language}
-              onLoad={()=>setPlaceHolderData()}
+              onLoad={() => setPlaceHolderData()}
               onChange={e => handleChangeCode(e)}
               onCopy={event => handleEvents(event, "copy")}
               onPaste={event => handleEvents(event, "paste")}

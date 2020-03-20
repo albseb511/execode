@@ -25,7 +25,7 @@ const Routes = () => {
             <DashboardRoutes path={location.pathname} />
           )}
         />
-        <Route path="/execode/contest/:id" render={() => <ContestRegister />} />
+        <Route path="/contest/:id" render={() => <ContestRegister />} />
         <Route path="/login" render={() => <Login />} />
         <Route path="/register" render={() => <Register />} />
         <Route path="/about" render={() => <About />} />

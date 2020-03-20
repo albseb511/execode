@@ -30,7 +30,7 @@ function getUserInfo() {
 const [token, email, userType] = getUserInfo();
 
 const initState = {
-  isAuth: !!localStorage.token,
+  isAuth: false,
   isLoading: false,
   isValidating: false,
   token,

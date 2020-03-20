@@ -133,7 +133,7 @@ export const tokenValidateUser = payload => {
     return axios
       .get("/validate", {
         headers: {
-          Authorization: payload.token
+          Authorization: payload
         }
       })
       .then(res =>
