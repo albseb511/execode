@@ -170,3 +170,23 @@ def update_contest(data, contest_id, user_id):
     else:
         print("User is not authorized for updating the contest!")
         return False
+
+def get_admin_contests(user_id):
+    resp_data = []
+    result_data = db.engine.execute("select * from contests where owner = '%s';"%(user_id))
+    final_val = [dict(row) for row in result_data]
+    print(final_val)
+    for j in final_val:
+        data = {}
+        data["id"] = j['id']
+        data["contest_name"] = j['contest_name']
+        data['start_date'] = str(j['start'].strftime("%m/%d/%Y"))
+        data['start_time'] = str(j['start'].strftime("%H:%M"))
+        data['end_date'] = str(j['end'].strftime("%m/%d/%Y"))
+        data['end_time'] = str(j['end'].strftime("%H:%M"))
+        data['details'] = j['details']
+        data['show_leaderboard'] = j['show_leaderboard']
+        data['created_at'] = str(j['created_at'].strftime("%m/%d/%Y %H:%M"))
+        resp_data.append(data)
+    resp = {"contests": resp_data}
+    return resp
