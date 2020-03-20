@@ -18,9 +18,16 @@ def add_signup(data, user_id):
                             user_id = user_id)
 
     save_changes(new_asset)
-    print('add signup saved')
     signup_id = new_asset.id
     if signup_id == None:
         return False
     else:
         return True
+
+def validate_signup(data, user_id):
+    signup_record = SignUpContestModel.query.filter_by(
+        contest_id=data['contest_id'], user_id = user_id).first()
+    if signup_record:
+        return True
+    else:
+        return False
