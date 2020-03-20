@@ -19,7 +19,14 @@ const Register = ({
     name: "",
     password: ""
   });
-
+  // form validate
+  function validateForm() {
+    return (
+      signupState.name.length > 0 &&
+      signupState.email.length > 0 &&
+      signupState.password.length > 0
+    );
+  }
   const onChange = e => {
     if (e.target.name === "keepLoggedIn") {
       setSignupState({ ...signupState, [e.target.name]: e.target.checked });
@@ -92,6 +99,7 @@ const Register = ({
             <button
               type="submit"
               className="btn btn-dark btn-raised btn-block text-uppercase"
+              disabled={!validateForm()}
             >
               <i className="fas fa-plus-square" /> Register
             </button>

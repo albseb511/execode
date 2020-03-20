@@ -5,17 +5,31 @@ import {
   Switch,
   Route,
   Link,
-  useParams
+  useParams,
+  Redirect
 } from "react-router-dom";
 import axios from "../../../../utils/axiosInterceptor";
 import { connect } from "react-redux";
 
-const ContestRegister = ({ isAuth, token, email, error, errorMessage }) => {
+const ContestRegister = ({
+  isAuth,
+  token,
+  email,
+  error,
+  errorMessage,
+  isLoading
+}) => {
   let { id } = useParams();
+  const [vailddata, updatevailddata] = useState([]);
+  console.log(vailddata);
+  const [contestSign, updatecontestSign] = useState([]);
+  const [idFromButtonClick, setIdFromButtonClick] = useState(id);
+
+  console.log(contestSign);
   useEffect(() => {
     axios
       .post(
-        `/signupcontest`,
+        `/validatesignup`,
         {
           contest_id: id
         },
@@ -27,67 +41,102 @@ const ContestRegister = ({ isAuth, token, email, error, errorMessage }) => {
       )
       .then(response => {
         console.log(response);
+        updatevailddata(response.data);
       })
       .catch(error => {
         console.log(error);
       });
-  }, []);
-
-  return isAuth ? (
+  }, [id]);
+  useEffect(() => {
+    async function signContest() {
+      try {
+        const response = await axios.post(
+          `/signupcontest`,
+          {
+            contest_id: id
+          },
+          {
+            headers: {
+              Authorization: token
+            }
+          }
+        );
+        updatecontestSign(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    signContest();
+  }, [id]);
+  const handleClick = () => {
+    setIdFromButtonClick(id);
+  };
+  return isAuth && vailddata.signup == true && contestSign.created == false ? (
     <div>
-      <div className="jumbotron jumbotron-fluid">
-        <div className="container text-center">
-          <h1>
-            Hello <span className="text-danger">{email.split("@")[0]} </span>
-            You're Invited contest id <span className="text-danger">{id}</span>
-          </h1>
-          <p className="lead">
-            Coding contest to test your understanding of data structures and
-            algorithms
-          </p>
-          <div className="py-3">
-            <Link to={`/dashboard/contest/${id}`} className="btn btn-dark">
-              <i className="fas fa-sign-in-alt" />
-              <span> enter your contest </span>
-            </Link>
+      <Redirect to={`/dashboard/contest/${id}`} />
+    </div>
+  ) : isAuth && vailddata.signup == false ? (
+    <div>
+      <div>
+        <div className="jumbotron jumbotron-fluid">
+          <div className="container text-center">
+            <h1>
+              Hello <span className="text-danger">{email.split("@")[0]} </span>
+              You're Invited contest id
+              <span className="text-danger">{id}</span>
+            </h1>
+            <p className="lead">
+              Coding contest to test your understanding of data structures and
+              algorithms
+            </p>
+            <div className="py-3">
+              <Link
+                type="button"
+                onClick={handleClick}
+                to={`/dashboard/contest/${id}`}
+                className="btn btn-dark"
+              >
+                <i className="fas fa-sign-in-alt" />
+                <span> enter your contest </span>
+              </Link>
+            </div>
+          </div>
+        </div>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12">
+              <h4 className="text-center">Rules</h4>
+              <b>DISQUALIFICATION</b>
+              <ul className="mt-3">
+                <li>Copying code from stackoverflow or by Googling</li>
+                <li>Seen browsing or referring any code</li>
+              </ul>
+            </div>
+            <div className="col-md-12">
+              <h4 className="text-center">Scoring</h4>
+              <ul className="mt-3">
+                <li>Each challenge has a pre-determined score.</li>
+                <li>
+                  A participant’s score depends on the number of test cases a
+                  participant’s code submission successfully passes.
+                </li>
+                <li>
+                  If a participant submits more than one solution per challenge,
+                  then the participant’s score will reflect the highest score
+                  achieved. In a game challenge, the participant's score will
+                  reflect the last code submission.
+                </li>
+                <li>
+                  Participants are ranked by score. If two or more participants
+                  achieve the same score, then the tie is broken by the total
+                  time taken to submit the last solution resulting in a higher
+                  score
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-      <div className="container">
-        <div className="row">
-          <div className="col-md-12">
-            <h4 className="text-center">Rules</h4>
-            <b>DISQUALIFICATION</b>
-            <ul className="mt-3">
-              <li>Copying code from stackoverflow or by Googling</li>
-              <li>Seen browsing or referring any code</li>
-            </ul>
-          </div>
-          <div className="col-md-12">
-            <h4 className="text-center">Scoring</h4>
-            <ul className="mt-3">
-              <li>Each challenge has a pre-determined score.</li>
-              <li>
-                A participant’s score depends on the number of test cases a
-                participant’s code submission successfully passes.
-              </li>
-              <li>
-                If a participant submits more than one solution per challenge,
-                then the participant’s score will reflect the highest score
-                achieved. In a game challenge, the participant's score will
-                reflect the last code submission.
-              </li>
-              <li>
-                Participants are ranked by score. If two or more participants
-                achieve the same score, then the tie is broken by the total time
-                taken to submit the last solution resulting in a higher score
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      {/* <Redirect to={`/dashboard/contest/${id}`} /> */}
     </div>
   ) : (
     <div>

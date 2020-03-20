@@ -31,6 +31,11 @@ const LoginPublic = ({
     loading: true
   });
 
+  // form validate
+  function validateForm() {
+    return loginState.email.length > 0 && loginState.password.length > 0;
+  }
+
   const onChange = e => {
     if (e.target.name === "keepLoggedIn") {
       setLoginState({ ...loginState, [e.target.name]: e.target.checked });
@@ -98,6 +103,7 @@ const LoginPublic = ({
               <button
                 type="submit"
                 className="btn btn-dark btn-raised btn-block text-uppercase"
+                disabled={!validateForm()}
               >
                 <i className=" fas fa-sign-in-alt" /> Login
               </button>
