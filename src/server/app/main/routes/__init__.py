@@ -11,7 +11,8 @@ from app.main.routes.Contests import Contests
 from app.main.routes.SubmittedCode import SubmittedCode
 from app.main.routes.JwtValidation import JwtValidation
 from app.main.routes.EventsHandle import EventsHandle, EventsHandleAdd
-from app.main.routes.SignUpContest import SignUpContest
+from app.main.routes.SignUpContest import SignUpContest, ValidateSignUp
+from app.main.routes.AdminContest import AdminContest
 
 
 def add_resources(app):
@@ -37,6 +38,7 @@ def add_resources(app):
     api.add_resource(FacebookAuthorize, '/facebook') 
     api.add_resource(GithubAuthorize, '/github')
     api.add_resource(SignUpContest, '/signupcontest') 
+    api.add_resource(ValidateSignUp, '/validatesignup') 
     api.add_resource(Contest, '/contest/<contest_name>') 
     api.add_resource(Contests, '/contests') 
     api.add_resource(UserLeaderboard, '/contest/<contest_id>/leaderboard') 
@@ -50,6 +52,7 @@ def add_resources(app):
     api.add_resource(AllChallenge, '/challenges') 
     api.add_resource(
         SubmittedCode, '/contest/<contest_id>/leaderboard/<user_id>/code/<submission_id>') 
+    api.add_resource(AdminContest, '/admincontest') 
 
 
 def register_blueprints(app):
