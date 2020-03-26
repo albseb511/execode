@@ -77,11 +77,11 @@ const reducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         isAuth: false,
-        token: "",
+        token: localStorage.token,
         isLoading: false,
         error: true,
         errorType: "login",
-        errorMessage: "😞 User Not Found"
+        errorMessage: "Please Enter Valid information"
       };
     case LOGOUT_USER_REQUEST:
       return {
