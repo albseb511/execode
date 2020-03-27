@@ -19,19 +19,17 @@ const ContestRegister = ({
   errorMessage,
   isLoading
 }) => {
-  let { id } = useParams();
+  let { url } = useParams();
   const [vailddata, updatevailddata] = useState([]);
-  console.log(vailddata);
   const [contestSign, updatecontestSign] = useState([]);
-  const [idFromButtonClick, setIdFromButtonClick] = useState(id);
+  const [urlFromButtonClick, seturlFromButtonClick] = useState(url);
 
-  console.log(contestSign);
   useEffect(() => {
     axios
       .post(
         `/validatesignup`,
         {
-          contest_id: id
+          contest_id_hash: url
         },
         {
           headers: {
@@ -40,50 +38,50 @@ const ContestRegister = ({
         }
       )
       .then(response => {
-        console.log(response);
         updatevailddata(response.data);
       })
       .catch(error => {
         console.log(error);
       });
-  }, [id]);
+  }, []);
+
   useEffect(() => {
-    async function signContest() {
-      try {
-        const response = await axios.post(
-          `/signupcontest`,
-          {
-            contest_id: id
-          },
-          {
-            headers: {
-              Authorization: token
-            }
+    axios
+      .post(
+        `/signupcontest`,
+        {
+          contest_id_hash: url
+        },
+        {
+          headers: {
+            Authorization: token
           }
-        );
+        }
+      )
+      .then(response => {
         updatecontestSign(response.data);
-      } catch (error) {
+      })
+      .catch(error => {
         console.error(error);
-      }
-    }
-    signContest();
-  }, [id]);
+      });
+  }, []);
+
+  //sign up contest
   const handleClick = () => {
-    setIdFromButtonClick(id);
+    seturlFromButtonClick(url);
   };
-  return isAuth && vailddata.signup == true && contestSign.created == false ? (
+  return vailddata.signup === true && contestSign.created === true ? (
     <div>
-      <Redirect to={`/dashboard/contest/${id}`} />
+      <Redirect to={`/dashboard/contest/${url}`} />
     </div>
-  ) : isAuth && vailddata.signup == false ? (
+  ) : vailddata.signup === false ? (
     <div>
       <div>
         <div className="jumbotron jumbotron-fluid">
           <div className="container text-center">
             <h1>
               Hello <span className="text-danger">{email.split("@")[0]} </span>
-              You're Invited contest id
-              <span className="text-danger">{id}</span>
+              You're Invited{" "}
             </h1>
             <p className="lead">
               Coding contest to test your understanding of data structures and
@@ -93,7 +91,7 @@ const ContestRegister = ({
               <Link
                 type="button"
                 onClick={handleClick}
-                to={`/dashboard/contest/${id}`}
+                to={`/dashboard/contest/${url}`}
                 className="btn btn-dark"
               >
                 <i className="fas fa-sign-in-alt" />
