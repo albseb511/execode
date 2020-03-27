@@ -30,7 +30,6 @@ const ContestDetails = ({
 }) => {
   const [challenges, setChallenges] = useState([]);
   const [aboutchallenges, setAboutchallenges] = useState([]);
-
   useEffect(() => {
     async function getChallenges() {
       try {
