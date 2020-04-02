@@ -88,4 +88,4 @@ class UserModel(db.Model):
             return False
 
     def __repr__(self):
-        return "<User '{}'>".format(self.username)
+        return "<User '{}'>".format(self.name)
