@@ -9,7 +9,7 @@ from app.main.models.AttemptsModel import AttemptsModel
 from app.main.models.ContestsChallengesModel import contests_challenges
 from app.main.services.test_cases_service import get_challenge_test_cases
 import time
-
+from string import ascii_lowercase
 
 def save_changes(data):
     try:
@@ -187,6 +187,71 @@ def get_admin_contests(user_id):
         data['details'] = j['details']
         data['show_leaderboard'] = j['show_leaderboard']
         data['created_at'] = str(j['created_at'].strftime("%m/%d/%Y %H:%M"))
+        data['url'] = '/contest/%s'%(caesar_encrypt_raw(j['id']))
         resp_data.append(data)
     resp = {"contests": resp_data}
     return resp
+
+
+def caesar_encrypt(text, places=5):
+    def substitute(char):
+        if char in ascii_lowercase:
+            char_num = ord(char) - 97
+            char = chr((char_num + places) % 26 + 97)
+        return char
+    return ''.join(substitute(char) for char in text)
+
+def caesar_decrypt(text, places=5):
+    def substitute(char):
+        if char in ascii_lowercase:
+            char_num = ord(char) - 97
+            char = chr((char_num - places) % 26 + 97)
+        return char
+    return ''.join(substitute(char) for char in text)
+
+def caesar_decrypt_raw(text):
+    text_to_num =  {'one': 1,
+                'two': 2,
+                'three': 3,
+                'four': 4,
+                'five': 5,
+                'six': 6,
+                'seven': 7,
+                'eight': 8,
+                'nine': 9,
+                'zero': 0}
+    
+    final_number = 0
+    digits = text.split('0')
+
+    #n = len(digits)
+
+    for i in range(len(digits)):
+        word = caesar_decrypt(digits[i])
+        print(word)
+        final_number = text_to_num[word]* 10**(i) + final_number
+        print(final_number)
+
+    return final_number
+
+def caesar_encrypt_raw(number):
+    num_to_text =  {1: 'one',
+                    2: 'two',
+                    3: 'three',
+                    4: 'four' ,
+                    5: 'five',
+                    6: 'six',
+                    7: 'seven',
+                    8: 'eight',
+                    9: 'nine',
+                    0: 'zero'}
+    
+    final_text_raw = []
+    
+    while (number>0):
+        num = number%10
+        word = num_to_text[num]
+        final_text_raw.append(caesar_encrypt(word))
+        number = number // 10
+
+    return '0'.join(final_text_raw)

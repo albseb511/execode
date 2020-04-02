@@ -1,8 +1,9 @@
 from flask import request
 from flask_restful import Resource, reqparse
-from ..services.contest_detail import get_contests_challenges, get_contests, add_contest, update_contest
+from ..services.contest_detail import get_contests_challenges, get_contests, add_contest, update_contest, caesar_encrypt_raw, caesar_decrypt_raw
 from app.main.services.decode_auth_token import decode_auth_token
 from app.main import db
+from ..services.signup_contest import validate_signup
 
 class Contest(Resource):
     """"
@@ -28,25 +29,6 @@ class Contest(Resource):
                         required=True, location='json', help="Challenges cannot be empty")
 
     @classmethod
-    def get(self, contest_name=None):
-        """
-            Contest details
-        """
-        # check authentication header
-        # check user role
-        # print(contest_name)
-        # contests_details = ContestsModel.get_contests_challenges(contest_name)
-        # print(contests_details)
-        # return {"message": "data"}
-        auth_token = request.headers.get("Authorization")
-        user_id = decode_auth_token(auth_token)
-        if user_id:
-            print(contest_name)
-            return get_contests_challenges(contest_name, user_id)
-        else:
-            return {"comment": "JWT Expired or Invalid"}, 200
-
-    @classmethod
     def post(self, contest_name):
         # auth token 
         auth_token = request.headers.get("Authorization")
@@ -62,13 +44,46 @@ class Contest(Resource):
         else:
             return {"comment": "JWT Expired or Invalid"}, 401
 
+class ContestGet(Resource):
+
+    @classmethod
+    def get(self, contest_id_encoded):
+        """
+            Contest details
+        """
+        # check authentication header
+        # check user role
+        # print(contest_name)
+        # contests_details = ContestsModel.get_contests_challenges(contest_name)
+        # print(contests_details)
+        # return {"message": "data"}
+        auth_token = request.headers.get("Authorization")
+        user_id = decode_auth_token(auth_token)
+
+        if user_id:
+            print(contest_id_encoded)
+            print(user_id)
+            print('-----------------')
+
+            contest_id = caesar_decrypt_raw(contest_id_encoded)
+            is_signed_up = validate_signup(contest_id, user_id)
+            if is_signed_up:
+                
+                
+                return get_contests_challenges(contest_id, user_id)
+            else:
+                return {"comment": "please redirect user to the signup page",
+                        "error": True, 
+                        "redirect": True,
+                        "url": "/contest/%s"%(contest_id_encoded)}, 403
+        else:
+            return {"comment": "JWT Expired or Invalid", "error": True, "redirect": False}, 200
+
 
 class Contests(Resource):
     @classmethod
     def get(self):
         return get_contests()
-
-
 
 
 class ContestEdit(Resource):
