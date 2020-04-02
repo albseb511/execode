@@ -1,24 +1,6 @@
 from app.main.models.UsersModel import UserModel
 import requests
 
-def refresh_server():
-    username = 'parthmasai'
-    token = 'e0de7e1895acdf09f570f2b8af4a1c7d9c86ecff'
-
-    response = requests.post(
-    'https://www.pythonanywhere.com/api/v0/user/{username}/webapps/parthmasai.pythonanywhere.com/reload/'.format(
-        username=username
-    ),
-    headers={'Authorization': 'Token {token}'.format(token=token)}
-    )
-
-
-    if response.status_code == 200:
-        print(response.content)
-    else:
-        print('Got unexpected status code {}: {!r}'.format(response.status_code, response.content))
-
-
 class Auth:
     @staticmethod
     def login_user(data):
@@ -50,7 +32,6 @@ class Auth:
                 'status': 'fail',
                 'message': 'Try again'
             }
-            refresh_server()
             return response_object, 200
 
     @staticmethod
