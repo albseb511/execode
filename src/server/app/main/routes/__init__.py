@@ -1,6 +1,6 @@
 from app.main.routes.auth_controller import UserLogin, LogoutAPI, UserSignUp, FacebookAuthorize, GithubAuthorize, UserAll
 from app.main import api
-from app.main.routes.Contest import Contest, ContestEdit
+from app.main.routes.Contest import Contest, ContestEdit, ContestGet
 from app.main.routes.UserLeaderboard import UserLeaderboard
 from app.main.routes.AdminLeaderboard import AdminLeaderboard, SingleUserSubmissions
 from app.main.routes.RuncodeResource import RuncodeResource
@@ -40,6 +40,7 @@ def add_resources(app):
     api.add_resource(SignUpContest, '/signupcontest') 
     api.add_resource(ValidateSignUp, '/validatesignup') 
     api.add_resource(Contest, '/contest/<contest_name>') 
+    api.add_resource(ContestGet, '/contest/<contest_id_encoded>') 
     api.add_resource(Contests, '/contests') 
     api.add_resource(UserLeaderboard, '/contest/<contest_id>/leaderboard') 
     api.add_resource(AdminLeaderboard,
