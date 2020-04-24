@@ -77,11 +77,11 @@ const reducer = (state = initState, { type, payload }) => {
       return {
         ...state,
         isAuth: false,
-        token: "",
+        token: localStorage.token,
         isLoading: false,
         error: true,
         errorType: "login",
-        errorMessage: "something went wrong"
+        errorMessage: "Please Enter Valid information"
       };
     case LOGOUT_USER_REQUEST:
       return {
@@ -167,7 +167,7 @@ const reducer = (state = initState, { type, payload }) => {
         isValidating: false,
         error: true,
         errorType: "token_invalid",
-        errorMessage: "session has expired or invalid. Please login in again"
+        errorMessage: " "
       };
     case REDIRECT_URL:
       return {

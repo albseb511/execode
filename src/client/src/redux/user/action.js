@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable radix */
 import {
   SUBMIT_PAGE_ROUTE_REQUEST,
@@ -141,12 +142,14 @@ export const submitTestCase = payload => {
         }
       )
       .then(res => {
-        if(res.isAxiosError){
-          throw new Error
+        if (res.isAxiosError) {
+          throw new Error();
         }
-        dispatch(submitTestCaseSuccess(res.data))
+        dispatch(submitTestCaseSuccess(res.data));
       })
-      .catch(err => dispatch(submitTestCaseFailure({ ...err, id:payload.test_id})));
+      .catch(err =>
+        dispatch(submitTestCaseFailure({ ...err, id: payload.test_id }))
+      );
   };
 };
 

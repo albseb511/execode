@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { tokenValidateUser } from "../../redux/authentication/actions";
 
 const LoginPublic = ({
+  contestId,
   loginUser,
   isAuth,
   token,
@@ -14,7 +15,8 @@ const LoginPublic = ({
   isValidating,
   tokenValidateUser,
   redirectUrl,
-  redirect
+  redirect,
+  isLoading
 }) => {
   if (token != "" && !isValidating && !isAuth) {
     tokenValidateUser(token);
@@ -25,8 +27,14 @@ const LoginPublic = ({
   const [loginState, setLoginState] = useState({
     email: "",
     password: "",
-    keepLoggedIn: false
+    keepLoggedIn: false,
+    loading: true
   });
+
+  // form validate
+  function validateForm() {
+    return loginState.email.length > 0 && loginState.password.length > 0;
+  }
 
   const onChange = e => {
     if (e.target.name === "keepLoggedIn") {
@@ -35,65 +43,85 @@ const LoginPublic = ({
       setLoginState({ ...loginState, [e.target.name]: e.target.value });
     }
   };
-
-  const onLoginSubmit = e => {
+  const registerUserRequest = e => {
     e.preventDefault();
     let payload = {
       email: loginState.email,
-      password: loginState.password
+      password: loginState.password,
+      token
     };
     loginUser(payload);
   };
   return isAuth ? (
-    <>
-    {redirect? <Redirect to={`${redirectUrl}`} />:
-    <Redirect to="/dashboard" />}
-    </>
+    <div>
+      {redirect ? (
+        <Redirect to={`${redirectUrl}`} />
+      ) : (
+        <Redirect to="/dashboard" />
+      )}
+    </div>
   ) : (
-    <div className="mb-4 mt-4">
-      <div>
-        <h4 className="text-center">Login To Execode</h4>
-        <form onSubmit={onLoginSubmit}>
-          <div className="form-group mb-3">
-            <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              placeholder="Enter Username"
-              className="form-control"
-              name="email"
-              value={loginState.username}
-              onChange={onChange}
-            />
+    <div className="row">
+      <div className="col-md-8 offset-md-2 py-5">
+        <div className="mb-4 mt-4">
+          <div>
+            <h4 className="text-center">Login</h4>
+            <form onSubmit={registerUserRequest}>
+              <div className="form-group mb-3">
+                <label htmlFor="Email">Email</label>
+                <input
+                  type="text"
+                  placeholder="Enter Email"
+                  className="form-control"
+                  name="email"
+                  value={loginState.username}
+                  onChange={onChange}
+                />
+              </div>
+              <div className="form-group mb-3">
+                <label htmlFor="password">Password</label>
+                <input
+                  type="password"
+                  placeholder="Enter Password"
+                  className="form-control"
+                  name="password"
+                  value={loginState.password}
+                  onChange={onChange}
+                />
+              </div>
+              <div className="form-group mt-2">
+                <span>
+                  <input
+                    type="checkbox"
+                    name="keepLoggedIn"
+                    defaultValue={loginState.keepLoggedIn}
+                    onChange={onChange}
+                  />
+                  <small className="text-muted ml-2">Keep me logged in</small>
+                </span>
+              </div>
+              <button
+                type="submit"
+                className="btn btn-dark btn-raised btn-block text-uppercase"
+                disabled={!validateForm()}
+              >
+                <i className=" fas fa-sign-in-alt" /> Login
+              </button>
+            </form>
+            {isLoading && (
+              <div className="text-center mt-4">
+                <div className="spinner-border text-success" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              </div>
+            )}
+            <div className="mt-3">
+              <span className="text-center text-danger">
+                {error && errorMessage}
+              </span>
+            </div>
           </div>
-          <div className="form-group mb-3">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              placeholder="Enter Password"
-              className="form-control"
-              name="password"
-              value={loginState.password}
-              onChange={onChange}
-            />
-          </div>
-          <div className="form-group mt-2">
-            <span>
-              <input
-                type="checkbox"
-                name="keepLoggedIn"
-                defaultValue={loginState.keepLoggedIn}
-                onChange={onChange}
-              />
-              <small className="text-muted ml-2">Keep me logged in</small>
-            </span>
-          </div>
-          <input
-            type="submit"
-            className="btn btn-dark btn-raised  btn-block"
-            value="Login"
-          />
-        </form>
-        <div className="text-danger">{error && errorMessage}</div>
+        </div>
       </div>
     </div>
   );

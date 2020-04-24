@@ -44,7 +44,10 @@ export const loginUser = payload => {
   };
 };
 
-loginUser({ email: "test", password: "test" });
+loginUser({
+  email: "test",
+  password: "test"
+});
 
 // REGISTER
 
@@ -57,7 +60,7 @@ export const registerUserSuccess = payload => ({
   payload
 });
 
-export const registerUserFail = (payload) => ({
+export const registerUserFail = payload => ({
   type: REGISTER_USER_FAILURE,
   payload
 });
@@ -107,7 +110,7 @@ export const logoutUser = payload => {
       .then(res => {
         dispatch(logoutUserSuccess(res));
       })
-      .catch((err) => dispatch(logoutUserFail(err.message)));
+      .catch(err => dispatch(logoutUserFail(err.message)));
   };
 };
 

@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchAllContests } from "../../../../redux/admin/action";
+import { fetchAllAdminContests } from "../../../../redux/admin/action";
 
 const AllContest = ({
   contests: contestFinalData,
@@ -48,7 +48,9 @@ const AllContest = ({
             <div className="d-flex mt-4">
               <div>
                 <b>URL:</b>
-                <p className="mx-auto">https://masai-execode.now.sh/dashboard/user/{contest.id}</p>  
+                <p className="mx-auto">
+                  https://masai-execode.now.sh{contest.url}/register
+                </p>
               </div>
             </div>
             <div className="row  py-3 m-auto">
@@ -56,7 +58,7 @@ const AllContest = ({
                 <Link
                   className="btn-block btn btn-outline-dark active"
                   to={`/dashboard/admin/${contest.id}/edit/`}
-                  >
+                >
                   More Details
                 </Link>
               </div>
@@ -89,7 +91,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getContests: payload => dispatch(fetchAllContests(payload))
+  getContests: payload => dispatch(fetchAllAdminContests(payload))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllContest);

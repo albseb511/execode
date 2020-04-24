@@ -1,3 +1,5 @@
+/* eslint-disable no-case-declarations */
+/* eslint-disable radix */
 import {
   SET_CONTEST_END_TIME,
   UPDATE_CONTEST_TIME,

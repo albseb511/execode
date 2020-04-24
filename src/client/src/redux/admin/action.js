@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable no-use-before-define */
 import {
   FETCH_USER_SUBMISSIONS,
   VIEW_USER_CODE,
@@ -38,6 +40,38 @@ export const fetchUserCode = id => {
   };
 };
 
+// admin page all contests
+export const fetchAllAdminContestsRequest = payload => ({
+  type: FETCH_ALL_CONTESTS_REQUEST,
+  payload
+});
+
+export const fetchAllAdminContestsSuccess = payload => ({
+  type: FETCH_ALL_CONTESTS_SUCCESS,
+  payload
+});
+
+export const fetchAllAdminContestsFailure = payload => ({
+  type: FETCH_ALL_CONTESTS_FAILURE,
+  payload
+});
+
+export const fetchAllAdminContests = payload => {
+  return dispatch => {
+    dispatch(fetchAllAdminContestsRequest());
+    return axios
+      .get("/admincontest", {
+        headers: {
+          Authorization: payload.token
+        }
+      })
+      .then(res => {
+        dispatch(fetchAllAdminContestsSuccess(res.data));
+      })
+      .catch(() => dispatch(fetchAllAdminContestsFailure()));
+  };
+};
+
 export const fetchAllContestsRequest = payload => ({
   type: FETCH_ALL_CONTESTS_REQUEST,
   payload
@@ -57,15 +91,11 @@ export const fetchAllContests = payload => {
   return dispatch => {
     dispatch(fetchAllContestsRequest());
     return axios
-      .get(
-        "/contests",
-        {},
-        {
-          headers: {
-            Authorization: `JWT ${payload.token}`
-          }
+      .get("/contests", {
+        headers: {
+          Authorization: payload.token
         }
-      )
+      })
       .then(res => {
         dispatch(fetchAllContestsSuccess(res.data));
       })
@@ -150,17 +180,17 @@ export const updateChallengeFailure = payload => ({
 });
 
 export const updateChallenge = payload => {
-  let {
+  const {
     challenge_name,
-      difficulty,
-      description,
-      problem_statement,
-      input_format,
-      constraints,
-      output_format,
-      sample_input,
-      sample_output
-  } = payload
+    difficulty,
+    description,
+    problem_statement,
+    input_format,
+    constraints,
+    output_format,
+    sample_input,
+    sample_output
+  } = payload;
   return dispatch => {
     dispatch(updateChallengeRequest());
     return axios
@@ -210,15 +240,11 @@ export const fetchAllChallenges = payload => {
   return dispatch => {
     dispatch(fetchAllChallengesRequest());
     return axios
-      .get(
-        "/challenges",
-        {},
-        {
-          headers: {
-            Authorization: `JWT ${payload.token}`
-          }
+      .get("/challenges", {
+        headers: {
+          Authorization: payload.token
         }
-      )
+      })
       .then(res => {
         dispatch(fetchAllChallengesSuccess(res.data));
       })
