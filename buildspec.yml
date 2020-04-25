@@ -20,9 +20,9 @@ phases:
       - npm install
   build:
     commands:
-      - echo tests running
-      - npm run test
-      - echo building
+      # - echo tests running
+      # - npm run test
+      - echo building application
       - npm run build
       - pwd
       - ls
