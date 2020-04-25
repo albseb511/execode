@@ -4,7 +4,7 @@ phases:
   install:
     commands: 
       - echo installing node
-      - curl -sL https://rpm.nodesource.com/setup_12.x | bash -
+      - curl -sL https://deb.nodesource.com/setup_12.x | bash -
       - apt install -y nodejs
       - echo install yarn
       - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
@@ -23,6 +23,6 @@ phases:
       - yarn build
 artficats:
   files:
-    - "**/*"
+      - "**/*"
     discard-paths: no
     base-directory: dist
