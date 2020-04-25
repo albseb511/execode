@@ -17,11 +17,11 @@ phases:
       - npm install
   build:
     command:
+      - pwd
       - echo tests running
       - npm run test
       - echo building
       - npm run build
-      - pwd
 artifacts:
   files:
     - "**/*"
