@@ -1,0 +1,28 @@
+version: 0.1
+
+phases:
+  install:
+    commands: 
+      - echo installing node
+      - curl -sL https://rpm.nodesource.com/setup_12.x | bash -
+      - apt install -y nodejs
+      - echo install yarn
+      - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+      - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+      - app install --no-install-recommends yarn
+  pre_build:
+    commands:
+      - echo installing dependencies
+      - cd client/src
+      - yarn
+  build:
+    command:
+      - echo tests running
+      - yarn test
+      - echo building
+      - yarn build
+artficats:
+  files:
+    - "**/*"
+    discard-paths: no
+    base-directory: dist
