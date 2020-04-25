@@ -13,7 +13,7 @@ phases:
   pre_build:
     commands:
       - echo installing dependencies
-      - cd client/src
+      - cd src/client
       - yarn
   build:
     command:
