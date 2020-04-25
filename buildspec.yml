@@ -14,15 +14,16 @@ phases:
     commands:
       - echo installing dependencies
       - cd src/client
-      - yarn
+      - npm install
   build:
     command:
       - echo tests running
-      - yarn test
+      - npm run test
       - echo building
-      - yarn build
+      - npm run build
+      - pwd
 artifacts:
   files:
     - "**/*"
   discard-paths: no
-  base-directory: src/client/build
+  base-directory: build
