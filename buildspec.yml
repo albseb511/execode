@@ -15,6 +15,8 @@ phases:
       - pwd
       - echo installing dependencies
       - cd src/client
+      - pwd
+      - ls
       - npm install
   build:
     command:
@@ -22,6 +24,8 @@ phases:
       - npm run test
       - echo building
       - npm run build
+      - pwd
+      - ls
 artifacts:
   files:
     - "**/*"
