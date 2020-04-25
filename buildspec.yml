@@ -12,12 +12,12 @@ phases:
       - apt install --no-install-recommends yarn
   pre_build:
     commands:
+      - pwd
       - echo installing dependencies
       - cd src/client
       - npm install
   build:
     command:
-      - pwd
       - echo tests running
       - npm run test
       - echo building
