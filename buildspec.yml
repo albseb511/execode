@@ -19,7 +19,7 @@ phases:
       - ls
       - npm install
   build:
-    command:
+    commands:
       - echo tests running
       - npm run test
       - echo building
@@ -30,4 +30,4 @@ artifacts:
   files:
     - "**/*"
   discard-paths: no
-  base-directory: src/client/build
+  base-directory: build
