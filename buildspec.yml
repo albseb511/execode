@@ -30,4 +30,4 @@ artifacts:
   files:
     - "**/*"
   discard-paths: no
-  baseDirectory: src/client/build
+  base-directory: src/client/build
