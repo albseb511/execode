@@ -2,7 +2,7 @@ pipeline {
   agent {
     docker {
       args '-p 3000:3000'
-      image 'jenkinsci/blueocean'
+      image 'node:6-alpine'
     }
 
   }
